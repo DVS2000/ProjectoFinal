@@ -2,7 +2,7 @@ html{
     scroll-behavior: smooth;
 }
 .w-100{
-    height:300px!important ;
+    height:450px!important ;
 }
 
 .slide::after{
@@ -12,11 +12,12 @@ html{
     background: #000;
     margin: 0 auto;
     position: absolute;
-    height:300px;
+    height:450px;
     top: 0;
     opacity: .5;
  
 }
+
 
 .div-flex1,
 .div-flex2,

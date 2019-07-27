@@ -1,103 +1,3 @@
-html{
-    scroll-behavior: smooth;
-}
-.w-100{
-    height:450px!important;
-    width:100%;
-}
-
-.slide::after{
-    content:'';
-    display:block;
-    width: 100%;
-    background: #000;
-    margin: 0 auto;
-    position: absolute;
-    height:450px;
-    top: 0;
-    opacity: .5;
- 
-}
-
-
-.btn-outline-warning:hover {
-    color: white;
-}
-
-.text-black:hover{
-    color: white;
-}
-
-.div-flex1,
-.div-flex2,
-.div-flex3{
-    display: flex;   
-    justify-content: center;
-    margin-top: 40px;
-}
-
-.div-flex1 .div-flex-son{
-    width: 400px;
-    height: 700px;
-    background-color: #000;
-    margin: 10px;
-}
- 
-.div-flex2 .div-flex-son{
-    width: 400px;
-    height: 500px;
-    background-color: #fc0;
-    margin: 10px;
-}
- 
-.div-flex3 .div-flex-son{
-    width: 400px;
-    height: 500px;
-    background-color: #c75;
-    margin: 10px;
-}
- .flex-main{
-     display: flex;
-     flex-direction: column;
-     margin-bottom: 300px;
- }
-.navbar.navbar-expand-lg.navbar-light.bg-white{
-    position: fixed;
-    width: 100%;
-    z-index: 9999;
-}
-.carousel-caption.d-none.d-md-block h3{
-    font-weight: bolder!important;
-}
-.carousel-caption.d-none.d-md-block p{
-    font-size: 21px!important;
-}
-
-.nav-link.active::after{
-    content: '';
-    display: block;
-    margin-block: 0 auto;
-    width: auto;
-    height: 2px;
-    background-color: #ffc107;
-}
-
-
-.mybtn:hover {
-    border-bottom: 2px solid #ffc107;
-}
-
-.mybtn2 {
-    background: #ffc107;
-    color: white !important;
-    border-radius: 4px;
-}
-.mybtn2:hover {
-    border:1px solid #ffc107;
-    border-radius: 4px;
-}
-
-
 /*********************** Demo - 1 *******************/
 .box1 img,.box1:after,.box1:before{width:100%;transition:all .3s ease 0s}
 .box1 .icon,.box2,.box3,.box4,.box5 .icon li a{text-align:center}
@@ -158,13 +58,13 @@ body{background-color:#f1f1f2}
 .box3:after,.box3:before{display:block;background:rgba(0,0,0,.3);top:10%;bottom:10%;z-index:1;transform:scale(0,1)}
 .box3:after{top:10.8%;bottom:10.8%;transform:scale(1,0)}
 .box3:hover:after,.box3:hover:before{transform:scale(1);animation:animate 1.5s}
-.box3:hover:before{border-top:3px solid #ffc107;border-bottom:3px solid #ffc107}
-.box:hover:after{border-left:3px solid #ffc107;border-right:3px solid #fff}
+.box3:hover:before{border-top:3px solid #fff;border-bottom:3px solid #fff}
+.box:hover:after{border-left:3px solid #fff;border-right:3px solid #fff}
 .box img{width:100%;height:auto;transition:all .3s}
 .box3:hover img{transform:scale(1.2);filter:blur(5px);-moz-filter:blur(5px);-webkit-filter:blur(5px)}
 .box3 .box-content{padding:30px 10px;top:10%;bottom:10%;opacity:0;z-index:2}
 .box3:hover .box-content{box-shadow:0 0 0 35px rgba(255,255,255,.3);opacity:1;transition:all .3s}
-.box3 .title{font-size:24px;font-weight:600;color:#ffc107;margin:0 0 5px}
+.box3 .title{font-size:24px;font-weight:600;color:#88c425;margin:0 0 5px}
 .box3 .post{display:block;margin:0 0 5px;font-size:14px;color:rgba(255,255,255,.8)}
 .box3 .description{font-size:14px;color:#fff;margin:0 0 20px}
 .box3 .icon{padding:0;margin:0;list-style:none}
@@ -552,70 +452,3 @@ body{background-color:#f1f1f2}
 }
 @media only screen and (max-width:359px){.box21 .title{padding-bottom:10px}
 }
-
-
-
-
-
-
-
-
-
-
-body {
-    margin:0;
-    padding:0;
-    font-family: sans-serif;
-}
-section {
-    width: 100%;
-    height: 50vh;
-    box-sizing: border-box;
-}
-section.sec1 {
-    background: url(../imgs/img1.jpg);
-    background-size: cover;
-    background-position: center center;
-    background-attachment: fixed;
-}
-section.sec2 {
-   /* background: url(https://www.hdwallpapers.in/walls/autumn_bench-HD.jpg);*/
-    background: url(../imgs/img.jpg);
-    background-size: cover;
-    background-position: center center;
-    background-attachment: fixed;
-}
-section.sec3 {
-    background: url(../imgs/img2.png);
-    background-size: cover;
-    background-position: center center;
-    background-attachment: fixed;
-}
-
-.test {
-    background-color: rgba(0,0,0,.5);
-    padding-top: 5px; 
-    width: 100%;
-    height: 100%;
-}
-section.sec4 {
-    background: url(../imgs/img.jpg);
-    background-size: cover;
-    background-position: center center;
-    background-attachment: fixed;
-}
-section.secText {
-    padding: 50px 100px;
-    height: auto;
-}
-section.secText h1 {
-    margin:0;
-    padding:0;
-    font-size:48px;
-    color:#262626;
-}
-section.secText p {
-    font-size:18px;
-}
-
-

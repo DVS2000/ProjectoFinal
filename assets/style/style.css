@@ -78,21 +78,21 @@ html{
     margin-block: 0 auto;
     width: auto;
     height: 2px;
-    background-color: #ffc107;
+    background-color: #0B508C;
 }
 
 
 .mybtn:hover {
-    border-bottom: 2px solid #ffc107;
+    border-bottom: 2px solid #0B508C;
 }
 
 .mybtn2 {
-    background: #ffc107;
+    background: #0B508C;
     color: white !important;
     border-radius: 4px;
 }
 .mybtn2:hover {
-    border:1px solid #ffc107;
+    border:1px solid #0B508C;
     border-radius: 4px;
 }
 
@@ -101,7 +101,7 @@ html{
 }
 .mytitle::after {
     content: '';
-    background-color: #ffc107;
+    background-color: #0B508C;
     display: block;
     margin-block: 0px auto;
     width: 100px;
@@ -132,7 +132,7 @@ a.back-to-top {
     position: fixed;
     padding: 5px;
     bottom: 18px;
-    background-color: #ffc107;
+    background-color: #0B508C;
     border-radius: 100px;
     right: 15px;
     text-decoration: none;
@@ -147,6 +147,22 @@ a.back-to-top {
     text-decoration: none;
   }
 
+
+  .btn-outline-primary {
+      border-color: #fff !important;
+      color: #fff !important;
+  }
+
+  .btn-outline-primary:hover {
+      border-color: #0B508C !important;
+    background: #0B508C !important;
+    color: #fff !important;
+}
+
+
+.btn-primary {
+    background-color: #0B508C !important;
+}
 
 /*********************** Demo - 1 *******************/
 .box1 img,.box1:after,.box1:before{width:100%;transition:all .3s ease 0s}
@@ -183,13 +199,13 @@ body{background-color:#f1f1f2}
 .box3:after,.box3:before{display:block;background:rgba(0,0,0,.3);top:10%;bottom:10%;z-index:1;transform:scale(0,1)}
 .box3:after{top:10.8%;bottom:10.8%;transform:scale(1,0)}
 .box3:hover:after,.box3:hover:before{transform:scale(1);animation:animate 1.5s}
-.box3:hover:before{border-top:3px solid #ffc107;border-bottom:3px solid #ffc107}
-.box:hover:after{border-left:3px solid #ffc107;border-right:3px solid #fff}
+.box3:hover:before{border-top:3px solid #0B508C;border-bottom:3px solid #0B508C}
+.box:hover:after{border-left:3px solid #0B508C;border-right:3px solid #fff}
 .box img{width:100%;height:auto;transition:all .3s}
 .box3:hover img{transform:scale(1.2);filter:blur(5px);-moz-filter:blur(5px);-webkit-filter:blur(5px)}
 .box3 .box-content{padding:30px 10px;top:10%;bottom:10%;opacity:0;z-index:2}
 .box3:hover .box-content{box-shadow:0 0 0 35px rgba(255,255,255,.3);opacity:1;transition:all .3s}
-.box3 .title{font-size:24px;font-weight:600;color:#ffc107;margin:0 0 5px}
+.box3 .title{font-size:24px;font-weight:600;color:#fff;margin:0 0 5px}
 .box3 .post{display:block;margin:0 0 5px;font-size:14px;color:rgba(255,255,255,.8)}
 .box3 .description{font-size:14px;color:#fff;margin:0 0 20px}
 .box3 .icon{padding:0;margin:0;list-style:none}

@@ -61,8 +61,8 @@
         </a>
         <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">         
-            <a class="collapse-item" href="register2.html">Novo utilizador</a>
-            <a class="collapse-item" href="users.html">Ver todos utilizadores</a>
+            <a class="collapse-item" href="buttons.html">Novo utilizador</a>
+            <a class="collapse-item" href="cards.html">Ver todos utilizadores</a>
             <a href="#" class="collapse-item">Online</a>
             <a href="#" class="collapse-item">Eliminados</a>
           </div>
@@ -194,7 +194,7 @@
             <li class="nav-item dropdown no-arrow">
               <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <span class="mr-2 d-none d-lg-inline text-gray-600 small">Dorivaldo dos Santos</span>
-                <img class="img-profile rounded-circle" src="../imgs/avatar.jpeg">
+                <img class="img-profile rounded-circle" src="https://scontent.flad1-1.fna.fbcdn.net/v/t1.0-9/37919657_2101164123470574_5433798344348532736_n.jpg?_nc_cat=107&_nc_eui2=AeEtNBFU1yGntd_Glvcy1ru9A9Sf4Jc7YGIBcMe-JXTiWiDVPzHeVhnQV6d4Y7vs1T2hejhFSQhe-CdU8IdhicnJr64_WJusQsWTqjwQ3nvSbA&_nc_oc=AQlaoE0YPUvCcEyZbmE0KGbbIDVPTq2rjDdMRkOrllBmkzkMq_-1MvfvHVGMMnZBD0Y&_nc_ht=scontent.flad1-1.fna&oh=e7465ccfe7ae6c10b68b3e5b9710b291&oe=5D9FDDAD">
               </a>
               <!-- Dropdown - User Information -->
               <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
@@ -222,111 +222,52 @@
         <!-- Begin Page Content -->
         <div class="container-fluid">
 
-          <!-- Page Heading -->
-          <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
-            <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Gerar relatório</a>
-          </div>
-
-          <!-- Content Row -->
-          <div class="row animated wow fadeIn" style="visibility: visible; -webkit-animation-delay: .3s; -moz-animation-delay: .3s; animation-delay: .3s;">
-
-
-            <!-- Earnings (Monthly) Card Example -->
-            <div class="col-xl-4 col-md-6 mb-4" data-wow-delay=".4s">
-                <div class="card border-left-info shadow-sm h-100 py-2">
-                  <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                      <div class="col mr-2">
-                        <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Alunos escritos</div>
-                        <div class="row no-gutters align-items-center">
-                          <div class="col-auto">
-                            <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">500</div>
+            <div class="card o-hidden border-0 shadow-lg my-5">
+              <div class="card-body p-0">
+                <!-- Nested Row within Card Body -->
+                <div class="row">
+                  <div class="col-lg-8 offset-2">
+                    <div class="p-5">
+                      <div class="text-center">
+                        <h1 class="h4 text-gray-900 mb-4">Create an Account!</h1>
+                      </div>
+                      <form class="user">
+                        <div class="form-group row">
+                          <div class="col-sm-6 mb-3 mb-sm-0">
+                            <input type="text" class="form-control form-control-user" id="exampleFirstName" placeholder="First Name">
                           </div>
-                          <div class="col">
-                            <div class="progress progress-sm mr-2">
-                              <div class="progress-bar bg-info" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-                            </div>
+                          <div class="col-sm-6">
+                            <input type="text" class="form-control form-control-user" id="exampleLastName" placeholder="Last Name">
                           </div>
                         </div>
-                      </div>
-                      <div class="col-auto">
-                        <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-  
-              <!-- Pending Requests Card Example -->
-              <div class="col-xl-4 col-md-6 mb-4">
-                <div class="card border-left-warning shadow-sm h-100 py-2">
-                  <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                      <div class="col mr-2">
-                        <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">E-mails enviando</div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800">1560</div>
-                      </div>
-                      <div class="col-auto">
-                        <i class="fas fa-envelope fa-2x text-gray-300"></i>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-          
-
-            <!-- Earnings (Monthly) Card Example -->
-            <div class="col-xl-4 col-md-6 mb-4">
-              <div class="card border-left-success shadow-sm h-100 py-2">
-                <div class="card-body">
-                  <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                      <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Cursos</div>
-                      <div class="h5 mb-0 font-weight-bold text-gray-800">3</div>
-                    </div>
-                    <div class="col-auto">
-                      <i class="fas fa-address-card fa-2x text-gray-300"></i>
+                        <div class="form-group">
+                          <input type="email" class="form-control form-control-user" id="exampleInputEmail" placeholder="Email Address">
+                        </div>
+                        <div class="form-group row">
+                          <div class="col-sm-6 mb-3 mb-sm-0">
+                            <input type="password" class="form-control form-control-user" id="exampleInputPassword" placeholder="Password">
+                          </div>
+                          <div class="col-sm-6">
+                            <input type="password" class="form-control form-control-user" id="exampleRepeatPassword" placeholder="Repeat Password">
+                          </div>
+                        </div>
+                        <a href="login.html" class="btn btn-primary btn-user btn-block">
+                          Register Account
+                        </a>
+                        <hr>
+                      </form>
+                      <hr>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
+        
 
-            
-          </div>
 
-          <!-- Content Row -->
 
-          <div class="row animated wow fadeIn" style="visibility: visible; -webkit-animation-delay: .6s; -moz-animation-delay: .6s; animation-delay: .6s;">
 
-            <!-- Area Chart -->
-            <div class="col-xl-12 col-lg-7">
-              <div class="card shadow-sm mb-4">
-                <!-- Card Header - Dropdown -->
-                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                  <h6 class="m-0 font-weight-bold text-primary">Rendimento Anual</h6>
-                  <div class="dropdown no-arrow">
-                    <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                      <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
-                      <div class="dropdown-header">Opções:</div>
-                      <a class="dropdown-item" href="#"> Actualizar</a> 
-                    </div>
-                  </div>
-                </div>
-                <!-- Card Body -->
-                <div class="card-body">
-                  <div class="chart-area">
-                    <canvas id="myAreaChart"></canvas>
-                  </div>
-                </div>
-              </div>
-            </div>
 
-        </div>
-        <!-- /.container-fluid -->
 
       </div>
       <!-- End of Main Content -->

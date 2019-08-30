@@ -13,15 +13,21 @@ class CrudUtilizador extends Conexao {
         #Incializando a conexão
         $this->connect();
 
-        $query;
         $query  = "INSERT INTO tbutilizador(nome, email, telefone, senha, dtCriacao, dtEdicao, idtbTipoUtilizador, idEstado) 
-                VALUES ('".$model->getNome()."','".$model->getEmail()."','".$model->getTelefone()."','".$model->getSenha()."','".$model->getDtCriacao()."','".$model->getDtEdicao()."',".$model->getIdTipoUtilizador().",".$model->getIdEstado().");";
+                VALUES ('".$model->getNome()."',
+                '".$model->getEmail()."',
+                '".$model->getTelefone()."','".$model->getSenha()."',
+                '".$model->getDtCriacao()."','".$model->getDtEdicao()."',
+                ".$model->getIdTipoUtilizador().",
+                ".$model->getIdEstado().");";
 
         if(mysqli_query($this->conexao, $query)) {
             echo "Correu tuo bem";
         } else {
             echo "Não correu tudo bem";
         }
+
+        mysqli_close($this->conexao);
     }
 
     # CRIANDO A FUNÇÃO PARA FAZER O UPDATE DO UTILIZADOR NO BANCO DE DADOS

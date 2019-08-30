@@ -12,7 +12,7 @@ class Utilizador {
     private $dtEdicao;
     private $idTipoUtilizador;
     private $idEstado;
-    # CRAINDO OS GET E SET #
+    # CRAINDO OS GET E SETS #
 
     # CRAINDO O GET E SETS DO ID UTILIZADOR
     public function getId() { return $this->id; }
@@ -36,11 +36,11 @@ class Utilizador {
 
     # CRIANDO O GET E SET DA DATA DA CRIAÇÃO DA CONTA DO UTLIZADOR
     public function getDtCriacao() { return $this->dtCriacao; }
-    public function setDtCriacao($dtCriao) { $this->dtCriacao = $dtCriao; /* DESTE MODO A DATA DE CRIAÇÃO SERÁ SEMPRE A DATA ACTUAL */}
+    public function setDtCriacao($dtCriao) { $this->dtCriacao = $dtCriao; }
 
     # CRIANDO O GET E SET DA DATA DE EDIÇÃO DA CONTA DO UTILIZADOR
     public function getDtEdicao() { return $this->dtEdicao; }
-    public function setDtEdicao($dtEdicao) { return $this->dtEdicao = $dtEdicao; /* DESTE MODO A DATA DE EDIÇÃO SERÁ SEMPRE A DATA ACTUAL */}
+    public function setDtEdicao($dtEdicao) { return $this->dtEdicao = $dtEdicao; }
 
     # CRIANDO O GET E SET DO TIPO DE UTILIZADOR
     public function getIdTipoUtilizador() { return $this->idTipoUtilizador; }

@@ -30,7 +30,7 @@
          include_once('../global/erro.php');
          session_start();
          # APRESENTADO O ERRO
-         Erro::Erros($_SESSION['tipoErro'], $_SESSION['descricao']);
+         Erro::Erros("500", "Ocorreu um erro");
 
          ?>
 

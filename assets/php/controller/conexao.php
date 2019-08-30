@@ -18,6 +18,7 @@ class Conexao {
      public function connect() {
 
         $this->conexao = mysqli_connect(self::SERVERNAME, self::USERNAME, self::PASSWORD, self::DBNAME);
+        mysqli_set_charset($this->conexao, "UTF8");
 
         if(mysqli_connect_error()) {
             $_SESSION['tipoErro']   = "500";
@@ -27,6 +28,9 @@ class Conexao {
      }    
 
 
+
+
+     
      public static $instance;
 
      public static function getConne() {

@@ -118,6 +118,7 @@ class CrudCurso extends Conexao {
                 $curso->       setDtCriacao($dados["dtCriacao"]);
                 $curso->       setDtEdicao($dados["dtEdicao"]);
                 $cursos[] = $curso;
+
             }
         }
         

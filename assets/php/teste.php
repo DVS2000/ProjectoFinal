@@ -1,26 +1,17 @@
 <?php
 
 
-require 'model/curso.php';
-require 'controller/crud-curso.php';
+require 'model/utilizador.php';
+require 'controller/crud-utilizador.php';
 
 
 
-$model = new Curso();
-$model->setId(3);
-$model->setDescricao("Ligeiro Básico desde a base");
-$model->setPreco(90000);
-$model->setRequisitos("Sei la eu , sei lá eu, Testa lá");
-$model->setIdEstado(1);
-$model->setDtCriacao(date("Y-m-d H:s"));
-$model->setDtEdicao(date("Y-m-d H:s"));
+;
 
-$controller = new CrudCurso();
-$dados = $controller->search("base");
+$controller = new CrudUtilizador();
+$controller->select();
 
-foreach ($dados as $key => $value) {
-    echo "Nome : ".$value->getDescricao()."\n";
-}
+
 // $model = new Candidato();
 // $model->setId(1);
 // $model->setNome("Dorivaldo DVS2000");
@@ -62,5 +53,5 @@ foreach ($dados as $key => $value) {
 
 // }
 
-// ?>
+ ?>
 

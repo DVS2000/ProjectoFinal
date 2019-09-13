@@ -12,6 +12,10 @@ class Utilizador {
     private $dtEdicao;
     private $idTipoUtilizador;
     private $idEstado;
+    private $idSexo;
+    private $tipoUtilizador;
+    private $estado;
+    private $sexo;
     # CRAINDO OS GET E SETS #
 
     # CRAINDO O GET E SETS DO ID UTILIZADOR
@@ -49,4 +53,20 @@ class Utilizador {
     # CRIANDO O GET E SET DO ID DO ESTADO DO UTILIZADOR
     public function getIdEstado() { return $this->idEstado; }
     public function setIdEstado($idEstado) { $this->idEstado = $idEstado; }
+
+    # CRIANDO O GET E SET DO ID DO SEXO DO UTILIZADOR
+    public function getIdSexo() { return $this->idSexo; }
+    public function setIdSexo($idSexo) { $this->idSexo = $idSexo; }
+
+    # CRIANDO O GET E SET DO TIPO DE UTILIZADOR
+    public function getTipoUtilizador() { return $this->tipoUtilizador; }
+    public function setTipoUtilizador($tipoUtilizador) { $this->tipoUtilizador = $tipoUtilizador; }
+
+    # CRIANDO O GET E SET DO ESTADO DO UTILIZADOR
+    public function getEstado() { return $this->estado; }
+    public function setEstado($estado) { $this->estado = $estado; }
+
+    # CRIANDO O GET E SET DO SEXO DO UTILIZADOR
+    public function getSexo() { return $this->sexo; }
+    public function setSexo($sexo) { $this->sexo = $sexo; }
 }

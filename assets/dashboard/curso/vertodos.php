@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Dashboardd</title>
+    <title>Todos utilizadores</title>
 
     <!-- Custom fonts for this template-->
     <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -207,7 +207,7 @@
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span class="mr-2 d-none d-lg-inline text-gray-600 small">Dorivaldo dos Santos</span>
                                 <img class="img-profile rounded-circle"
-                                    src="https://scontent.flad1-1.fna.fbcdn.net/v/t1.0-9/37919657_2101164123470574_5433798344348532736_n.jpg?_nc_cat=107&_nc_eui2=AeEtNBFU1yGntd_Glvcy1ru9A9Sf4Jc7YGIBcMe-JXTiWiDVPzHeVhnQV6d4Y7vs1T2hejhFSQhe-CdU8IdhicnJr64_WJusQsWTqjwQ3nvSbA&_nc_oc=AQlaoE0YPUvCcEyZbmE0KGbbIDVPTq2rjDdMRkOrllBmkzkMq_-1MvfvHVGMMnZBD0Y&_nc_ht=scontent.flad1-1.fna&oh=e7465ccfe7ae6c10b68b3e5b9710b291&oe=5D9FDDAD">
+                                    src="https: //scontent.flad1-1.fna.fbcdn.net/v/t1.0-9/37919657_2101164123470574_5433798344348532736_n.jpg?_nc_cat=107&_nc_eui2=AeEtNBFU1yGntd_Glvcy1ru9A9Sf4Jc7YGIBcMe-JXTiWiDVPzHeVhnQV6d4Y7vs1T2hejhFSQhe-CdU8IdhicnJr64_WJusQsWTqjwQ3nvSbA&_nc_oc=AQlaoE0YPUvCcEyZbmE0KGbbIDVPTq2rjDdMRkOrllBmkzkMq_-1MvfvHVGMMnZBD0Y&_nc_ht=scontent.flad1-1.fna&oh=e7465ccfe7ae6c10b68b3e5b9710b291&oe=5D9FDDAD">
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -255,7 +255,6 @@
                                                     <th scope="col">Email</th>
                                                     <th scope="col">Sexo</th>
                                                     <th scope="col">Tipo de utilizador</th>
-                                                    <th scope="col">Estado</th>
                                                     <th scope="col">Data de criação</th>
                                                     <th scope="col">Data de edição</th>
                                                     <th></th>
@@ -263,70 +262,31 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr>
-                                                    <td>Dorivaldo dos Santos</td>
-                                                    <td>944557610</td>
-                                                    <td>dorivalds2000@gmail</td>
-                                                    <td>Masculino</td>
-                                                    <td>Administrador</td>
-                                                    <td>@Activo</td>
-                                                    <td>20/04/2019</td>
-                                                    <td>21/3/20190</td>
-                                                    <td>
-                                                        <a href="" class="btn btn-outline-secondary">EDITAR</a>
-                                                    </td>
-                                                    <td>
-                                                        <a href="" class="btn btn-outline-danger">ELIMINAR</a>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Mark</td>
-                                                    <td>Otto</td>
-                                                    <td>@mdo</td>
-                                                    <td>Mark</td>
-                                                    <td>Otto</td>
-                                                    <td>@mdo</td>
-                                                    <td>Mark</td>
-                                                    <td>Otto</td>
-                                                    <td>
-                                                        <a href="" class="btn btn-outline-secondary">EDITAR</a>
-                                                    </td>
-                                                    <td>
-                                                        <a href="" class="btn btn-outline-danger">ELIMINAR</a>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Mark</td>
-                                                    <td>Otto</td>
-                                                    <td>@mdo</td>
-                                                    <td>Mark</td>
-                                                    <td>Otto</td>
-                                                    <td>@mdo</td>
-                                                    <td>Mark</td>
-                                                    <td>Otto</td>
-                                                    <td>
-                                                        <a href="" class="btn btn-outline-secondary">EDITAR</a>
-                                                    </td>
-                                                    <td>
-                                                        <a href="" class="btn btn-outline-danger">ELIMINAR</a>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Mark</td>
-                                                    <td>Otto</td>
-                                                    <td>@mdo</td>
-                                                    <td>Mark</td>
-                                                    <td>Otto</td>
-                                                    <td>@mdo</td>
-                                                    <td>Mark</td>
-                                                    <td>Otto</td>
-                                                    <td>
-                                                        <a href="" class="btn btn-outline-secondary">EDITAR</a>
-                                                    </td>
-                                                    <td>
-                                                        <a href="" class="btn btn-outline-danger">ELIMINAR</a>
-                                                    </td>
-                                                </tr>
+                                                <?php
+                                                include_once('../../php/model/utilizador.php');
+                                                include_once('../../php/controller/crud-utilizador.php');
+                                                $select = new CrudUtilizador();
+                                                $dados  = $select->select();
+                                                foreach ($dados as $key => $value) {
+                                                    echo '<tr>
+                                                            <td>'.$value->getNome().'</td>
+                                                            <td>'.$value->getTelefone().'</td>
+                                                            <td>'.$value->getEmail().'@gmail</td>
+                                                            <td>'.$value->getSexo().'</td>
+                                                            <td>'.$value->getTipoUtilizador().'</td>
+                                                            <td>'.$value->getDtCriacao().'</td>
+                                                            <td>'.$value->getDtEdicao().'</td>
+                                                            <td>
+                                                                <a href="editar.php?id='.$value->getId().'" class="btn btn-outline-secondary"><i class="fas fa-edit    "></i></a>
+                                                            </td>
+                                                            <td>
+                                                                <a href="#"  data-toggle="modal" data-target="#delete'.$value->getId().'" class="btn btn-outline-danger"><i class="fas fa-edit"></i></a>
+                                                            </td>
+                                                        </tr>';
+                                                }
+
+
+                                                ?>
                                             </tbody>
                                         </table>
 
@@ -385,6 +345,46 @@
                 </div>
             </div>
         </div>
+
+
+
+        <?php
+
+        $select = new CrudUtilizador();
+        $dados  = $select->select();
+        foreach ($dados as $key => $value) {
+            echo '
+                <div class="modal fade" id="delete'.$value->getId().'" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">'.$value->getNome().'</h5>
+                            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">×</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">Tens certeza que deseja eliminar este utilizador ?</div>
+                        <div class="modal-footer">
+                            <button class="btn btn-outline-danger" type="button" data-dismiss="modal">Não</button>
+                            <form action="deletar.php" method="post">
+                                <input type="hidden" name="id" value="'.$value->getId().'">
+                                <button type="submit" class="btn btn-danger" name="deletar">Sim</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>    
+            ';
+        }
+
+
+       
+
+                                            
+
+
+        ?>
 
         <!-- Bootstrap core JavaScript-->
         <script src="../vendor/jquery/jquery.min.js"></script>

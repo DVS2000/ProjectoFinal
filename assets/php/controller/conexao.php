@@ -2,7 +2,7 @@
 
 
 //include_once('../../global/erro.php');
-session_start();
+//session_start();
 
 class Conexao {
 

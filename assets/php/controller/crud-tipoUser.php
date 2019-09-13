@@ -51,7 +51,21 @@ class CrudTipoUser extends Conexao {
     }
 
     # Função para fazer o select
-    public function select() {
+    public function select($idTipoUtilizador = 11) {
+        $this->connect();
+        $selected = "selected";
+        $query = "SELECT * FROM tbtipoutilizador";
+        if($resultado = mysqli_query($this->conexao, $query)) {
+            while ($dados = mysqli_fetch_array($resultado)) {
+                if($dados[0] == $idTipoUtilizador)
+                    echo "<option selected value='$dados[0]'>$dados[1]</option>";
+                else
+                    echo "<option value='$dados[0]'>$dados[1]</option>";
+            }
+
+        } else {
+            echo '<option value="erro">Erro</option>';
+        }
 
     }
 }

@@ -6,7 +6,7 @@ include_once('conexao.php');
 
 class CrudCandidato extends Conexao {
 
-    # 
+    # CRIANDO A FUNÇÃO PARA FAZER O INSERT DO CANDIDATO
     public function insert(Candidato $model) {
         # Abrindo a conexão
         $this->connect();
@@ -23,7 +23,8 @@ class CrudCandidato extends Conexao {
                   '".$model->getDtEdicao()."',
                   '".$model->getNomeMae()."',
                   '".$model->getNomePai()."',
-                  '".$model->getMorada()."');";
+                  '".$model->getMorada().",
+                  ".$model->getIdSexo()."');";
 
         if(mysqli_query($this->conexao, $query)) {
             echo "Correu tudo bem";
@@ -64,13 +65,13 @@ class CrudCandidato extends Conexao {
         mysqli_close($this->conexao);
     }
 
-    # CRIANDO A FUNÇÃO PARA ELEMINAR O CANDIDATO
+    # CRINAOD A FUNÇÃO PARA ELIMINAR O CANDIDATO
     public function delete($id) {
         #ABRINDO A CONEXÃO
         $this->connect();
 
-        $query = "UPDATE tbcandidato SET idEstado = 3 WHERE idcandidato = $id;";
-        if(mysqli_query($this->conexao, $query)) {
+        $query = "DELETE FROM tbCandidato WHERE idCandidato = $id";
+        if(mysqli_query($this->conexao,$query)) {
             echo "Correu tudo bem";
         } else {
             echo "Não correu tudo bem";
@@ -111,6 +112,32 @@ class CrudCandidato extends Conexao {
         return $candidatos;
     }
 
+    # CRIANDO A FUNÇÃO PARA ACTIVAR O CANDIDATO
+    public function enable($id) {
+        # ABRINDO A CONEXÃO
+        $this->connect();
+
+        $query = "UPDATE tbCandicado SET idEstado = 1 WHERE idCandidato  = $id";
+        if(mysqli_query($this->conexao, $query)) {
+            echo "Correu tudo bem";
+        } else {
+            echo "Não correu tudo bem";
+        }
+    }
+
+    # CRIANDO A FUNÇÃO PARA DESACTIVAR temporaraio O CANDIDATO
+    public function disable($id) {
+        #ABRINDO A CONEXÃO
+        $this->connect();
+
+        $query = "UPDATE tbcandidato SET idEstado = 2 WHERE idcandidato = $id;";
+        if(mysqli_query($this->conexao, $query)) {
+            echo "Correu tudo bem";
+        } else {
+            echo "Não correu tudo bem";
+        }
+    }
+
     # CRIANDO A FUNÇÃ PARA FAZER A PESQUISA DO CANDIDATO
     public function search($nome) {
          # Abrindo a conexão
@@ -144,4 +171,43 @@ class CrudCandidato extends Conexao {
          mysqli_close($this->conexao);
          return $candidatos;
     } 
+
+    # CRIANDO A FUNÇÃO FAZER A LISTAGEM DE TODOS OS CANDIDADOS
+    public function selectDisable() {
+        # Abrindo a conexão
+        $this->connect();
+
+        $candidatos = array();
+        $query = "SELECT * FROM tbcandidato WHERE idEstado = 2";
+        if($result = mysqli_query($this->conexao, $query)) {
+            while($dados = mysqli_fetch_assoc($result)) {
+                $candidato = new Candidato();
+                $candidato-> setId($dados["idcandidato"]);
+                $candidato-> setNome($dados["nome"]);
+                $candidato-> setBi($dados["bi"]);
+                $candidato-> setEmail($dados["email"]);
+                $candidato-> setTelefone($dados["telefone"]);
+                $candidato-> setDtNasc($dados["dtNasc"]);
+                $candidato-> setIdNacionalidade($dados["idnacionalidade"]);
+                $candidato-> setIdEstado($dados["idEstado"]);
+                $candidato-> setDtCriacao($dados["dtCriacao"]);
+                $candidato-> setDtEdicao($dados["dtEdicao"]);
+                $candidato-> setNomeMae($dados["nomemae"]);
+                $candidato-> setNomePai($dados["nomepai"]);
+                $candidato-> setMorada($dados["morada"]);
+
+
+                $candidatos[] = $candidato;
+            }
+        }
+
+        # FECHANDO A CONEXÃO
+        mysqli_close($this->conexao);
+        return $candidatos;
+    }
+
+    # CRINAOD A FUNÇÃO QUE RETURNA O CANDIDATO VIA ID
+    public function getById($id) {
+
+    }
 }

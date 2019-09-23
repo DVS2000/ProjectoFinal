@@ -16,6 +16,8 @@ class Candidato {
     private $nomeMae;
     private $nomePai;
     private $morada;
+    private $idSexo;
+    private $sexo;
 
 
     # CRIANDO O GET E SET DO ID DO CANDIDATO
@@ -69,4 +71,12 @@ class Candidato {
     # CRIANDO O GET E O SET DO NOME DO PAI DO CANDIDATO.
     public function getMorada() { return $this->morada; }
     public function setMorada($morada) { $this->morada = $morada; }
+
+    # CRINAOD O GET E O SET DO ID DO SEXO DO CANDIDATO
+    public function getIdSexo() { return $this->idSexo; }
+    public function setIdSexo($idSexo) { $this->idSexo = $idSexo; }
+
+    # CRIANDO O GET SE O SEXO DO CANDIDATO
+    public function getSexo() { return $this->sexo; }
+    public function setSexo($sexo) { $this->sexo = $sexo; }
 }

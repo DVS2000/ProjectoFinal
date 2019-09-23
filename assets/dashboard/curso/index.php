@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Novo Utilizador</title>
+    <title>Novo Curso</title>
 
     <!-- Custom fonts for this template-->
     <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -20,8 +20,8 @@
         rel="stylesheet">
 
     <!-- Custom styles for this template-->
-    <link href="../css/sb-admin-2.min.css" rel="stylesheet">
-    <link href="../../editor/quill.snow.css" rel="stylesheet">
+    <link href="../css/sb-admin-2.css" rel="stylesheet">
+
 
 </head>
 
@@ -244,14 +244,14 @@
                                                     <input type="text" class="form-control " id="nome"
                                                         placeholder="Nome" required="required" name="nome">
                                                 </div>
-                                                <div class="col-sm-6">
+                                                <div class="col-sm-3">
                                                     <label for="preco">Preço</label>
                                                     <input type="number" class="form-control" id="preco"
                                                         placeholder="Preço" required="required" name="preco">
                                                 </div>
-                                            </div>
-                                            <div class="form-group row">
-                                                <div class="col-sm-3 mb-3 mb-sm-0 ">
+
+
+                                                <div class="col-sm-3">
                                                     <label>Estado</label>
                                                     <select class="custom-select" required="required" name="estado">
                                                         <?php
@@ -264,75 +264,50 @@
                                                     </select>
                                                 </div>
 
+
+                                            </div>
+                                            <div class="form-group row">
+                                                <div class="col-sm-12">
+                                                    <label>Requisitos</label>
+                                                    <!---REQUITOS PARA O CURSO--->
+                                                    <main>
+                                                    <textarea name="requisitos" id="editor">
+                                                        
+                                                    </textarea>
+                                                    </main>
+                                                </div>
                                             </div>
 
-                                         
-                                            
-
-
-                                                    <!-- Create the editor container -->
-                                                  <div class="row">
-                                                      <div class="col-sm-3">
-
-                                                      </div>
-                                                      <div class="col-sm-6">
-                                                      <div id="editor">
-                                                        <p>Hello World!</p>
-                                                        <p>Some initial <strong>bold</strong> text</p>
-                                                        <p><br></p>
-                                                    </div>
-                                                      </div>
-                                                      <div class="col-sm-3"></div>
-                                                  </div>
-
-                                              
-                                       
-
-
+                                            <button class="btn btn-primary ml-auto mt-2" name="guardar">
+                                                GUARDAR
+                                            </button>
 
                                             <?php
-                                          include_once('../../php/model/utilizador.php');
-                                          include_once('../../php/controller/crud-utilizador.php');
+                                          include_once('../../php/model/curso.php');
+                                          include_once('../../php/controller/crud-curso.php');
                                           if(isset($_POST['guardar'])) {
 
-
-                                           
-
-                                                $model = new Utilizador();
-                                                $model->setNome($_POST['nome']);
-                                                $model->setEmail($_POST['email']);
-                                                $model->setTelefone($_POST['telefone']);
-                                                $model->setSenha(md5($_POST['senha']));
-                                                $model->setIdSexo($_POST['sexo']);
-                                                $model->setIdTipoUtilizador($_POST['tipoutilizador']);
+                                                $model = new Curso();
+                                                $model->setDescricao($_POST['nome']);
+                                                $model->setPreco($_POST['preco']);
                                                 $model->setIdEstado($_POST['estado']);
+                                                $model->setRequisitos($_POST['requisitos']);
                                                 $model->setDtCriacao(date('Y-m-d H:s'));
                                                 $model->setDtEdicao(date('Y-m-d H:s'));
-
-                                                $insert = new CrudUtilizador();
+                                                $insert = new CrudCurso();
                                                 $insert->insert($model);
                                           }
                                           ?>
 
-                                            <div class="container-fluid mt-5">
-                                                <button class="btn btn-primary ml-auto" name="guardar">
-                                                    GUARDAR
-                                                </button>
-                                            </div>
-
                                         </form>
+
+
 
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-
-
-
-
-
-
 
                 </div>
                 <!-- End of Main Content -->
@@ -386,14 +361,31 @@
         <!-- Custom scripts for all pages-->
         <script src="../js/sb-admin-2.min.js"></script>
         <!-- Page level custom scripts -->
-        <script src="../js/demo/chart-area-demo.js"></script>
-        <script src="../../editor/quill.js"></script>
+        <script src="../../ckeditor.js"></script>
 
-        <!-- Initialize Quill editor -->
         <script>
-        var quill = new Quill('#editor', {
-            theme: 'snow'
-        });
+        ClassicEditor
+            .create(document.querySelector('#editor'), {
+                toolbar: [
+                    'heading',
+                    '|',
+                    'alignment',
+                    'bold',
+                    'italic',
+                    'link',
+                    'bulletedList',
+                    'numberedList',
+                    'blockQuote',
+                    'undo',
+                    'redo'
+                ]
+            })
+            .then(editor => {
+                window.editor = editor;
+            })
+            .catch(err => {
+                console.error(err.stack);
+            });
         </script>
 </body>
 

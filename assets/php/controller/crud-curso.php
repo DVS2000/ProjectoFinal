@@ -11,7 +11,23 @@ class CrudCurso extends Conexao {
         # Abrindo a conexão
         $this->connect();
 
-        $query = "INSERT  INTO tbCurso (descricao, preco, requisitos, idEstado, dtCriacao, dtEdicao)
+        $query = "SELECT * FROM tbCurso  WHERE descricao = '".$model->getDescricao()."';";
+        
+        if($result = mysqli_query($this->conexao, $query)) {
+            if(mysqli_num_rows($result) > 0) {
+
+                echo '<div class="alert alert-danger mt-5 alert-dismissible fade show" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                      <span class="sr-only">Close</span>
+                    </button>
+                       <h4 class="alert-heading">Este Curso já está registado.</h4>
+                       <p>Tente um outro curso, Obrigado!</p>
+                    </div>';
+
+
+            } else {
+                $query = "INSERT  INTO tbCurso (descricao, preco, requisitos, idEstado, dtCriacao, dtEdicao)
                   VALUES('".$model->getDescricao()."',
                   ".$model->getPreco().",
                   '".$model->getRequisitos()."',
@@ -19,51 +35,127 @@ class CrudCurso extends Conexao {
                   '".$model->getDtCriacao()."',
                   '".$model->getDtEdicao()."');";
 
-        if(mysqli_query($this->conexao, $query)) {
-            echo "Correu tudo bem";
-        } else {
-            echo "Não correu tudo bem";
-        }
+                    if(mysqli_query($this->conexao, $query)) {
+                        echo '<div class="alert alert-success mt-5 alert-dismissible fade show" role="alert">
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                                <span class="sr-only">Close</span>
+                                </button>
+                                <h4 class="alert-heading">'.$model->getDescricao().'</h4>
+                                <p>Foi adicionado com sucesso!.</p>
+                                <p class="mb-0">'.date('d-m-Y H:s').'</p>
+                              </div>';
+                    } else {
+                        echo '<div class="alert alert-success mt-5 alert-dismissible fade show" role="alert">
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                                <span class="sr-only">Close</span>
+                                </button>
+                                <h4 class="alert-heading">'.$model->getDescricao().'</h4>
+                                <p>Não foi adicionado com sucesso!.</p>
+                                <p class="mb-0">'.date('d-m-Y H:s').'</p>
+                              </div>';
+                    }
+            }
 
+        } else {
+
+            echo '<div class="alert alert-danger mt-5 alert-dismissible fade show" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                      <span class="sr-only">Close</span>
+                    </button>
+                       <h4 class="alert-heading">Ocorreu um erro.</h4>
+                       <p>Tente mais tarde.</p>
+                    </div>';
+
+        }
         # FECHANDO A CONEXÃO
         mysqli_close($this->conexao);
     }
-
 
     # Função para fazer o update do curso
     public function update(Curso $model) {
         # Abrindo a conexão
         $this->connect();
 
-        $query = "UPDATE tbCurso SET
+
+        $query = "SELECT * FROM tbCurso  WHERE descricao = '".$model->getDescricao()."' AND idCurso <>".$model->getId().";";
+        
+        if($result = mysqli_query($this->conexao, $query)) {
+            if(mysqli_num_rows($result) > 0) {
+
+                echo '<div class="alert alert-danger mt-5 alert-dismissible fade show" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                      <span class="sr-only">Close</span>
+                    </button>
+                       <h4 class="alert-heading">Este Curso já está registado.</h4>
+                       <p>Tente um outro curso, Obrigado!</p>
+                    </div>';
+
+
+            } else {
+                $query = "UPDATE tbCurso SET
                   descricao       = '".$model->getDescricao()."',
                   preco           =  ".$model->getPreco().",
                   requisitos      = '".$model->getRequisitos()."',
                   idEstado        =  ".$model->getIdEstado().",
-                  dtCriacao       = '".$model->getDtCriacao()."',
                   dtEdicao        = '".$model->getDtEdicao()."'
                   WHERE idCurso   =  ".$model->getId().";";
-        if(mysqli_query($this->conexao, $query)) {
-            echo "Correu tudo bem";
+                    if(mysqli_query($this->conexao, $query)) {
+                        echo '<div class="alert alert-success mt-5 alert-dismissible fade show" role="alert">
+                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                            <span class="sr-only">Close</span>
+                                            </button>
+                                            <h4 class="alert-heading">'.$model->getDescricao().'</h4>
+                                            <p>Foi editado com sucesso!.</p>
+                                            <p class="mb-0">'.date('d-m-Y H:s').'</p>
+                                        </div>';
+                    
+                    } else {
+                        echo '<div class="alert alert-success mt-5 alert-dismissible fade show" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        <span class="sr-only">Close</span>
+                        </button>
+                        <h4 class="alert-heading">'.$model->getDescricao().'</h4>
+                        <p>Não foi editado com sucesso!.</p>
+                        <p class="mb-0">'.date('d-m-Y H:s').'</p>
+                    </div>';
+                    }   
+            }
+
         } else {
-            echo "Não correu tudo bem";
+
+            echo '<div class="alert alert-danger mt-5 alert-dismissible fade show" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                      <span class="sr-only">Close</span>
+                    </button>
+                       <h4 class="alert-heading">Ocorreu um erro.</h4>
+                       <p>Tente mais tarde.</p>
+                    </div>';
+
         }
 
         # Fechando a conexão
         mysqli_close($this->conexao);
     }
 
-    # Função para fazer o delete do curso
+    # FUNÇÃO PARA FAZER O DELETE DO CURSO DE FORMA DEFINITIVA
     public function delete($id) {
-        # ABRINDO A CONEXÃO
+        #Abrindo a conexão
         $this->connect();
 
-        $query = "UPDATE tbcurso SET idEstado = 3 WHERE idCurso = $id;";
+        $query = "DELETE FROM tbcurso WHERE idCurso = $id";
         if(mysqli_query($this->conexao, $query)) {
             echo "Correu tudo bem";
         } else {
-            echo "Não correu tudo bem";
+            "Não correu tudo bem";
         }
+
 
         # FECHANDO A CONEXÃO
         mysqli_close($this->conexao);
@@ -74,7 +166,98 @@ class CrudCurso extends Conexao {
         # Abrindo a conexão
         $this->connect();
         
-        $query = "SELECT * FROM tbcurso";
+        $query = "SELECT * FROM verCursos WHERE idestado <> 3 ORDER BY descricao";
+
+        $cursos = array();
+        if($result = mysqli_query($this->conexao, $query)) {
+
+            while($dados = mysqli_fetch_assoc($result)) {
+                $curso = new Curso();
+                $curso->       setId($dados["idcurso"]);
+                $curso->       setDescricao($dados["descricao"]);
+                $curso->       setPreco($dados["preco"]);
+                $curso->       setRequisitos($dados["requisitos"]);
+                $curso->       setIdEstado($dados["idestado"]);
+                $curso->       setEstado($dados["estado"]);
+                $curso->       setDtCriacao($dados["dtCriacao"]);
+                $curso->       setDtEdicao($dados["dtEdicao"]);
+                $cursos[] = $curso;
+            }
+        }
+        
+        # FECHANDO A CONEXÃO
+        mysqli_close($this->conexao);
+        return $cursos;
+
+    }
+
+    # Função para listar todos os curso
+    public function selectDesactivado() {
+        # Abrindo a conexão
+        $this->connect();
+        
+        $query = "SELECT * FROM verCursos WHERE idestado = 3 ORDER BY descricao";
+
+        $cursos = array();
+        if($result = mysqli_query($this->conexao, $query)) {
+
+            while($dados = mysqli_fetch_assoc($result)) {
+                $curso = new Curso();
+                $curso->       setId($dados["idcurso"]);
+                $curso->       setDescricao($dados["descricao"]);
+                $curso->       setPreco($dados["preco"]);
+                $curso->       setRequisitos($dados["requisitos"]);
+                $curso->       setIdEstado($dados["idestado"]);
+                $curso->       setEstado($dados["estado"]);
+                $curso->       setDtCriacao($dados["dtCriacao"]);
+                $curso->       setDtEdicao($dados["dtEdicao"]);
+                $cursos[] = $curso;
+            }
+        }
+        
+        # FECHANDO A CONEXÃO
+        mysqli_close($this->conexao);
+        return $cursos;
+
+    }
+
+    # Função para Activar o curso
+    public function activar($id) {
+        # ABRINDO A CONEXÃO
+        $this->connect();
+
+        $query = "UPDATE tbcurso SET idEstado = 1 WHERE idCurso = $id;";
+        if(mysqli_query($this->conexao, $query)) {
+            echo "Correu tudo bem";
+        } else {
+            echo "Não correu tudo bem";
+        }
+
+        # FECHANDO A CONEXÃO
+        mysqli_close($this->conexao);
+    }
+    # Função para Desactivar o curso
+    public function desactivar($id) {
+        # ABRINDO A CONEXÃO
+        $this->connect();
+
+        $query = "UPDATE tbcurso SET idEstado = 2 WHERE idCurso = $id;";
+        if(mysqli_query($this->conexao, $query)) {
+            echo "Correu tudo bem";
+        } else {
+            echo "Não correu tudo bem";
+        }
+
+        # FECHANDO A CONEXÃO
+        mysqli_close($this->conexao);
+    }
+
+    # Função para pesquisar o curso
+    public function search($descricao) {
+        # Abrindo a conexão
+        $this->connect();
+
+        $query = "SELECT * FROM verCursos WHERE descricao  LIKE '%$descricao%' ORDER BY descricao;";
 
         $cursos = array();
         if($result = mysqli_query($this->conexao, $query)) {
@@ -86,9 +269,11 @@ class CrudCurso extends Conexao {
                 $curso->       setPreco($dados["preco"]);
                 $curso->       setRequisitos($dados["requisitos"]);
                 $curso->       setIdEstado($dados["idEstado"]);
+                $curso->       setEstado($dados["estado"]);
                 $curso->       setDtCriacao($dados["dtCriacao"]);
                 $curso->       setDtEdicao($dados["dtEdicao"]);
                 $cursos[] = $curso;
+
             }
         }
         
@@ -99,35 +284,32 @@ class CrudCurso extends Conexao {
     }
 
     # Função para pesquisar o curso
-    public function search($descricao) {
+    public function getById($id) {
         # Abrindo a conexão
         $this->connect();
         
-        $query = "SELECT * FROM tbcurso WHERE descricao  LIKE '%$descricao%';";
-
-        $cursos = array();
+        $query = "SELECT * FROM verCursos WHERE idcurso = $id";
+       
         if($result = mysqli_query($this->conexao, $query)) {
-
+            $curso = new Curso();
             while($dados = mysqli_fetch_assoc($result)) {
-                $curso = new Curso();
-                $curso->       setId($dados["idCurso"]);
+                $curso->       setId($dados["idcurso"]);
                 $curso->       setDescricao($dados["descricao"]);
                 $curso->       setPreco($dados["preco"]);
                 $curso->       setRequisitos($dados["requisitos"]);
-                $curso->       setIdEstado($dados["idEstado"]);
+                $curso->       setIdEstado($dados["idestado"]);
+                $curso->       setEstado($dados["estado"]);
                 $curso->       setDtCriacao($dados["dtCriacao"]);
                 $curso->       setDtEdicao($dados["dtEdicao"]);
-                $cursos[] = $curso;
+               
 
             }
         }
         
         # FECHANDO A CONEXÃO
         mysqli_close($this->conexao);
-        return $cursos;
+        return $curso;
 
     }
 
 } 
-
-

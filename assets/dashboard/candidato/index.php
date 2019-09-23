@@ -244,7 +244,7 @@
                                     <div class="p-3 mt-5">
                                         <div class="text-left">
                                             <h1 class="h4 text-gray-900 mb-2 font-weight-bold"
-                                                style="text-transform: uppercase">Eliminados</h1>
+                                                style="text-transform: uppercase">Todos utilizadores</h1>
 
                                         </div>
                                         <table class="table table-striped">
@@ -258,6 +258,7 @@
                                                     <th scope="col">Data de criação</th>
                                                     <th scope="col">Data de edição</th>
                                                     <th></th>
+                                                    <th></th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -265,19 +266,21 @@
                                                 include_once('../../php/model/utilizador.php');
                                                 include_once('../../php/controller/crud-utilizador.php');
                                                 $select = new CrudUtilizador();
-                                                $dados  = $select->selectUserDeleted();
+                                                $dados  = $select->select();
                                                 foreach ($dados as $key => $value) {
                                                     echo '<tr>
                                                             <td>'.$value->getNome().'</td>
                                                             <td>'.$value->getTelefone().'</td>
-                                                            <td>'.$value->getEmail().'@gmail</td>
+                                                            <td>'.$value->getEmail().'</td>
                                                             <td>'.$value->getSexo().'</td>
                                                             <td>'.$value->getTipoUtilizador().'</td>
                                                             <td>'.$value->getDtCriacao().'</td>
                                                             <td>'.$value->getDtEdicao().'</td>
-                                                           
                                                             <td>
-                                                                <a href="#"  data-toggle="modal" data-target="#delete'.$value->getId().'" class="btn btn-outline-danger"><i class="fas fa-edit"></i></a>
+                                                                <a href="editar.php?id='.$value->getId().'" class="btn btn-outline-secondary"><i class="fas fa-pen    "></i></a>
+                                                            </td>
+                                                            <td>
+                                                                <a href="#"  data-toggle="modal" data-target="#delete'.$value->getId().'" class="btn btn-outline-danger"><i class="far fa-trash-alt"></i></a>
                                                             </td>
                                                         </tr>';
                                                 }
@@ -348,7 +351,7 @@
         <?php
 
         $select = new CrudUtilizador();
-        $dados  = $select->selectUserDeleted();
+        $dados  = $select->select();
         foreach ($dados as $key => $value) {
             echo '
                 <div class="modal fade" id="delete'.$value->getId().'" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
@@ -361,10 +364,10 @@
                                 <span aria-hidden="true">×</span>
                             </button>
                         </div>
-                        <div class="modal-body">Tens certeza que deseja recuprar este utilizador ?</div>
+                        <div class="modal-body">Tens certeza que deseja eliminar este utilizador ?</div>
                         <div class="modal-footer">
                             <button class="btn btn-outline-danger" type="button" data-dismiss="modal">Não</button>
-                            <form action="recuperar.php" method="post">
+                            <form action="deletar.php" method="post">
                                 <input type="hidden" name="id" value="'.$value->getId().'">
                                 <button type="submit" class="btn btn-danger" name="deletar">Sim</button>
                             </form>

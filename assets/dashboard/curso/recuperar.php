@@ -1,14 +1,24 @@
 <?php 
 
+include_once('../../php/model/curso.php');
+include_once('../../php/controller/crud-curso.php');
+
 
 if(isset($_POST["deletar"])) {
-    include_once('../../php/model/utilizador.php');
-    include_once('../../php/controller/crud-utilizador.php');
 
     $id = $_POST['id'];
-    $deletar = new CrudUtilizador();
-    $deletar->recuperar($id);
-    header('Location: eliminados.php');
+    $deletar = new CrudCurso();
+    $deletar->deleteDef($id);
+    header('Location: reciclagem.php');
+  // echo "Angola";
+} else if(isset($_POST['recuperar'])) {
+    $id = $_POST['id'];
+    $recuperar = new CrudCurso();
+    $recuperar->recuperar($id);
+    header('Location: reciclagem.php');
+    
 } else {
-    header('Location: eliminados.php');
+  header('Location: reciclagem.php');
+
+
 }

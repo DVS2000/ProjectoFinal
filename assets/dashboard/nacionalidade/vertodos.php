@@ -20,7 +20,7 @@
         rel="stylesheet">
 
     <!-- Custom styles for this template-->
-    <link href="../css/sb-admin-2.min.css" rel="stylesheet">
+    <link href="../css/sb-admin-2.css" rel="stylesheet">
 
 </head>
 
@@ -244,17 +244,13 @@
                                     <div class="p-3 mt-5">
                                         <div class="text-left">
                                             <h1 class="h4 text-gray-900 mb-2 font-weight-bold"
-                                                style="text-transform: uppercase">Todos utilizadores</h1>
+                                                style="text-transform: uppercase">Todos Cursos</h1>
 
                                         </div>
                                         <table class="table table-striped">
                                             <thead>
                                                 <tr>
                                                     <th scope="col">Nome</th>
-                                                    <th scope="col">Telefone</th>
-                                                    <th scope="col">Email</th>
-                                                    <th scope="col">Sexo</th>
-                                                    <th scope="col">Tipo de utilizador</th>
                                                     <th scope="col">Data de criação</th>
                                                     <th scope="col">Data de edição</th>
                                                     <th></th>
@@ -263,24 +259,20 @@
                                             </thead>
                                             <tbody>
                                                 <?php
-                                                include_once('../../php/model/utilizador.php');
-                                                include_once('../../php/controller/crud-utilizador.php');
-                                                $select = new CrudUtilizador();
+                                                include_once('../../php/model/nacionalidade.php');
+                                                include_once('../../php/controller/crud-nacionalidade.php');
+                                                $select = new CrudNacionalidade();
                                                 $dados  = $select->select();
                                                 foreach ($dados as $key => $value) {
                                                     echo '<tr>
-                                                            <td>'.$value->getNome().'</td>
-                                                            <td>'.$value->getTelefone().'</td>
-                                                            <td>'.$value->getEmail().'</td>
-                                                            <td>'.$value->getSexo().'</td>
-                                                            <td>'.$value->getTipoUtilizador().'</td>
+                                                            <td>'.$value->getDescricao().'</td>
                                                             <td>'.$value->getDtCriacao().'</td>
                                                             <td>'.$value->getDtEdicao().'</td>
                                                             <td>
-                                                                <a href="editar.php?id='.$value->getId().'" class="btn btn-outline-secondary"><i class="fas fa-pen    "></i></a>
+                                                                <a href="editar.php?id='.$value->getId().'" class="btn btn-outline-secondary"><i class="fas fa-pen"></i></a>
                                                             </td>
                                                             <td>
-                                                                <a href="#"  data-toggle="modal" data-target="#delete'.$value->getId().'" class="btn btn-outline-danger"><i class="far fa-trash-alt"></i></a>
+                                                                <a href="#"  data-toggle="modal" data-target="#delete'.$value->getId().'" class="btn btn-outline-danger"><i class="fas fa-trash-alt"></i></a>
                                                             </td>
                                                         </tr>';
                                                 }
@@ -350,21 +342,23 @@
 
         <?php
 
-        $select = new CrudUtilizador();
+        $select = new CrudNacionalidade();
         $dados  = $select->select();
         foreach ($dados as $key => $value) {
+
+            # MODAL PARA ELIMINAR O CURSO
             echo '
                 <div class="modal fade" id="delete'.$value->getId().'" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
                 aria-hidden="true">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">'.$value->getNome().'</h5>
+                            <h5 class="modal-title" id="exampleModalLabel">'.$value->getDescricao().'</h5>
                             <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">×</span>
                             </button>
                         </div>
-                        <div class="modal-body">Tens certeza que deseja eliminar este utilizador ?</div>
+                        <div class="modal-body">Tens certeza que deseja eliminar este curso ?</div>
                         <div class="modal-footer">
                             <button class="btn btn-outline-danger" type="button" data-dismiss="modal">Não</button>
                             <form action="deletar.php" method="post">
@@ -376,14 +370,8 @@
                 </div>
             </div>    
             ';
+
         }
-
-
-       
-
-                                            
-
-
         ?>
 
         <!-- Bootstrap core JavaScript-->

@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Todos utilizadores</title>
+    <title>Nova Nacionalide</title>
 
     <!-- Custom fonts for this template-->
     <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -20,7 +20,8 @@
         rel="stylesheet">
 
     <!-- Custom styles for this template-->
-    <link href="../css/sb-admin-2.min.css" rel="stylesheet">
+    <link href="../css/sb-admin-2.css" rel="stylesheet">
+
 
 </head>
 
@@ -158,18 +159,6 @@
                         <i class="fa fa-bars"></i>
                     </button>
 
-                    <!-- Topbar Search -->
-                    <form class="d-none d-sm-inline-block form-inline mr-auto  my-2 my-md-0 mw-100 navbar-search">
-                        <div class="input-group">
-                            <input type="text" class="form-control bg-light border-0 small"
-                                placeholder="Pesquisa por..." aria-label="Search" aria-describedby="basic-addon2">
-                            <div class="input-group-append">
-                                <button class="btn btn-primary" type="button">
-                                    <i class="fas fa-search fa-sm"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </form>
 
                     <!-- Topbar Navbar -->
                     <ul class="navbar-nav ml-auto">
@@ -207,7 +196,7 @@
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span class="mr-2 d-none d-lg-inline text-gray-600 small">Dorivaldo dos Santos</span>
                                 <img class="img-profile rounded-circle"
-                                    src="https: //scontent.flad1-1.fna.fbcdn.net/v/t1.0-9/37919657_2101164123470574_5433798344348532736_n.jpg?_nc_cat=107&_nc_eui2=AeEtNBFU1yGntd_Glvcy1ru9A9Sf4Jc7YGIBcMe-JXTiWiDVPzHeVhnQV6d4Y7vs1T2hejhFSQhe-CdU8IdhicnJr64_WJusQsWTqjwQ3nvSbA&_nc_oc=AQlaoE0YPUvCcEyZbmE0KGbbIDVPTq2rjDdMRkOrllBmkzkMq_-1MvfvHVGMMnZBD0Y&_nc_ht=scontent.flad1-1.fna&oh=e7465ccfe7ae6c10b68b3e5b9710b291&oe=5D9FDDAD">
+                                    src="https://scontent.flad1-1.fna.fbcdn.net/v/t1.0-9/37919657_2101164123470574_5433798344348532736_n.jpg?_nc_cat=107&_nc_eui2=AeEtNBFU1yGntd_Glvcy1ru9A9Sf4Jc7YGIBcMe-JXTiWiDVPzHeVhnQV6d4Y7vs1T2hejhFSQhe-CdU8IdhicnJr64_WJusQsWTqjwQ3nvSbA&_nc_oc=AQlaoE0YPUvCcEyZbmE0KGbbIDVPTq2rjDdMRkOrllBmkzkMq_-1MvfvHVGMMnZBD0Y&_nc_ht=scontent.flad1-1.fna&oh=e7465ccfe7ae6c10b68b3e5b9710b291&oe=5D9FDDAD">
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -241,66 +230,65 @@
                             <!-- Nested Row within Card Body -->
                             <div class="row">
                                 <div class="col-lg-12">
-                                    <div class="p-3 mt-5">
+                                    <div class="p-5">
                                         <div class="text-left">
                                             <h1 class="h4 text-gray-900 mb-2 font-weight-bold"
-                                                style="text-transform: uppercase">Todos utilizadores</h1>
-
+                                                style="text-transform: uppercase">Criar nova Nacionalidade
+                                                </h1>
+                                            <hr>
                                         </div>
-                                        <table class="table table-striped">
-                                            <thead>
-                                                <tr>
-                                                    <th scope="col">Nome</th>
-                                                    <th scope="col">Telefone</th>
-                                                    <th scope="col">Email</th>
-                                                    <th scope="col">Sexo</th>
-                                                    <th scope="col">Tipo de utilizador</th>
-                                                    <th scope="col">Data de criação</th>
-                                                    <th scope="col">Data de edição</th>
-                                                    <th></th>
-                                                    <th></th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <?php
-                                                include_once('../../php/model/utilizador.php');
-                                                include_once('../../php/controller/crud-utilizador.php');
-                                                $select = new CrudUtilizador();
-                                                $dados  = $select->select();
-                                                foreach ($dados as $key => $value) {
-                                                    echo '<tr>
-                                                            <td>'.$value->getNome().'</td>
-                                                            <td>'.$value->getTelefone().'</td>
-                                                            <td>'.$value->getEmail().'</td>
-                                                            <td>'.$value->getSexo().'</td>
-                                                            <td>'.$value->getTipoUtilizador().'</td>
-                                                            <td>'.$value->getDtCriacao().'</td>
-                                                            <td>'.$value->getDtEdicao().'</td>
-                                                            <td>
-                                                                <a href="editar.php?id='.$value->getId().'" class="btn btn-outline-secondary"><i class="fas fa-pen    "></i></a>
-                                                            </td>
-                                                            <td>
-                                                                <a href="#"  data-toggle="modal" data-target="#delete'.$value->getId().'" class="btn btn-outline-danger"><i class="far fa-trash-alt"></i></a>
-                                                            </td>
-                                                        </tr>';
-                                                }
+                                        <form class="user" method="POST">
+                                            <div class="form-group row">
+                                                <div class="col-sm-6 mb-3 mb-sm-0">
+                                                    <label for="nome">Nome</label>
+                                                    <input type="text" class="form-control " id="nome"
+                                                        placeholder="Nome" required="required" name="nome">
+                                                </div>
+
+                                                <div class="col-sm-6">
+                                                    <label>Estado</label>
+                                                    <select class="custom-select" required="required" name="estado">
+                                                        <?php
+
+                                                        include_once('../../php/controller/crud-estado.php');
+                                                        $select = new CrudEstado();
+                                                        $select->select();
+
+                                                        ?>
+                                                    </select>
+                                                </div>
 
 
-                                                ?>
-                                            </tbody>
-                                        </table>
+                                            </div>
+                                           
+                                            <button class="btn btn-primary ml-auto mt-2" name="guardar">
+                                                GUARDAR
+                                            </button>
+
+                                            <?php
+                                          include_once('../../php/model/nacionalidade.php');
+                                          include_once('../../php/controller/crud-nacionalidade.php');
+                                          if(isset($_POST['guardar'])) {
+
+                                                $model = new Nacionalidade();
+                                                $model->setDescricao($_POST['nome']);
+                                                $model->setIdEstado($_POST['estado']);
+                                                $model->setDtCriacao(date('Y-m-d'));
+                                                $model->setDtEdicao(date('Y-m-d'));
+                                                $insert = new CrudNacionalidade();
+                                                $insert->insert($model);
+                                          }
+                                          ?>
+
+                                        </form>
+
+
 
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-
-
-
-
-
-
 
                 </div>
                 <!-- End of Main Content -->
@@ -346,46 +334,6 @@
             </div>
         </div>
 
-
-
-        <?php
-
-        $select = new CrudUtilizador();
-        $dados  = $select->select();
-        foreach ($dados as $key => $value) {
-            echo '
-                <div class="modal fade" id="delete'.$value->getId().'" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-                aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">'.$value->getNome().'</h5>
-                            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">×</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">Tens certeza que deseja eliminar este utilizador ?</div>
-                        <div class="modal-footer">
-                            <button class="btn btn-outline-danger" type="button" data-dismiss="modal">Não</button>
-                            <form action="deletar.php" method="post">
-                                <input type="hidden" name="id" value="'.$value->getId().'">
-                                <button type="submit" class="btn btn-danger" name="deletar">Sim</button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>    
-            ';
-        }
-
-
-       
-
-                                            
-
-
-        ?>
-
         <!-- Bootstrap core JavaScript-->
         <script src="../vendor/jquery/jquery.min.js"></script>
         <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -394,7 +342,6 @@
         <!-- Custom scripts for all pages-->
         <script src="../js/sb-admin-2.min.js"></script>
         <!-- Page level custom scripts -->
-        <script src="../js/demo/chart-area-demo.js"></script>
 </body>
 
 </html>

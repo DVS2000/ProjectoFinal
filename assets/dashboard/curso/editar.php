@@ -2,29 +2,25 @@
 
 if(isset($_GET['id'])) {
 
-    include_once('../../php/model/utilizador.php');
-    include_once('../../php/controller/crud-utilizador.php');
+    include_once('../../php/model/curso.php');
+    include_once('../../php/controller/crud-curso.php');
 
     $id = $_GET['id'];
-
-    $selectUser = new CrudUtilizador();
-    $user       = $selectUser->selectById($id);
-} else {
-    header('Location: ../index.html');
-}
-
-
-
-
-
-
+    $selectCurso = new CrudCurso();
+    $curso  = $selectCurso->selectById($id);
+        if($curso->getId() == null) {
+            header('Location: ../index.html');
+        }
+    
+    } else {
+        header('Location: ../index.html');
+    } 
 
 
 ?>
 
-
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt">
 
 <head>
 
@@ -34,7 +30,7 @@ if(isset($_GET['id'])) {
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Editar Utilizador</title>
+    <title><?php echo $curso->getDescricao(); ?></title>
 
     <!-- Custom fonts for this template-->
     <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -45,7 +41,8 @@ if(isset($_GET['id'])) {
         rel="stylesheet">
 
     <!-- Custom styles for this template-->
-    <link href="../css/sb-admin-2.min.css" rel="stylesheet">
+    <link href="../css/sb-admin-2.css" rel="stylesheet">
+
 
 </head>
 
@@ -62,7 +59,7 @@ if(isset($_GET['id'])) {
                 <div class="sidebar-brand-icon rotate-n-15">
                     <i class="fas fa-laugh-wink"></i>
                 </div>
-                <div class="sidebar-brand-text mx-3">JELU</div>
+                <div class="sidebar-brand-text mx-3">SB Admin</div>
             </a>
 
             <!-- Divider -->
@@ -183,7 +180,7 @@ if(isset($_GET['id'])) {
                         <i class="fa fa-bars"></i>
                     </button>
 
-                   
+
                     <!-- Topbar Navbar -->
                     <ul class="navbar-nav ml-auto">
 
@@ -258,7 +255,7 @@ if(isset($_GET['id'])) {
                                         <div class="text-left">
                                             <h1 class="h4 text-gray-900 mb-2 font-weight-bold"
                                                 style="text-transform: uppercase">Editar
-                                                utilizador</h1>
+                                                Curso</h1>
                                             <hr>
                                         </div>
                                         <form class="user" method="POST">
@@ -266,112 +263,81 @@ if(isset($_GET['id'])) {
                                                 <div class="col-sm-6 mb-3 mb-sm-0">
                                                     <label for="nome">Nome</label>
                                                     <input type="text" class="form-control " id="nome"
-                                                        placeholder="Nome" required="required" name="nome" value="<?php echo $user->getNome(); ?>">
+                                                        placeholder="Nome" required="required" name="nome" value="<?php echo $curso->getDescricao(); ?>" >
                                                 </div>
-                                                <div class="col-sm-6">
-                                                    <label for="email">Email</label>
-                                                    <input type="email" class="form-control" id="email"
-                                                        placeholder="Email" required="required" name="email" value="<?php echo $user->getEmail(); ?>">
-                                                </div>
-                                            </div>
-                                            <div class="form-group row">
-
-                                                <div class="col-sm-6 mb-3 mb-sm-0">
-                                                    <div class="form-group">
-                                                        <label for="telefone">Telefone</label>
-                                                        <input type="tel" class="form-control" id="telefone"
-                                                            placeholder="Telefone" required="required" name="telefone" value="<?php echo $user->getTelefone(); ?>">
-                                                    </div>
+                                                <div class="col-sm-3">
+                                                    <label for="preco">Preço</label>
+                                                    <input type="number" class="form-control" id="preco"
+                                                        placeholder="Preço" required="required" name="preco" value="<?php echo $curso->getPreco(); ?>">
                                                 </div>
 
-                                                <div class="col-sm-6 mb-3 mb-sm-0">
-                                                    <label for="senha">Nova senha</label>
-                                                    <input type="password" class="form-control" id="senha"
-                                                        placeholder="Nova senha" required="required" name="senha">
-                                                </div>
-                                            </div>
-                                            <div class="form-group row">
 
-                                                <div class="col-sm-3 mb-3 mb-sm-0 ">
-                                                    <label>Sexo</label>
-                                                    <select class="custom-select" required="required" name="sexo">
-                                                    <?php 
-
-                                                        include_once('../../php/controller/crud-sexo.php');
-                                                        $select = new CrudSexo();
-                                                        $select->select($user->getIdSexo());
-                                                     ?>
-                                                    </select>
-                                                </div>
-                                                <div class="col-sm-3 mb-3 mb-sm-0 ">
-                                                    <label>Estado</label>
+                                                <div class="col-sm-3">
+                                                <label>Estado</label>
                                                     <select class="custom-select" required="required" name="estado">
                                                         <?php
 
                                                         include_once('../../php/controller/crud-estado.php');
                                                         $select = new CrudEstado();
-                                                        $select->select($user->getIdEstado());
+                                                        $select->select($curso->getIdEstado());
 
-                                                        ?>
-                                                    </select>
-                                                </div>
-
-
-                                                <div class="col-sm-6 mb-3 mb-sm-0 ">
-                                                    <label>Tipo de utilizador</label>
-
-                                                    <select class="custom-select" required name="tipoutilizador">
-                                                        <?php
-
-                                                          include_once('../../php/controller/crud-tipoUser.php');
-                                                          $select = new CrudTipoUser();
-                                                          $select->select($user->getIdTipoUtilizador());
-                                                        
                                                         ?>
                                                     </select>
                                                 </div>
 
 
                                             </div>
-                                            <button class="btn btn-primary" name="editar">
+                                            <div class="form-group row">
+                                               <div class="col-sm-12">
+                                               <label>Requisitos</label>
+                                            <main>
+
+                                                <div class="centered">
+                                                <textarea name="requisitos" id="editor">
+                                                      <?php echo $curso->getRequisitos(); ?> 
+                                                 </textarea>
+
+                                                </div>
+                                            </main>
+
+                                               </div> 
+                                            </div>
+
+
+                                            <?php
+                                          include_once('../../php/model/curso.php');
+                                          include_once('../../php/controller/crud-curso.php');
+                                          if(isset($_POST['guardar'])) {
+
+                                                $model = new Curso();
+                                                $model->setId($id);
+                                                $model->setDescricao($_POST['nome']);
+                                                $model->setPreco($_POST['preco']);
+                                                $model->setIdEstado($_POST['estado']);
+                                                $model->setRequisitos($_POST['requisitos']);
+                                                $model->setDtEdicao(date('Y-m-d H:s'));
+                                                $insert = new CrudCurso();
+                                                $insert->update($model);
+                                                
+
+                                          }
+                                          ?>
+
+
+                                            <button class="btn btn-primary ml-auto mt-2" name="guardar">
                                                 EDITAR
                                             </button>
 
 
-                                            <?php
-                                          include_once('../../php/model/utilizador.php');
-                                          include_once('../../php/controller/crud-utilizador.php');
-                                          if(isset($_POST['editar'])) {
-
-                                                $model = new Utilizador();
-                                                $model->setId($id);
-                                                $model->setNome($_POST['nome']);
-                                                $model->setEmail($_POST['email']);
-                                                $model->setTelefone($_POST['telefone']);
-                                                $model->setSenha(md5($_POST['senha']));
-                                                $model->setIdSexo($_POST['sexo']);
-                                                $model->setIdTipoUtilizador($_POST['tipoutilizador']);
-                                                $model->setIdEstado($_POST['estado']);
-                                                $model->setDtEdicao(date('Y-m-d H:s'));
-
-                                                $insert = new CrudUtilizador();
-                                                $insert->update($model);
-                                          }
-                                          ?>
-
                                         </form>
+
+
 
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-
-
-
-
-
-
 
                 </div>
                 <!-- End of Main Content -->
@@ -425,7 +391,32 @@ if(isset($_GET['id'])) {
         <!-- Custom scripts for all pages-->
         <script src="../js/sb-admin-2.min.js"></script>
         <!-- Page level custom scripts -->
-        <script src="../js/demo/chart-area-demo.js"></script>
+        <script src="../../ckeditor.js"></script>
+
+        <script>
+             ClassicEditor
+            .create(document.querySelector('#editor'), {
+                     toolbar: [ 
+                                'heading',
+                                '|',
+                                'alignment',                                                 
+                                'bold',
+                                'italic',
+                                'link',
+                                'bulletedList',
+                                'numberedList',
+                                'blockQuote',
+                                'undo',
+                                'redo'
+                        ]
+                     })
+                      .then(editor => {
+                       window.editor = editor;
+                     })
+                      .catch(err => {
+                        console.error(err.stack);
+                      });
+             </script>
 </body>
 
 </html>

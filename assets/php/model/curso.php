@@ -10,6 +10,7 @@ class Curso {
     private $idEstado;
     private $dtCriacao;
     private $dtEdicao;
+    private $estado;
 
     # CRIANDO OS GETS E OS SETS DO Curso
 
@@ -40,4 +41,8 @@ class Curso {
     # CRIANDO O GET E O SET DA DATA DE EDIÇÃO DO CURSO
     public function getDtEdicao() { return $this->dtEdicao; }
     public function setDtEdicao($dtEdicao) { $this->dtEdicao = $dtEdicao; }
+
+    # CRIANDO O GET E O SET DO ESTADO DO CURSO
+    public function getEstado() { return $this->estado; }
+    public function setEstado($estado) { $this->estado = $estado; }
 }

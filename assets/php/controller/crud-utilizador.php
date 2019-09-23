@@ -82,7 +82,7 @@ class CrudUtilizador extends Conexao {
         if($result = mysqli_query($this->conexao, $query)) {
             if(mysqli_num_rows($result) > 0 ) {
 
-                echo '<div class="alert alert-success mt-5 alert-dismissible fade show" role="alert">
+                echo '<div class="alert alert-danger mt-5 alert-dismissible fade show" role="alert">
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                       <span aria-hidden="true">&times;</span>
                       <span class="sr-only">Close</span>

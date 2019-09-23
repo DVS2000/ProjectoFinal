@@ -9,15 +9,9 @@ if(isset($_GET['id'])) {
 
     $selectUser = new CrudUtilizador();
     $user       = $selectUser->selectById($id);
-} else {
-    header('Location: ../index.html');
-}
-
-
-
-
-
-
+    } else {
+        header('Location: ../index.html');
+    }
 
 
 ?>
@@ -34,7 +28,7 @@ if(isset($_GET['id'])) {
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Editar Utilizador</title>
+    <title><?php echo $user->getNome(); ?></title>
 
     <!-- Custom fonts for this template-->
     <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">

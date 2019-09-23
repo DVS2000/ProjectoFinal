@@ -137,8 +137,6 @@ class CrudNacionalidade extends Conexao {
         }
     } 
 
-
-
     # CRIANDO A FUNÇÃO PARA LISTAR TODAS NACIONALIDADE
     public function select() {
         # Abrindom a conexao

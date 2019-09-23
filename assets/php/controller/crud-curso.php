@@ -222,7 +222,7 @@ class CrudCurso extends Conexao {
     }
 
     # Função para Activar o curso
-    public function activar($id) {
+    public function enable($id) {
         # ABRINDO A CONEXÃO
         $this->connect();
 
@@ -237,11 +237,11 @@ class CrudCurso extends Conexao {
         mysqli_close($this->conexao);
     }
     # Função para Desactivar o curso
-    public function desactivar($id) {
+    public function disable($id) {
         # ABRINDO A CONEXÃO
         $this->connect();
 
-        $query = "UPDATE tbcurso SET idEstado = 2 WHERE idCurso = $id;";
+        $query = "UPDATE tbcurso SET idEstado = 3 WHERE idCurso = $id;";
         if(mysqli_query($this->conexao, $query)) {
             echo "Correu tudo bem";
         } else {

@@ -31,7 +31,7 @@ class CrudEstado extends Conexao implements Crud {
             while ($dados = mysqli_fetch_array($resultado)) {
                 if($dados[0] == $idEstado) {
                     echo "<option value='$dados[0]' selected>$dados[1]</option>";
-                } {
+                } else {
                     echo "<option value='$dados[0]'>$dados[1]</option>";
                 }   
             }

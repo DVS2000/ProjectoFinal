@@ -263,7 +263,7 @@
                                                 include_once('../../php/model/curso.php');
                                                 include_once('../../php/controller/crud-curso.php');
                                                 $select = new CrudCurso();
-                                                $dados  = $select->selectCursoDeleted();
+                                                $dados  = $select->selectDesactivado();
                                                 foreach ($dados as $key => $value) {
                                                     echo '<tr>
                                                             <td>'.$value->getDescricao().'</td>
@@ -345,7 +345,7 @@
         <?php
 
         $select = new CrudCurso();
-        $dados  = $select->selectCursoDeleted();
+        $dados  = $select->selectDesactivado();
         foreach ($dados as $key => $value) {
 
             # MODAL PARA ELIMINAR O CURSO

@@ -367,11 +367,10 @@
                         </div>
                         <div class="modal-body">Tens certeza que deseja eliminar este curso ?</div>
                         <div class="modal-footer">
-                            
                             <form action="deletar.php" method="post">
                                 <input type="hidden" name="id" value="'.$value->getId().'">
-                                <button type="submit" class="btn btn-danger" name="deletarTmp">Temporariamente</button>
-                                <button type="submit" class="btn btn-danger" name="deletarDef">Definitivamente</button>
+                                <button type="submit" class="btn btn-danger" name="deletarTmp">Desactivar</button>
+                                <button type="submit" class="btn btn-danger" name="deletarDef">Eliminar</button>
                             </form>
                         </div>
                     </div>

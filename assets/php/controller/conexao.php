@@ -26,20 +26,4 @@ class Conexao {
             header('Location: ../../dashboard/404.php');
        } 
      }    
-
-
-
-
-     
-     public static $instance;
-
-     public static function getConne() {
-       if(!isset(self::$instance)) {
-         self::$instance = new PDO("mysql:host".self::SERVERNAME.";dbname=".self::DBNAME.";charset=utf8",self::USERNAME, self::PASSWORD);
-       } else {
-         return self::$instance;
-       }
-     }
 }
-
-//Conexao::getConne();

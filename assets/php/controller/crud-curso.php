@@ -4,13 +4,17 @@
 # Incluindo o ficheiro de conexao
 include_once('conexao.php');
 
+
 # CRIANDO A CLASS QUE VAI CONTER TODAS FUNÇÕES DO CRUD PARA O CURSO
 class CrudCurso extends Conexao {
 
+    
+    # FUNÇÃO PARA FAZER O INSERT DO CURSO NO BANCO DE CADO
     public function insert(Curso $model) {
-        # Abrindo a conexão
-        $this->connect();
 
+        # ABRINDO A CONEXÃO
+        $this->connect();
+        
         $query = "SELECT * FROM tbCurso  WHERE descricao = '".$model->getDescricao()."';";
         
         if($result = mysqli_query($this->conexao, $query)) {
@@ -27,14 +31,14 @@ class CrudCurso extends Conexao {
 
 
             } else {
-                $query = "INSERT  INTO tbCurso (descricao, preco, requisitos, idEstado, dtCriacao, dtEdicao)
+                $query = "INSERT  INTO tbCurso (descricao, preco, requisitos, idEstado, dtCriacao, dtEdicao, planoAula)
                   VALUES('".$model->getDescricao()."',
                   ".$model->getPreco().",
                   '".$model->getRequisitos()."',
                   ".$model->getIdEstado().",
                   '".$model->getDtCriacao()."',
-                  '".$model->getDtEdicao()."');";
-
+                  '".$model->getDtEdicao()."',
+                  '".$model->getPlanoAula()."');";
                     if(mysqli_query($this->conexao, $query)) {
                         echo '<div class="alert alert-success mt-5 alert-dismissible fade show" role="alert">
                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -42,7 +46,7 @@ class CrudCurso extends Conexao {
                                 <span class="sr-only">Close</span>
                                 </button>
                                 <h4 class="alert-heading">'.$model->getDescricao().'</h4>
-                                <p>Foi adicionado com sucesso!.</p>
+                                <p>Foi adicionado com sucesso!</p>
                                 <p class="mb-0">'.date('d-m-Y H:s').'</p>
                               </div>';
                     } else {
@@ -52,7 +56,7 @@ class CrudCurso extends Conexao {
                                 <span class="sr-only">Close</span>
                                 </button>
                                 <h4 class="alert-heading">'.$model->getDescricao().'</h4>
-                                <p>Não foi adicionado com sucesso!.</p>
+                                <p>Não foi adicionado com sucesso!</p>
                                 <p class="mb-0">'.date('d-m-Y H:s').'</p>
                               </div>';
                     }
@@ -100,6 +104,7 @@ class CrudCurso extends Conexao {
                   descricao       = '".$model->getDescricao()."',
                   preco           =  ".$model->getPreco().",
                   requisitos      = '".$model->getRequisitos()."',
+                  planoAula       = '".$model->getPlanoAula()."', 
                   idEstado        =  ".$model->getIdEstado().",
                   dtEdicao        = '".$model->getDtEdicao()."'
                   WHERE idCurso   =  ".$model->getId().";";
@@ -166,7 +171,7 @@ class CrudCurso extends Conexao {
         # Abrindo a conexão
         $this->connect();
         
-        $query = "SELECT * FROM verCursos WHERE idestado <> 3 ORDER BY descricao";
+        $query = "SELECT * FROM verCursos WHERE idestado <> 2 ORDER BY descricao";
 
         $cursos = array();
         if($result = mysqli_query($this->conexao, $query)) {
@@ -177,6 +182,7 @@ class CrudCurso extends Conexao {
                 $curso->       setDescricao($dados["descricao"]);
                 $curso->       setPreco($dados["preco"]);
                 $curso->       setRequisitos($dados["requisitos"]);
+                $curso->       setPlanoAula($dados['planoAula']);
                 $curso->       setIdEstado($dados["idestado"]);
                 $curso->       setEstado($dados["estado"]);
                 $curso->       setDtCriacao($dados["dtCriacao"]);
@@ -191,12 +197,14 @@ class CrudCurso extends Conexao {
 
     }
 
+    /* ===========FUNÇÕES ADICIONAL =========== */
+
     # Função para listar todos os curso
     public function selectDesactivado() {
         # Abrindo a conexão
         $this->connect();
         
-        $query = "SELECT * FROM verCursos WHERE idestado = 3 ORDER BY descricao";
+        $query = "SELECT * FROM verCursos WHERE idestado = 2 ORDER BY descricao";
 
         $cursos = array();
         if($result = mysqli_query($this->conexao, $query)) {
@@ -207,6 +215,7 @@ class CrudCurso extends Conexao {
                 $curso->       setDescricao($dados["descricao"]);
                 $curso->       setPreco($dados["preco"]);
                 $curso->       setRequisitos($dados["requisitos"]);
+                $curso->       setPlanoAula($dados['planoAula']);
                 $curso->       setIdEstado($dados["idestado"]);
                 $curso->       setEstado($dados["estado"]);
                 $curso->       setDtCriacao($dados["dtCriacao"]);
@@ -241,7 +250,7 @@ class CrudCurso extends Conexao {
         # ABRINDO A CONEXÃO
         $this->connect();
 
-        $query = "UPDATE tbcurso SET idEstado = 3 WHERE idCurso = $id;";
+        $query = "UPDATE tbcurso SET idEstado = 2 WHERE idCurso = $id;";
         if(mysqli_query($this->conexao, $query)) {
             echo "Correu tudo bem";
         } else {
@@ -283,7 +292,7 @@ class CrudCurso extends Conexao {
 
     }
 
-    # Função para pesquisar o curso
+    # Função para Pegar o curso vai id
     public function getById($id) {
         # Abrindo a conexão
         $this->connect();
@@ -297,12 +306,11 @@ class CrudCurso extends Conexao {
                 $curso->       setDescricao($dados["descricao"]);
                 $curso->       setPreco($dados["preco"]);
                 $curso->       setRequisitos($dados["requisitos"]);
+                $curso->       setPlanoAula($dados["planoAula"]);
                 $curso->       setIdEstado($dados["idestado"]);
                 $curso->       setEstado($dados["estado"]);
                 $curso->       setDtCriacao($dados["dtCriacao"]);
                 $curso->       setDtEdicao($dados["dtEdicao"]);
-               
-
             }
         }
         

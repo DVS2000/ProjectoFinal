@@ -5,13 +5,27 @@ if(isset($_GET['id'])) {
     include_once('../../php/model/utilizador.php');
     include_once('../../php/controller/crud-utilizador.php');
 
-    $id = $_GET['id'];
+    # INCLUIDO O FICHEIRO QUE VAI FAZER A LIMPEZA DAS VARIAVEL
+    include_once('../../php/Util/clear-var.php');
+    $clean = new Clear();
+    $clean->connect();
 
-    $selectUser = new CrudUtilizador();
-    $user       = $selectUser->selectById($id);
+    $id = $clean->intGET('id');
+        if($id != null) {
+            $userData = new CrudUtilizador();
+            $user  = $userData->getById($id);
+            if($user == null) {
+                header('Location: ../index.html');
+            }
+
+        } else {
+            header('Location: ../index.html');
+        } 
+    
     } else {
         header('Location: ../index.html');
-    }
+    } 
+
 
 
 ?>
@@ -278,10 +292,17 @@ if(isset($_GET['id'])) {
                                                     </div>
                                                 </div>
 
-                                                <div class="col-sm-6 mb-3 mb-sm-0">
-                                                    <label for="senha">Nova senha</label>
+                                                <div class="col-sm-3 mb-3 mb-sm-0">
+                                                    <label for="senha">Senha</label>
                                                     <input type="password" class="form-control" id="senha"
-                                                        placeholder="Nova senha" required="required" name="senha">
+                                                        placeholder="Senha" required="required" name="senha">
+                                                </div>
+
+                                                <div class="col-sm-3 mb-3 mb-sm-0">
+                                                    <label for="confsenha">Confirmar senha</label>
+                                                    <input type="password" class="form-control" id="confsenha"
+                                                        placeholder="Confirmar senha" required="required"
+                                                        name="confsenha">
                                                 </div>
                                             </div>
                                             <div class="form-group row">
@@ -333,18 +354,34 @@ if(isset($_GET['id'])) {
 
 
                                             <?php
-                                          include_once('../../php/model/utilizador.php');
-                                          include_once('../../php/controller/crud-utilizador.php');
+                                            include_once('../../php/model/utilizador.php');
+                                            include_once('../../php/controller/crud-utilizador.php');
+
+                                            $clean = new Clear();
+                                            #ABRINDO A CONEXÃO
+                                            $clean->connect();
+
+
                                           if(isset($_POST['editar'])) {
+
+                                                 # LIMPANDO AS VARIAVÉIS
+                                                $nome               = $clean->specialChars('nome');
+                                                $email              = $clean->email('email');
+                                                $telefone           = $clean->int('telefone');
+                                                $senha              = $clean->specialChars('senha');
+                                                $sexo               = $clean->int('sexo');
+                                                $tipoUtilizador     = $clean->int('tipoutilizador');
+                                                $estado             = $clean->int('estado');
 
                                                 $model = new Utilizador();
                                                 $model->setId($id);
-                                                $model->setNome($_POST['nome']);
-                                                $model->setEmail($_POST['email']);
-                                                $model->setTelefone($_POST['telefone']);
-                                                $model->setSenha(md5($_POST['senha']));
-                                                $model->setIdSexo($_POST['sexo']);
-                                                $model->setIdTipoUtilizador($_POST['tipoutilizador']);
+                                                $model->setNome($nome);
+                                                $model->setEmail($email);
+                                                $model->setTelefone($telefone);
+                                                $model->setSenha(md5($senha));
+                                                $model->setIdSexo($sexo);
+                                                $model->setIdTipoUtilizador($tipoUtilizador);
+                                                $model->setIdEstado($estado);
                                                 $model->setIdEstado($_POST['estado']);
                                                 $model->setDtEdicao(date('Y-m-d H:s'));
 

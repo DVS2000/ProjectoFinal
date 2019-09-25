@@ -3,18 +3,24 @@
 include_once('../../php/model/curso.php');
 include_once('../../php/controller/crud-curso.php');
 
+# INCLUIDO O FICHEIRO QUE VAI FAZER A LIMPEZA DAS VARIAVEL
+include_once('../../php/Util/clear-var.php');
+
+    $clean = new Clear();
+    $clean->connect();
+
 
 if(isset($_POST["deletar"])) {
 
-    $id = $_POST['id'];
+    $id = $clean->int('id');
     $deletar = new CrudCurso();
-    $deletar->deleteDef($id);
+    $deletar->delete($id);
     header('Location: reciclagem.php');
-  // echo "Angola";
+ 
 } else if(isset($_POST['recuperar'])) {
-    $id = $_POST['id'];
+    $id = $clean->int('id');
     $recuperar = new CrudCurso();
-    $recuperar->recuperar($id);
+    $recuperar->enable($id);
     header('Location: reciclagem.php');
     
 } else {

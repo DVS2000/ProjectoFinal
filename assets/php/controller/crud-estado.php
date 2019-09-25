@@ -7,22 +7,10 @@ include_once('crud.php');
 include_once('conexao.php');
 
 #Criando a classe para o crud do Email
-class CrudEstado extends Conexao implements Crud {
+class CrudEstado extends Conexao {
     
 
-    public function insert() {
-      //  $this->connect();
-         $this->conexao;
-    }
-
-    public function update() {
-       
-    }
-
-    public function delete() {
-        
-    }
-
+    # FUNÇÃO PARA FAZER PEGAR TODOS OS ESTADO
     public function select($idEstado = 1) {
         $this->connect();
         

@@ -7,6 +7,7 @@ class Curso {
     private $descricao;
     private $preco;
     private $requisitos;
+    private $planoAula;
     private $idEstado;
     private $dtCriacao;
     private $dtEdicao;
@@ -45,4 +46,9 @@ class Curso {
     # CRIANDO O GET E O SET DO ESTADO DO CURSO
     public function getEstado() { return $this->estado; }
     public function setEstado($estado) { $this->estado = $estado; }
+ 
+    # CRINAOD O GET E O SET DO PLANO DE AULA DE CURSO
+    public function getPlanoAula() { return $this->planoAula; }
+    public function setPlanoAula($planoAula) { $this->planoAula = $planoAula; }
+
 }

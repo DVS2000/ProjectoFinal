@@ -5,9 +5,23 @@ if(isset($_GET['id'])) {
     include_once('../../php/model/nacionalidade.php');
     include_once('../../php/controller/crud-nacionalidade.php');
 
-    $id = $_GET['id'];
-    $selectNacional = new CrudNacionalidade();
-    $nacional  = $selectNacional->selectById($id);
+    # INCLUIDO O FICHEIRO QUE VAI FAZER A LIMPEZA DAS VARIAVEL
+    include_once('../../php/Util/clear-var.php');
+    $clean = new Clear();
+    $clean->connect();
+
+    $id = $clean->intGET('id');
+        if($id != null) {
+            $selectNacional = new CrudNacionalidade();
+            $nacional  = $selectNacional->getById($id);
+            if($nacional->getId() == null) {
+                header('Location: ../index.html');
+            }
+
+        } else {
+            header('Location: ../index.html');
+        } 
+    
     } else {
         header('Location: ../index.html');
     } 
@@ -282,10 +296,14 @@ if(isset($_GET['id'])) {
                                           include_once('../../php/controller/crud-nacionalidade.php');
                                           if(isset($_POST['editar'])) {
 
+                                                # LIMPANDO AS VARIAVÉL
+                                                $descricao          = $clean->specialChars('nome');
+                                                $estado             = $clean->int('estado');
+
                                                 $model = new Nacionalidade();
                                                 $model->setId($id);
-                                                $model->setDescricao($_POST['nome']);                                               
-                                                $model->setIdEstado($_POST['estado']);
+                                                $model->setDescricao($descricao);                                               
+                                                $model->setIdEstado($estado);
                                                 $model->setDtEdicao(date('Y-m-d'));
                                                 $insert = new CrudNacionalidade();
                                                 $insert->update($model);

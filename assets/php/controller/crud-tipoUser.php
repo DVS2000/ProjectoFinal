@@ -6,6 +6,7 @@ include_once('conexao.php');
 
 class CrudTipoUser extends Conexao {
     
+    # FUNÇÃO PARA FAZER O INSERT DO TIPO DE UTILIZADOR
     public function insert(TipoUtilizador $objecto) {
         $this->connect();
         # Query

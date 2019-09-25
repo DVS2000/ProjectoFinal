@@ -1,16 +1,27 @@
 <?php
 
-if(isset($_GET['id'])) {
+  if(isset($_GET['id'])) {
 
     include_once('../../php/model/curso.php');
     include_once('../../php/controller/crud-curso.php');
 
-    $id = $_GET['id'];
-    $selectCurso = new CrudCurso();
-    $curso  = $selectCurso->selectById($id);
+    # INCLUIDO O FICHEIRO QUE VAI FAZER A LIMPEZA DAS VARIAVEL
+    include_once('../../php/Util/clear-var.php');
+    $clean = new Clear();
+    $clean->connect();
+
+    $id = $clean->intGET('id');
+    if($id != null) {
+
+        $selectCurso = new CrudCurso();
+        $curso  = $selectCurso->getById($id);
         if($curso->getId() == null) {
             header('Location: ../index.html');
         }
+
+    } else {
+        header('Location: ../index.html');
+    }
     
     } else {
         header('Location: ../index.html');
@@ -290,16 +301,24 @@ if(isset($_GET['id'])) {
                                             <div class="form-group row">
                                                <div class="col-sm-12">
                                                <label>Requisitos</label>
-                                            <main>
 
                                                 <div class="centered">
                                                 <textarea name="requisitos" id="editor">
                                                       <?php echo $curso->getRequisitos(); ?> 
                                                  </textarea>
-
                                                 </div>
-                                            </main>
+                                               </div> 
+                                            </div>
 
+                                            <div class="form-group row">
+                                               <div class="col-sm-12">
+                                               <label>Plano de Aula</label>
+
+                                                <div class="centered">
+                                                <textarea name="planoAula" id="editor1">
+                                                      <?php echo $curso->getPlanoAula(); ?> 
+                                                 </textarea>
+                                                </div>
                                                </div> 
                                             </div>
 
@@ -307,14 +326,25 @@ if(isset($_GET['id'])) {
                                             <?php
                                           include_once('../../php/model/curso.php');
                                           include_once('../../php/controller/crud-curso.php');
+                                          
+
                                           if(isset($_POST['guardar'])) {
+
+                                            # ============LIMPANDO AS VARIÁVEIS============== #
+                                            
+                                            $nome         = $clean->specialChars('nome');
+                                            $preco        = $clean->int('preco');
+                                            $estado       = $clean->int('estado');
+                                            $resquitos    = $clean->script($_POST['requisitos']);
+                                            $planoAula    = $clean->script($_POST['planoAula']);
 
                                                 $model = new Curso();
                                                 $model->setId($id);
-                                                $model->setDescricao($_POST['nome']);
-                                                $model->setPreco($_POST['preco']);
-                                                $model->setIdEstado($_POST['estado']);
-                                                $model->setRequisitos($_POST['requisitos']);
+                                                $model->setDescricao($nome);
+                                                $model->setPreco($preco);
+                                                $model->setIdEstado($estado);
+                                                $model->setRequisitos($resquitos);
+                                                $model->setPlanoAula($planoAula);
                                                 $model->setDtEdicao(date('Y-m-d H:s'));
                                                 $insert = new CrudCurso();
                                                 $insert->update($model);
@@ -396,6 +426,30 @@ if(isset($_GET['id'])) {
         <script>
              ClassicEditor
             .create(document.querySelector('#editor'), {
+                     toolbar: [ 
+                                'heading',
+                                '|',
+                                'alignment',                                                 
+                                'bold',
+                                'italic',
+                                'link',
+                                'bulletedList',
+                                'numberedList',
+                                'blockQuote',
+                                'undo',
+                                'redo'
+                        ]
+                     })
+                      .then(editor => {
+                       window.editor = editor;
+                     })
+                      .catch(err => {
+                        console.error(err.stack);
+                      });
+
+
+            ClassicEditor
+            .create(document.querySelector('#editor1'), {
                      toolbar: [ 
                                 'heading',
                                 '|',

@@ -366,10 +366,10 @@
                         </div>
                         <div class="modal-body">Tens certeza que deseja eliminar este utilizador ?</div>
                         <div class="modal-footer">
-                            <button class="btn btn-outline-danger" type="button" data-dismiss="modal">Não</button>
                             <form action="deletar.php" method="post">
                                 <input type="hidden" name="id" value="'.$value->getId().'">
-                                <button type="submit" class="btn btn-danger" name="deletar">Sim</button>
+                                <button type="submit" class="btn btn-danger" name="disable">Desactivar</button>
+                                <button type="submit" class="btn btn-danger" name="delete">Eliminar</button>
                             </form>
                         </div>
                     </div>

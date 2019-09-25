@@ -1,5 +1,9 @@
 /*
 --------------------------
 AQUI FICA OS FICHEIROS PHP
+NA QUAL TEREMOS OS MODEL
+OS CONTROLLERS E POS FIM 
+ALGUMS CLASS QUE VÃO AUXILIAR
+O CONTROLLER
 ---------------------------
 */

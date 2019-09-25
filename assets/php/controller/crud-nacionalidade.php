@@ -66,8 +66,6 @@ class CrudNacionalidade extends Conexao {
         mysqli_close($this->conexao);
     }
 
-
-
     # CRIANDO A FUNÇÃO PARA FAZER O UPDATE DA NACIONALIDADE
     public function update(Nacionalidade $model) {
         # Abrindo a conexão
@@ -127,22 +125,26 @@ class CrudNacionalidade extends Conexao {
 
     # CRIANDO A FUNÇÃO PARA ELIMINAR A NACIONALIDADE
     public function delete($id) {
-        # Abrindo a conexão
+        # ABRINDO A CONEXÃO
         $this->connect();
-        $query = "UPDATE tbnacionalidade SET idestado = 3 WHERE idnacionalidade = $id;";
+
+        $query = "DELETE FROM tbNacionalidade WHERE idNacionalidade = $id";
         if(mysqli_query($this->conexao, $query)) {
             echo "Correu tudo bem";
         } else {
             echo "Não correu tudo bem";
         }
-    } 
+
+        # FECHANDO A CONEXÃO
+        mysqli_close($this->conexao);
+    }
 
     # CRIANDO A FUNÇÃO PARA LISTAR TODAS NACIONALIDADE
     public function select() {
         # Abrindom a conexao
         $this->connect();
 
-        $query     = "SELECT * FROM tbnacionalidade WHERE idestado <> 3";
+        $query     = "SELECT * FROM tbnacionalidade WHERE idestado <> 2";
         $result    = mysqli_query($this->conexao, $query);
         $nacional  = array();
 
@@ -159,9 +161,78 @@ class CrudNacionalidade extends Conexao {
         return $nacional;
     }
 
+     /* ===========FUNÇÕES ADICIONAL =========== */
+
+    # CRIANDO A FUNÇÃO PARA LISTAR TODAS NACIONALIDADE
+    public function selectDesactivado() {
+        # Abrindom a conexao
+        $this->connect();
+
+        $query     = "SELECT * FROM tbnacionalidade WHERE idestado = 2";
+        $result    = mysqli_query($this->conexao, $query);
+        $nacional  = array();
+
+        while($dados = mysqli_fetch_assoc($result)) {
+            $objecto = new Nacionalidade();
+            $objecto->      setId($dados["idnacionalidade"]);
+            $objecto->      setDescricao($dados["descricao"]);
+            $objecto->      setIdEstado($dados["idestado"]);
+            $objecto->      setDtCriacao($dados["dtCriacao"]);
+            $objecto->      setDtEdicao($dados["dtEdicao"]);
+            $nacional[] = $objecto;
+        }
+
+        return $nacional;
+    }
+
+    # CRIANDO A FUNÇÃO PARA Activar A NACIONALIDADE
+    public function enable($id) {
+        # Abrindo a conexão
+        $this->connect();
+        $query = "UPDATE tbnacionalidade SET idestado = 1 WHERE idnacionalidade = $id;";
+        if(mysqli_query($this->conexao, $query)) {
+            echo "Correu tudo bem";
+        } else {
+            echo "Não correu tudo bem";
+        }
+    }
+    
+    # CRIANDO A FUNÇÃO PARA DESABLITAR A NACIONALIDADE
+    public function disable($id) {
+        # Abrindo a conexão
+        $this->connect();
+        $query = "UPDATE tbnacionalidade SET idestado = 2 WHERE idnacionalidade = $id;";
+        if(mysqli_query($this->conexao, $query)) {
+            echo "Correu tudo bem";
+        } else {
+            echo "Não correu tudo bem";
+        }
+    } 
+
+     # CRIANDO A FUNÇÃO PARA LISTAR TODAS NACIONALIDADE
+     public function serach($descricao) {
+        # Abrindom a conexao
+        $this->connect();
+
+        $query     = "SELECT * FROM tbnacionalidade WHERE descricao LIKE '%$descricao%' ORDER BY descricao;";
+        $result    = mysqli_query($this->conexao, $query);
+        $nacional  = array();
+
+        while($dados = mysqli_fetch_assoc($result)) {
+            $objecto = new Nacionalidade();
+            $objecto->      setId($dados["idnacionalidade"]);
+            $objecto->      setDescricao($dados["descricao"]);
+            $objecto->      setIdEstado($dados["idestado"]);
+            $objecto->      setDtCriacao($dados["dtCriacao"]);
+            $objecto->      setDtEdicao($dados["dtEdicao"]);
+            $nacional[] = $objecto;
+        }
+
+        return $nacional;
+    }
 
     # CRIANDO A FUNÇÃO PARA LISTAR NACIONALIDADE PELO ID
-    public function selectById($id) {
+    public function getById($id) {
         # Abrindom a conexao
         $this->connect();
 

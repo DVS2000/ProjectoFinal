@@ -268,11 +268,22 @@
                                             <?php
                                           include_once('../../php/model/nacionalidade.php');
                                           include_once('../../php/controller/crud-nacionalidade.php');
+                                          # INCLUIDO O FICHEIRO QUE VAI FAZER A LIMPEZA DAS VARIAVEL
+                                          include_once('../../php/Util/clear-var.php');
+
+                                           $clean = new Clear();
+                                           #ABRINDO A CONEXÃO
+                                           $clean->connect();
+
+
                                           if(isset($_POST['guardar'])) {
 
+                                                $nome       = $clean->specialChars('nome');
+                                                $estado     = $clean->int('estado');
+
                                                 $model = new Nacionalidade();
-                                                $model->setDescricao($_POST['nome']);
-                                                $model->setIdEstado($_POST['estado']);
+                                                $model->setDescricao($nome);
+                                                $model->setIdEstado($estado);
                                                 $model->setDtCriacao(date('Y-m-d'));
                                                 $model->setDtEdicao(date('Y-m-d'));
                                                 $insert = new CrudNacionalidade();

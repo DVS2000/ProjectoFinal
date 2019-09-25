@@ -369,8 +369,8 @@
                         <div class="modal-footer">
                             <form action="deletar.php" method="post">
                                 <input type="hidden" name="id" value="'.$value->getId().'">
-                                <button type="submit" class="btn btn-danger" name="deletarTmp">Desactivar</button>
-                                <button type="submit" class="btn btn-danger" name="deletarDef">Eliminar</button>
+                                <button type="submit" class="btn btn-danger" name="disable">Desactivar</button>
+                                <button type="submit" class="btn btn-danger" name="delete">Eliminar</button>
                             </form>
                         </div>
                     </div>
@@ -382,17 +382,20 @@
             # MODAL PARA VER OS REQUITOS DO CURSO
 
             echo '
-            <div class="modal fade" id="requisitos'.$value->getId().'" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+            <div class="modal fade" id="requisitos'.$value->getId().'" tabindex="-1" role="dialog"
             aria-hidden="true">
-            <div class="modal-dialog" role="document">
+            <div class="modal-dialog  modal-lg" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Requisitos Necessário</h5>
+                        <h5 class="modal-title">Requisitos Necessário</h5>
                         <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">×</span>
                         </button>
                     </div>
-                    <div class="modal-body">'.$value->getRequisitos().'</div>
+                    <div class="modal-body">'.$value->getRequisitos().' <hr></div>
+                   
+                    <h5 class="modal-title pl-3">Plano de Aula</h5>
+                    <div class="modal-body">'.$value->getPlanoAula().'</div>
                     <div class="modal-footer">
                         <button class="btn btn-outline-success" type="button" data-dismiss="modal">Fechar</button>
                     </div>

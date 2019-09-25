@@ -158,7 +158,7 @@
                         <i class="fa fa-bars"></i>
                     </button>
 
-                   
+
                     <!-- Topbar Navbar -->
                     <ul class="navbar-nav ml-auto">
 
@@ -259,10 +259,17 @@
                                                     </div>
                                                 </div>
 
-                                                <div class="col-sm-6 mb-3 mb-sm-0">
+                                                <div class="col-sm-3 mb-3 mb-sm-0">
                                                     <label for="senha">Senha</label>
                                                     <input type="password" class="form-control" id="senha"
                                                         placeholder="Senha" required="required" name="senha">
+                                                </div>
+
+                                                <div class="col-sm-3 mb-3 mb-sm-0">
+                                                    <label for="confsenha">Confirmar senha</label>
+                                                    <input type="password" class="form-control" id="confsenha"
+                                                        placeholder="Confirmar senha" required="required"
+                                                        name="confsenha">
                                                 </div>
                                             </div>
                                             <div class="form-group row">
@@ -270,7 +277,7 @@
                                                 <div class="col-sm-3 mb-3 mb-sm-0 ">
                                                     <label>Sexo</label>
                                                     <select class="custom-select" required="required" name="sexo">
-                                                       <?php 
+                                                        <?php 
 
                                                         include_once('../../php/controller/crud-sexo.php');
                                                         $select = new CrudSexo();
@@ -297,7 +304,7 @@
                                                     <label>Tipo de utilizador</label>
 
                                                     <select class="custom-select" required name="tipoutilizador">
-                                                        <option selected>*Seleccione um tipo de utilizador</option>
+
 
                                                         <?php
                                                           include_once('../../php/controller/crud-tipoUser.php');
@@ -318,19 +325,34 @@
                                             <?php
                                           include_once('../../php/model/utilizador.php');
                                           include_once('../../php/controller/crud-utilizador.php');
+
+                                          # INCLUIDO O FICHEIRO QUE VAI FAZER A LIMPEZA DAS VARIAVEL
+                                          include_once('../../php/Util/clear-var.php');
+
+                                           $clean = new Clear();
+                                           #ABRINDO A CONEXÃO
+                                           $clean->connect();
+
                                           if(isset($_POST['guardar'])) {
 
 
-                                           
+                                                # LIMPANDO AS VARIAVÉIS
+                                                $nome               = $clean->specialChars('nome');
+                                                $email              = $clean->email('email');
+                                                $telefone           = $clean->int('telefone');
+                                                $senha              = $clean->specialChars('senha');
+                                                $sexo               = $clean->int('sexo');
+                                                $tipoUtilizador     = $clean->int('tipoutilizador');
+                                                $estado             = $clean->int('estado');
 
                                                 $model = new Utilizador();
-                                                $model->setNome($_POST['nome']);
-                                                $model->setEmail($_POST['email']);
-                                                $model->setTelefone($_POST['telefone']);
-                                                $model->setSenha(md5($_POST['senha']));
-                                                $model->setIdSexo($_POST['sexo']);
-                                                $model->setIdTipoUtilizador($_POST['tipoutilizador']);
-                                                $model->setIdEstado($_POST['estado']);
+                                                $model->setNome($nome);
+                                                $model->setEmail($email);
+                                                $model->setTelefone($telefone);
+                                                $model->setSenha(md5($senha));
+                                                $model->setIdSexo($sexo);
+                                                $model->setIdTipoUtilizador($tipoUtilizador);
+                                                $model->setIdEstado($estado);
                                                 $model->setDtCriacao(date('Y-m-d H:s'));
                                                 $model->setDtEdicao(date('Y-m-d H:s'));
 

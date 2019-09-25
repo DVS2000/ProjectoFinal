@@ -272,7 +272,17 @@
                                                     <!---REQUITOS PARA O CURSO--->
                                                     <main>
                                                     <textarea name="requisitos" id="editor">
-                                                        
+                                                    </textarea>
+                                                    </main>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group row">
+                                                <div class="col-sm-12">
+                                                    <label>Plano de Aula</label>
+                                                    <!---REQUITOS PARA O CURSO--->
+                                                    <main>
+                                                    <textarea name="planoAula" id="editor1">
                                                     </textarea>
                                                     </main>
                                                 </div>
@@ -285,17 +295,37 @@
                                             <?php
                                           include_once('../../php/model/curso.php');
                                           include_once('../../php/controller/crud-curso.php');
+                                          # INCLUIDO O FICHEIRO QUE VAI FAZER A LIMPEZA DAS VARIAVEL
+                                          include_once('../../php/Util/clear-var.php');
+
+                                           $clean = new Clear();
+
+                                           
+                                           
+
                                           if(isset($_POST['guardar'])) {
 
+
+                                                # ============LIMPANDO AS VARIÁVEIS============== #
+                                                $clean->connect();
+                                                $nome         = $clean->specialChars('nome');
+                                                $preco        = $clean->int('preco');
+                                                $estado       = $clean->int('estado');
+                                                $resquitos    = $clean->script($_POST['requisitos']);
+                                                $planoAula    = $clean->script($_POST['planoAula']);
+
+
                                                 $model = new Curso();
-                                                $model->setDescricao($_POST['nome']);
-                                                $model->setPreco($_POST['preco']);
-                                                $model->setIdEstado($_POST['estado']);
-                                                $model->setRequisitos($_POST['requisitos']);
+                                                $model->setDescricao($nome);
+                                                $model->setPreco($preco);
+                                                $model->setIdEstado($estado);
+                                                $model->setRequisitos($resquitos);
+                                                $model->setPlanoAula($planoAula);
                                                 $model->setDtCriacao(date('Y-m-d H:s'));
                                                 $model->setDtEdicao(date('Y-m-d H:s'));
                                                 $insert = new CrudCurso();
                                                 $insert->insert($model);
+                                                
                                           }
                                           ?>
 
@@ -366,6 +396,31 @@
         <script>
         ClassicEditor
             .create(document.querySelector('#editor'), {
+                toolbar: [
+                    'heading',
+                    '|',
+                    'alignment',
+                    'bold',
+                    'italic',
+                    'link',
+                    'bulletedList',
+                    'numberedList',
+                    'blockQuote',
+                    'undo',
+                    'redo'
+                ]
+            })
+            .then(editor => {
+                window.editor = editor;
+            })
+            .catch(err => {
+                console.error(err.stack);
+            });
+
+
+
+            ClassicEditor
+            .create(document.querySelector('#editor1'), {
                 toolbar: [
                     'heading',
                     '|',

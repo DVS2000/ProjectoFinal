@@ -45,7 +45,7 @@ class CrudUtilizador extends Conexao {
                             <span class="sr-only">Close</span>
                             </button>
                             <h4 class="alert-heading">'.$model->getNome().'</h4>
-                            <p>Foi adicionado com sucesso!.</p>
+                            <p>Foi adicionado com sucesso!</p>
                             <p class="mb-0">'.date('d-m-Y H:s').'</p>
                             </div>';
                 } else {
@@ -55,7 +55,7 @@ class CrudUtilizador extends Conexao {
                             <span class="sr-only">Close</span>
                             </button>
                             <h4 class="alert-heading">'.$model->getNome().'</h4>
-                            <p>Não foi adicionado com sucesso!.</p>
+                            <p>Não foi adicionado com sucesso!</p>
                             <p class="mb-0">'.date('d-m-Y H:s').'</p>
                         </div>';
                 }
@@ -142,33 +142,21 @@ class CrudUtilizador extends Conexao {
          # FECHANDO A CONEXÃO
          mysqli_close($this->conexao);
     }
-
-
-    # CRIANDO A FUNÇÃO PARA RECUPERAR O UTILIZADOR NO BANCO DE DADOS
-    public function delete($id) {
-        $this->connect();
-
-        $query = "UPDATE tbutilizador SET idEstado = 3 WHERE idUtilizador = $id";
-        if(mysqli_query($this->conexao, $query)){
-            header('Location: ../../dashboard/utilizador/vertodos.php');
-        } else {
-            header('Location: ../../dashboard/404.php');
-        }
-
-        mysqli_close($this->conexao);
-    }
-
+    
     # CRIANDO A FUNÇÃO PARA FAZER O DELETE DO UTILIZADOR NO BANCO DE DADOS
-    public function recuperar($id) {
+    public function delete($id) {
+        # ABRINDO A CONEXÃO
         $this->connect();
 
-        $query = "UPDATE tbutilizador SET idEstado = 1 WHERE idUtilizador = $id";
-        if(mysqli_query($this->conexao, $query)){
-            header('Location: ../../dashboard/utilizador/vertodos.php');
+
+        $query = "DELETE FROM tbUtilizador WHERE idutilizador = $id;";
+        if(mysqli_query($this->conexao, $query)) {
+            echo "Correu tudo bem";
         } else {
-            header('Location: ../../dashboard/404.php');
+            echo "Não correu tudo bem";
         }
 
+        # FECHANDO A CONEXÃO
         mysqli_close($this->conexao);
     }
 
@@ -176,7 +164,7 @@ class CrudUtilizador extends Conexao {
     public function select() {
         $this->connect();
 
-        $query  = "SELECT * FROM verUtilizador WHERE idestado <> 3 ORDER BY nome;";
+        $query  = "SELECT * FROM verUtilizador WHERE idestado <> 2 ORDER BY nome;";
         $result = mysqli_query($this->conexao, $query);
 
         $users = array();
@@ -189,8 +177,8 @@ class CrudUtilizador extends Conexao {
             $objecto->  setTipoUtilizador($dados['TipoUtil']);
             $objecto->  setSexo($dados['sexo']);
             $objecto->  setIdSexo($dados["idsexo"]);
-            $objecto->  setDtCriacao($dados["dtcriacao"]);
-            $objecto->  setDtEdicao($dados["dtedicao"]);
+            $objecto->  setDtCriacao(date('d-m-Y', strtotime($dados["dtcriacao"])));
+            $objecto->  setDtEdicao(date('d-m-Y', strtotime($dados["dtedicao"])));
             $objecto->  setIdTipoUtilizador($dados["idtbTipoUtilizador"]);
            
             $users[] =  $objecto;
@@ -200,12 +188,13 @@ class CrudUtilizador extends Conexao {
        return $users;  
     }
 
+    /* ===========FUNÇÕES ADICIONAL =========== */
 
     # CRINAOD A FUNÇÃO PARA FAZER O SELECT DE TODOS OS UTILIZADORES
-    public function selectUserDeleted() {
+    public function selectDesactivado() {
         $this->connect();
 
-        $query  = "SELECT * FROM verUtilizador WHERE idestado = 3 ORDER BY nome;";
+        $query  = "SELECT * FROM verUtilizador WHERE idestado = 2 ORDER BY nome;";
         $result = mysqli_query($this->conexao, $query);
 
         $users = array();
@@ -218,8 +207,8 @@ class CrudUtilizador extends Conexao {
             $objecto->  setTipoUtilizador($dados['TipoUtil']);
             $objecto->  setSexo($dados['sexo']);
             $objecto->  setIdSexo($dados["idsexo"]);
-            $objecto->  setDtCriacao($dados["dtcriacao"]);
-            $objecto->  setDtEdicao($dados["dtedicao"]);
+            $objecto->  setDtCriacao(date('d-m-Y', strtotime($dados["dtcriacao"])));
+            $objecto->  setDtEdicao(date('d-m-Y', strtotime($dados["dtedicao"])));
             $objecto->  setIdTipoUtilizador($dados["idtbTipoUtilizador"]);
            
             $users[] =  $objecto;
@@ -229,38 +218,39 @@ class CrudUtilizador extends Conexao {
        return $users;  
     }
 
-
-     # CRINAOD A FUNÇÃO PARA FAZER O SELECT DO UTILIZADOR APARTIR DO ID
-     public function selectById($id) {
+    # CRIANDO A FUNÇÃO PARA DESACTIVAR O UTILIZADOR NO BANCO DE DADOS
+    public function disable($id) {
         $this->connect();
 
-        $query  = "SELECT * FROM verUtilizador WHERE idutilizador = $id;";
-        $result = mysqli_query($this->conexao, $query);
-
-        $users = array();
-        while($dados = mysqli_fetch_assoc($result)) {
-            $objecto =  new Utilizador();
-            $objecto->  setId($dados["idutilizador"]);
-            $objecto->  setNome($dados["nome"]);
-            $objecto->  setEmail($dados["email"]);
-            $objecto->  setTelefone($dados["telefone"]);
-            $objecto->  setTipoUtilizador($dados['TipoUtil']);
-            $objecto->  setSexo($dados['sexo']);
-            $objecto->  setIdSexo($dados["idsexo"]);
-            $objecto->  setDtCriacao($dados["dtcriacao"]);
-            $objecto->  setDtEdicao($dados["dtedicao"]);
-            $objecto->  setIdTipoUtilizador($dados["idtbTipoUtilizador"]);
+        $query = "UPDATE tbutilizador SET idEstado = 2 WHERE idUtilizador = $id";
+        if(mysqli_query($this->conexao, $query)){
+           echo "Correu tudo bem";
+        } else {
+            echo "Não correu tudo bem";
         }
 
-       mysqli_close($this->conexao);
-       return $objecto; 
+        mysqli_close($this->conexao);
+    }
+
+    # CRIANDO A FUNÇÃO PARA ACTIVAR DO UTILIZADOR NO BANCO DE DADOS
+    public function enable($id) {
+        $this->connect();
+
+        $query = "UPDATE tbutilizador SET idEstado = 1 WHERE idUtilizador = $id";
+        if(mysqli_query($this->conexao, $query)){
+            echo "Correu tudo bem";
+        } else {
+            echo "Não correu tudo bem";
+        }
+
+        mysqli_close($this->conexao);
     }
 
     # CRIANDO A FUNÇÃO PARA PESQUISAR UM OU MAIS UTILIZADORES
     public function search($nome) {
         $this->connect();
 
-        $query = "SELECT * FROM tbutilizador WHERE $nome LIKE '%$nome%'";
+        $query = "SELECT * FROM tbutilizador WHERE $nome LIKE '%$nome%' ORDER BY nome;";
         $result = mysqli_query($this->conexao, $query);
 
         $users = array();
@@ -271,8 +261,8 @@ class CrudUtilizador extends Conexao {
             $objecto->  setEmail($dados["email"]);
             $objecto->  setTelefone($dados["telefone"]);
             $objecto->  setSenha($dados["senha"]);
-            $objecto->  setDtCriacao($dados["dtcriacao"]);
-            $objecto->  setDtEdicao($dados["dtEdicao"]);
+            $objecto->  setDtCriacao(date('d-m-Y', strtotime($dados["dtcriacao"])));
+            $objecto->  setDtEdicao(date('d-m-Y', strtotime($dados["dtedicao"])));
             $objecto->  setIdTipoUtilizador($dados["idtbTipoUtilizador"]);
             $objecto->  setIdEstado($dados["idEstado"]);
             $users[] =  $objecto;
@@ -282,4 +272,31 @@ class CrudUtilizador extends Conexao {
         mysqli_close($this->conexao);
        return $users;
     }
+
+     # CRINAOD A FUNÇÃO PARA FAZER O SELECT DO UTILIZADOR APARTIR DO ID
+     public function getById($id) {
+        $this->connect();
+
+        $query  = "SELECT * FROM verUtilizador WHERE idutilizador = $id;";
+        $result = mysqli_query($this->conexao, $query);
+
+        while($dados = mysqli_fetch_assoc($result)) {
+            $objecto =  new Utilizador();
+            $objecto->  setId($dados["idutilizador"]);
+            $objecto->  setNome($dados["nome"]);
+            $objecto->  setEmail($dados["email"]);
+            $objecto->  setTelefone($dados["telefone"]);
+            $objecto->  setTipoUtilizador($dados['TipoUtil']);
+            $objecto->  setSexo($dados['sexo']);
+            $objecto->  setIdSexo($dados["idsexo"]);
+            $objecto->  setDtCriacao($dados["dtcriacao"]);
+            $objecto->  setDtEdicao($dados["dtedicao"]);
+            $objecto->  setIdTipoUtilizador($dados["idtbTipoUtilizador"]);
+        }
+
+        return $objecto; 
+       mysqli_close($this->conexao);
+       
+    }
+
 }

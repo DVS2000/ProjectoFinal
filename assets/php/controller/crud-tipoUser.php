@@ -5,11 +5,15 @@ include_once('conexao.php');
 
 
 class CrudTipoUser extends Conexao {
+
+    function __construct() {
+        # INICIALIZANDO A CONEXÃO
+        parent::connect();
+    }
     
     # FUNÇÃO PARA FAZER O INSERT DO TIPO DE UTILIZADOR
     public function insert(TipoUtilizador $objecto) {
-        $this->connect();
-        # Query
+
         $query = "INSERT INTO tbtipoutilizador(descricao) VALUES('".$objecto->getDescricao()."')";    
         if(mysqli_query($this->conexao, $query)) {
            echo "Correu tudo bem";
@@ -22,8 +26,7 @@ class CrudTipoUser extends Conexao {
 
     # Função para fazer o update
     public function update(TipoUtilizador $objecto) {
-        $this->connect();
-
+  
         #Query  para fazer o update
         $query = "UPDATE tbtipoutilizador SET descricao='".$objecto->getDescricao()."' WHERE idtbTipoUtilizador = ".$objecto->getIdTipoUser().";";
         if(mysqli_query($this->conexao, $query)) {
@@ -38,7 +41,6 @@ class CrudTipoUser extends Conexao {
 
     # Função para fazer o dele
     public function delete($id) {
-        $this->connect();
 
         #Query para eliminar o tipo de user
         $query = "DELETE FROM tbtipoutilizador WHERE idtbTipoUtilizador = $id";
@@ -53,11 +55,12 @@ class CrudTipoUser extends Conexao {
 
     # Função para fazer o select
     public function select($idTipoUtilizador = 11) {
-        $this->connect();
-        $selected = "selected";
-        $query = "SELECT * FROM tbtipoutilizador";
-        if($resultado = mysqli_query($this->conexao, $query)) {
-            while ($dados = mysqli_fetch_array($resultado)) {
+
+        $query = $this->conexao->prepare("SELECT * FROM tbtipoutilizador");
+        if($query->execute()) {
+
+            $resultado    = $query->get_result();
+            while ($dados = $resultado->fetch_array()) {
                 if($dados[0] == $idTipoUtilizador)
                     echo "<option selected value='$dados[0]'>$dados[1]</option>";
                 else

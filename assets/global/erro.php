@@ -6,7 +6,7 @@
         <div class='text-center'>
             <div class='error mx-auto' data-text='$tipoErro'>$tipoErro</div>
             <p class='lead text-gray-800 mb-1' style='text-transform: uppercase'>$descricao</p>
-            <a href='../../index.html'>&larr; Voltar para Página Iniicial</a>
+            <a href='../../index.html'>&larr; Voltar para Página Inicial</a>
         </div>
         ";
     }

@@ -18,6 +18,7 @@ class Candidato {
     private $morada;
     private $idSexo;
     private $sexo;
+    private $senha;
 
 
     # CRIANDO O GET E SET DO ID DO CANDIDATO
@@ -79,4 +80,8 @@ class Candidato {
     # CRIANDO O GET SE O SEXO DO CANDIDATO
     public function getSexo() { return $this->sexo; }
     public function setSexo($sexo) { $this->sexo = $sexo; }
+
+    # CRIANDO O GET E O SET DA SENHA DO CANDIDATO
+    public function getSenha() { return $this->senha; }
+    public function setSenha($senha) { $this->senha = $senha; }
 }

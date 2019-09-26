@@ -28,9 +28,8 @@
   
          <?php
          include_once('../global/erro.php');
-         session_start();
          # APRESENTADO O ERRO
-         Erro::Erros("500", "Ocorreu um erro");
+         Erro::Erros("500", "Ocorreu um erro de conexão, tente mais tarde!");
 
          ?>
 

@@ -37,7 +37,7 @@
                 <div class="sidebar-brand-icon rotate-n-15">
                     <i class="fas fa-laugh-wink"></i>
                 </div>
-                <div class="sidebar-brand-text mx-3">SB Admin</div>
+                <div class="sidebar-brand-text mx-3">JELU</div>
             </a>
 
             <!-- Divider -->
@@ -244,7 +244,7 @@
                                     <div class="p-3 mt-5">
                                         <div class="text-left">
                                             <h1 class="h4 text-gray-900 mb-2 font-weight-bold"
-                                                style="text-transform: uppercase">Todos Cursos Eliminados</h1>
+                                                style="text-transform: uppercase">NACIONALIDADES DESACTIVADAS</h1>
 
                                         </div>
                                         <table class="table table-striped">
@@ -268,11 +268,9 @@
                                                             <td>'.$value->getDescricao().'</td>
                                                             <td>'.$value->getDtCriacao().'</td>
                                                             <td>'.$value->getDtEdicao().'</td>
+                                                            
                                                             <td>
-                                                                <a href="editar.php?id='.$value->getId().'" class="btn btn-outline-secondary"><i class="fas fa-pen"></i></a>
-                                                            </td>
-                                                            <td>
-                                                                <a href="#"  data-toggle="modal" data-target="#delete'.$value->getId().'" class="btn btn-outline-danger"><i class="fas fa-trash-alt"></i></a>
+                                                                <a href="#"  data-toggle="modal" data-target="#delete'.$value->getId().'" class="btn btn-outline-danger"><i class="fas fa-trash-restore-alt"></i></a>
                                                             </td>
                                                         </tr>';
                                                 }

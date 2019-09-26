@@ -6,12 +6,18 @@ include_once('conexao.php');
 
 class CrudSexo extends Conexao {
 
-    public function select($idEstado = 2) {
-        $this->connect();
+    function __construct() {
+        # INICIALIZANDO A CONEXÃO
+        parent::connect();
+    }
 
-        $query = "SELECT * FROM tbSexo";
-        if($resultado = mysqli_query($this->conexao, $query)) {
-            while($dados = mysqli_fetch_array($resultado)) {
+    public function select($idEstado = 2) {
+
+        $query = $this->conexao->prepare("SELECT * FROM tbSexo");
+        if($query->execute()) {
+
+            $resultado   = $query->get_result();
+            while($dados = $resultado->fetch_array()) {
                 if($dados[0] == $idEstado) {
                     echo "<option value='$dados[0]' selected>$dados[1]</option>";
                 } else {

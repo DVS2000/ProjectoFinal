@@ -244,7 +244,7 @@
                                     <div class="p-3 mt-5">
                                         <div class="text-left">
                                             <h1 class="h4 text-gray-900 mb-2 font-weight-bold"
-                                                style="text-transform: uppercase">Todos Cursos</h1>
+                                                style="text-transform: uppercase">Todas NacionalidadeS</h1>
 
                                         </div>
                                         <table class="table table-striped">

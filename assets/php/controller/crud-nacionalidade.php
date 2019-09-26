@@ -3,18 +3,33 @@
 # Incluindo o ficheiro de conexao
 include_once('conexao.php');
 
-# CRIANDO O CRUD DA NACIONALIDADE
 
+
+# CRIANDO O CRUD DA NACIONALIDADE
 class CrudNacionalidade extends Conexao {
+
+    function __construct() {
+        # INICIALIZANDO A CONEXÃO
+        parent::connect();
+    }
+
 
     # CRIANDO A FUNÇÃO PARA FAZER O INSERT DA NACIONALIDADE
     public function insert(Nacionalidade $model) {
-        # Abriando a conexao;
-        $this->connect();
 
-        $query = "SELECT * FROM tbnacionalidade WHERE descricao = '".$model->getDescricao()."';";
-        if($result = mysqli_query($this->conexao, $query)) {
-            if(mysqli_num_rows($result) > 0) {
+
+        $descricao          = $model->getDescricao();
+        $idEstado           = $model->getIdEstado();
+        $dtCriacao          = $model->getDtCriacao();
+        $dtEdicao           = $model->getDtEdicao();
+
+        $query = $conexao->prepare("SELECT * FROM tbNacionalidade WHERE descricao = ?");
+        $query->bind_param('s', $descricao);
+    
+        if($query->execute()) {
+            $query->store_result();
+            if($query->num_rows > 0) {
+
                 echo '<div class="alert alert-danger mt-5 alert-dismissible fade show" role="alert">
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
@@ -25,29 +40,32 @@ class CrudNacionalidade extends Conexao {
                 </div>';
 
             } else {
-                $query = "INSERT INTO tbnacionalidade(descricao, idEstado, dtCriacao, dtEdicao) VALUES('".$model->getDescricao()."',".$model->getIdEstado().", '".$model->getDtCriacao()."', '".$model->getDtEdicao()."');";
-            
-                if(mysqli_query($this->conexao, $query)) {
+
+                $query = $this->conexao->prepare("INSERT INTO tbNacionalidade(descricao, idEstado, dtCriacao, dtEdicao) VALUES(?, ?, ?, ?)");
+                 $query->bind_param('ssss',$descricao, $idEstado, $dtCriacao, $dtEdicao);
+
+                if($query->execute()) {
                     echo '<div class="alert alert-success mt-5 alert-dismissible fade show" role="alert">
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                        <span class="sr-only">Close</span>
+                                        </button>
+                                        <h4 class="alert-heading">'.$descricao.'</h4>
+                                        <p>Foi adicionado com sucesso!</p>
+                                        <p class="mb-0">'.date('d-m-Y H:s').'</p>
+                                    </div>';
+                        } else {
+                            echo '<div class="alert alert-success mt-5 alert-dismissible fade show" role="alert">
                             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                                 <span class="sr-only">Close</span>
                                 </button>
-                                <h4 class="alert-heading">'.$model->getDescricao().'</h4>
-                                <p>Foi adicionado com sucesso!</p>
+                                <h4 class="alert-heading">'.$descricao.'</h4>
+                                <p>Não foi adicionado com sucesso!</p>
                                 <p class="mb-0">'.date('d-m-Y H:s').'</p>
                             </div>';
-                } else {
-                    echo '<div class="alert alert-success mt-5 alert-dismissible fade show" role="alert">
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                        <span class="sr-only">Close</span>
-                        </button>
-                        <h4 class="alert-heading">'.$model->getDescricao().'</h4>
-                        <p>Não foi adicionado com sucesso!</p>
-                        <p class="mb-0">'.date('d-m-Y H:s').'</p>
-                    </div>';
-                }
+                        }
+       
             }
 
         } else {
@@ -62,19 +80,29 @@ class CrudNacionalidade extends Conexao {
 
         }
 
-        # Fechando a conexão
-        mysqli_close($this->conexao);
+        # Fechando o comando
+        $query->close();
+        #Fechando a conexão
+        $this->conexao->close();
     }
 
     # CRIANDO A FUNÇÃO PARA FAZER O UPDATE DA NACIONALIDADE
     public function update(Nacionalidade $model) {
-        # Abrindo a conexão
-        $this->connect();
+
+        $id                 = $model->getId();
+        $descricao          = $model->getDescricao();
+        $idEstado           = $model->getIdEstado();
+        $dtCriacao          = $model->getDtCriacao();
+        $dtEdicao           = $model->getDtEdicao();
 
 
-        $query = "SELECT * FROM tbnacionalidade WHERE descricao = '".$model->getDescricao()."' AND idnacionalidade <> ".$model->getId().";";
-        if($result = mysqli_query($this->conexao, $query)) {
-            if(mysqli_num_rows($result) > 0) {
+        $query = $this->conexao->prepare("SELECT * FROM tbnacionalidade WHERE descricao = ? AND idnacionalidade <> ?");
+        $query->bind_param('ss', $descricao, $id);
+        if($query->execute()) {
+
+            $query->store_result();
+
+            if($query->num_rows > 0) {
                 echo '<div class="alert alert-danger mt-5 alert-dismissible fade show" role="alert">
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
@@ -85,8 +113,9 @@ class CrudNacionalidade extends Conexao {
                 </div>';
 
             } else {
-                $query = "UPDATE tbnacionalidade SET descricao = '".$model->getDescricao()."', idestado = ".$model->getIdEstado().", dtEdicao = '".$model->getDtEdicao()."' WHERE idnacionalidade = ".$model->getId().";";
-                if(mysqli_query($this->conexao, $query)) {
+                $query = $this->conexao->prepare("UPDATE tbnacionalidade SET descricao = ?, idestado = ?, dtEdicao = ? WHERE idnacionalidade = ?");
+                $query->bind_param('ssss', $descricao, $idEstado, $dtEdicao, $id);
+                if($query->execute()) {
                     echo '<div class="alert alert-success mt-5 alert-dismissible fade show" role="alert">
                             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
@@ -121,64 +150,72 @@ class CrudNacionalidade extends Conexao {
 
         }
         
+        # Fechando o comando
+        $query->close();
+        #Fechando a conexão
+        $this->conexao->close();
     } 
 
     # CRIANDO A FUNÇÃO PARA ELIMINAR A NACIONALIDADE
     public function delete($id) {
-        # ABRINDO A CONEXÃO
-        $this->connect();
 
-        $query = "DELETE FROM tbNacionalidade WHERE idNacionalidade = $id";
-        if(mysqli_query($this->conexao, $query)) {
+        $query = $this->conexao->prepare("DELETE FROM tbNacionalidade WHERE idNacionalidade = ?");
+        $query->bind_param('s', $id);
+        if($query->execute()) {
             echo "Correu tudo bem";
         } else {
             echo "Não correu tudo bem";
         }
 
-        # FECHANDO A CONEXÃO
-        mysqli_close($this->conexao);
+        # Fechando o comando
+        $query->close();
+        #Fechando a conexão
+        $this->conexao->close();
     }
 
     # CRIANDO A FUNÇÃO PARA LISTAR TODAS NACIONALIDADE
     public function select() {
-        # Abrindom a conexao
-        $this->connect();
 
-        $query     = "SELECT * FROM tbnacionalidade WHERE idestado <> 2";
-        $result    = mysqli_query($this->conexao, $query);
+        $query     = $this->conexao->prepare("SELECT * FROM tbnacionalidade WHERE idestado <> 2");
+        $query     ->execute();
+        $result    = $query->get_result();
         $nacional  = array();
 
-        while($dados = mysqli_fetch_assoc($result)) {
+        while($dados = $result->fetch_assoc()) {
             $objecto = new Nacionalidade();
             $objecto->      setId($dados["idnacionalidade"]);
             $objecto->      setDescricao($dados["descricao"]);
             $objecto->      setIdEstado($dados["idestado"]);
-            $objecto->      setDtCriacao($dados["dtCriacao"]);
-            $objecto->      setDtEdicao($dados["dtEdicao"]);
+            $objecto->      setDtCriacao(date('d-m-Y',strtotime($dados["dtCriacao"])));
+            $objecto->      setDtEdicao(date('d-m-Y',strtotime($dados["dtEdicao"])));
             $nacional[] = $objecto;
         }
 
         return $nacional;
+
+        # Fechando o comando
+        $query->close();
+        #Fechando a conexão
+        $this->conexao->close();
     }
 
      /* ===========FUNÇÕES ADICIONAL =========== */
 
     # CRIANDO A FUNÇÃO PARA LISTAR TODAS NACIONALIDADE
     public function selectDesactivado() {
-        # Abrindom a conexao
-        $this->connect();
 
-        $query     = "SELECT * FROM tbnacionalidade WHERE idestado = 2";
-        $result    = mysqli_query($this->conexao, $query);
+        $query     = $this->conexao->prepare("SELECT * FROM tbnacionalidade WHERE idestado = 2");
+        $query     ->execute();
+        $result    = $query->get_result();
         $nacional  = array();
 
-        while($dados = mysqli_fetch_assoc($result)) {
+        while($dados = $result->fetch_assoc()) {
             $objecto = new Nacionalidade();
             $objecto->      setId($dados["idnacionalidade"]);
             $objecto->      setDescricao($dados["descricao"]);
             $objecto->      setIdEstado($dados["idestado"]);
-            $objecto->      setDtCriacao($dados["dtCriacao"]);
-            $objecto->      setDtEdicao($dados["dtEdicao"]);
+            $objecto->      setDtCriacao(date('d-m-Y',strtotime($dados["dtCriacao"])));
+            $objecto->      setDtEdicao(date('d-m-Y',strtotime($dados["dtEdicao"])));
             $nacional[] = $objecto;
         }
 
@@ -187,38 +224,49 @@ class CrudNacionalidade extends Conexao {
 
     # CRIANDO A FUNÇÃO PARA Activar A NACIONALIDADE
     public function enable($id) {
-        # Abrindo a conexão
-        $this->connect();
-        $query = "UPDATE tbnacionalidade SET idestado = 1 WHERE idnacionalidade = $id;";
-        if(mysqli_query($this->conexao, $query)) {
+
+
+        $query = $this->conexao->prepare("UPDATE tbnacionalidade SET idestado = 1 WHERE idnacionalidade = ?");
+        $query->bind_param('s', $id);
+        if($query->execute()) {
             echo "Correu tudo bem";
         } else {
             echo "Não correu tudo bem";
         }
+
+        # Fechando o comando
+        $query->close();
+        #Fechando a conexão
+        $this->conexao->close();
     }
     
     # CRIANDO A FUNÇÃO PARA DESABLITAR A NACIONALIDADE
     public function disable($id) {
-        # Abrindo a conexão
-        $this->connect();
-        $query = "UPDATE tbnacionalidade SET idestado = 2 WHERE idnacionalidade = $id;";
-        if(mysqli_query($this->conexao, $query)) {
+
+
+        $query = $this->conexao->prepare("UPDATE tbnacionalidade SET idestado = 2 WHERE idnacionalidade = ?");
+        $query->bind_param('s', $id);
+        if($query->execute()) {
             echo "Correu tudo bem";
         } else {
             echo "Não correu tudo bem";
         }
+
+        # Fechando o comando
+        $query->close();
+        #Fechando a conexão
+        $this->conexao->close();
     } 
 
      # CRIANDO A FUNÇÃO PARA LISTAR TODAS NACIONALIDADE
-     public function serach($descricao) {
-        # Abrindom a conexao
-        $this->connect();
+     public function search($descricao) {
 
-        $query     = "SELECT * FROM tbnacionalidade WHERE descricao LIKE '%$descricao%' ORDER BY descricao;";
-        $result    = mysqli_query($this->conexao, $query);
+        $query     = $this->conexao->prepare("SELECT * FROM tbnacionalidade WHERE descricao LIKE '%$descricao%' ORDER BY descricao");
+        $query     ->execute();
+        $result    = $query->get_result();
         $nacional  = array();
 
-        while($dados = mysqli_fetch_assoc($result)) {
+        while($dados = $result->fecth_assoc()) {
             $objecto = new Nacionalidade();
             $objecto->      setId($dados["idnacionalidade"]);
             $objecto->      setDescricao($dados["descricao"]);
@@ -233,14 +281,14 @@ class CrudNacionalidade extends Conexao {
 
     # CRIANDO A FUNÇÃO PARA LISTAR NACIONALIDADE PELO ID
     public function getById($id) {
-        # Abrindom a conexao
-        $this->connect();
 
-        $query     = "SELECT * FROM tbnacionalidade WHERE idnacionalidade = $id;";
-        $result    = mysqli_query($this->conexao, $query);
+
+        $query     = $this->conexao->prepare("SELECT * FROM tbnacionalidade WHERE idnacionalidade = $id");
+        $query     ->execute();
+        $result    = $query->get_result();
 
         $objecto   = new Nacionalidade();
-        while($dados = mysqli_fetch_assoc($result)) {
+        while($dados = $result->fetch_assoc()) {
             $objecto->      setId($dados["idnacionalidade"]);
             $objecto->      setDescricao($dados["descricao"]);
             $objecto->      setIdEstado($dados["idestado"]);

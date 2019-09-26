@@ -1,8 +1,6 @@
 <?php
 
 
-//include_once('../../global/erro.php');
-//session_start();
 
 class Conexao {
 
@@ -11,19 +9,21 @@ class Conexao {
     const USERNAME   = "root";
     const PASSWORD   = "";
     const DBNAME     = "bdjelu";
+
+
    
     # Variavel de Conexão
-    var $conexao;
-    
-     public function connect() {
+     protected $conexao;
 
-        $this->conexao = mysqli_connect(self::SERVERNAME, self::USERNAME, self::PASSWORD, self::DBNAME);
-        mysqli_set_charset($this->conexao, "UTF8");
+     function connect() {
+       $this->conexao = new mysqli(self::SERVERNAME, self::USERNAME, self::PASSWORD, self::DBNAME);
+       $this->conexao->set_charset('UTF8');
 
-        if(mysqli_connect_error()) {
-            $_SESSION['tipoErro']   = "500";
-            $_SESSION['descricao']  = "Ocorreu um erro na conexão com o Banco de Dados, tente mais tarde.Obrigado";
-            header('Location: ../../dashboard/404.php');
-       } 
-     }    
+        if(mysqli_connect_errno()) {
+          header('Location: ../../dashboard/404.php');
+        }
+
+        return true;
+     }
 }
+

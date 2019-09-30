@@ -5,7 +5,7 @@
 
  - Vamos começar a trabalhar no layout da página
  - A seguir será o BackEnd do WebSite com php
- - E no finalde tudo vamos fazer algumas validação.
+ - E no final de tudo vamos fazer algumas validação.
  
  
  ## Este é a UI que vamos usar

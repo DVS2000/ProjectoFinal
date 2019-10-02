@@ -1,3 +1,36 @@
+<?php
+
+include_once('../model/utilizador.php');
+include_once('../controller/crud-utilizador.php'); 
+
+session_start();
+
+if(isset($_SESSION['idUtlizador'])) {
+
+    $id     = $_SESSION['idUtilizador'];
+    $select = new CrudUtilizador();
+    $user   = $select->getById($id);
+
+
+} else if(isset($_COOKIE['idUtilizador'])) {
+
+    $_SESSION['idUtilizador']   = $_COOKIE['idUtilizador'];
+    $id                         = $_SESSION['idUtilizador'];
+    $select                     = new CrudUtilizador();
+    $user                       = $select->getById($id);
+
+} else {
+  header('Location: login.php');
+}
+
+
+
+?>
+
+
+
+
+
 <!DOCTYPE html>
 <html lang="pt-pt">
 
@@ -69,34 +102,44 @@
         </div>
       </li>
 
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilizador">
-          <i class="fas fa-users fa-cog"></i>
-          <span>Utilizador</span>
-        </a>
-        <div id="collapseUtilizador" class="collapse" aria-labelledby="headingTwo" data-parent="#meuSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">         
-            <a class="collapse-item" href="utilizador/">Novo</a>
-            <a class="collapse-item" href="utilizador/vertodos.php">Ver Todos</a>
-            <a class="collapse-item" href="utilizador/reciclagem.php">Desactivados</a>
+      <?php
+
+        if($user->getIdTipoUtilizador() == 11) {
+          echo '<li class="nav-item">
+          <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilizador">
+            <i class="fas fa-users fa-cog"></i>
+            <span>Utilizador</span>
+          </a>
+          <div id="collapseUtilizador" class="collapse" aria-labelledby="headingTwo" data-parent="#meuSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">         
+              <a class="collapse-item" href="utilizador/">Novo</a>
+              <a class="collapse-item" href="utilizador/vertodos.php">Ver Todos</a>
+              <a class="collapse-item" href="utilizador/reciclagem.php">Desactivados</a>
+            </div>
           </div>
-        </div>
-      </li>
+        </li>
+
+          <li class="nav-item">
+          <a href="#" class="nav-link collapsed" data-toggle="collapse" data-target="#collapseCurso">
+            <i class="fa fa-book" aria-hidden="true"></i>
+            <span>Curso</span>
+          </a>
+          <div id="collapseCurso" class="collapse" aria-labelledby="headingTwo" data-parent="#meuSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">         
+              <a class="collapse-item" href="curso/">Novo</a>
+              <a class="collapse-item" href="curso/vertodos.php">Ver Todos</a>
+              <a class="collapse-item" href="curso/reciclagem.php">Desactivados</a>
+            </div>
+          </div>
+        </li>';
+
+        }
 
 
-      <li class="nav-item">
-        <a href="#" class="nav-link collapsed" data-toggle="collapse" data-target="#collapseCurso">
-          <i class="fa fa-book" aria-hidden="true"></i>
-          <span>Curso</span>
-        </a>
-        <div id="collapseCurso" class="collapse" aria-labelledby="headingTwo" data-parent="#meuSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">         
-            <a class="collapse-item" href="curso/">Novo</a>
-            <a class="collapse-item" href="curso/vertodos.php">Ver Todos</a>
-            <a class="collapse-item" href="curso/reciclagem.php">Desactivados</a>
-          </div>
-        </div>
-      </li>
+      ?>
+
+
+     
 
      
 
@@ -161,17 +204,14 @@
             <div class="topbar-divider d-none d-sm-block"></div>
             <li class="nav-item dropdown no-arrow">
               <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Dorivaldo dos Santos</span>
-                <img class="img-profile rounded-circle" src="../imgs/avatar.jpeg">
+              <button class="btn btn-primary rounded-circle"><?php echo substr($user->getNome(), 0,1) ?></button>
+                <span class="ml-2 d-none d-lg-inline text-gray-600 small"><?php echo $user->getNome() ?></span>
               </a>
               <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                <a class="dropdown-item" href="#">
+              <button class="dropdown-item" onClick='<?php echo 'window.location.replace("http://localhost/ProjectoFinal/view/utilizador/editar.php?id='.$user->getId().'")'; ?>'>
                   <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                   Editar Perfil
-                </a>
-                <a class="dropdown-item" href="#">
-                  <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-                </a>
+                </button>
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
                   <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>

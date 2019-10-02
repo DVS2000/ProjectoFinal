@@ -45,7 +45,3 @@ class RelatorioCandidato extends Conexao {
         }
     }
 }
-
-
-$update = new RelatorioCandidato();
-$update->UpdateRelatorio();

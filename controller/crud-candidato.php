@@ -310,7 +310,7 @@ class CrudCandidato extends Conexao {
             $result      = $query->get_result();
             while($dados = $result->fetch_assoc()) {
                
-                $candidato-> setId($dados["idcandidato"]);
+                $candidato-> setId($dados["idCandidato"]);
                 $candidato-> setNome($dados["nome"]);
                 $candidato-> setBi($dados["bi"]);
                 $candidato-> setEmail($dados["email"]);
@@ -328,6 +328,50 @@ class CrudCandidato extends Conexao {
         }
 
         return $candidato;
+
+         # FECHANDO O COMANDO;
+         $query->close();
+         #FECHANDO A CONEXÃO
+         $this->conexao->close();
+    }
+
+
+    # CRIANDO A FUNÇÃO PARA FAZER O LOGIN
+    public function login(Candidato $model) {
+
+        $email     = $model->getEmail();
+        $telefone  = $model->getTelefone();
+        $senha     = $model->getSenha();
+
+        $query = $this->conexao->prepare("SELECT * FROM verCandidato WHERE email = ? AND senha = ? OR telefone = ? AND senha = ? ");
+        $query     ->bind_param('ssss', $email, $senha, $telefone, $senha);
+        if($query->execute()) {
+            
+            $result      = $query->get_result();
+
+            $dados = $result->fetch_assoc();
+            $candidato = new Candidato();
+                    $candidato-> setId($dados["idCandidato"]);
+                    $candidato-> setNome($dados["nome"]);
+                    $candidato-> setBi($dados["bi"]);
+                    $candidato-> setEmail($dados["email"]);
+                    $candidato-> setTelefone($dados["telefone"]);
+                    $candidato-> setDtNasc($dados["dtNasc"]);
+                    $candidato-> setIdNacionalidade($dados["idnacionalidade"]);
+                    $candidato-> setNacionalidade($dados["nacionalidade"]);
+                    $candidato-> setIdEstado($dados["idestado"]);
+                    $candidato-> setDtCriacao(date('d-m-Y', strtotime($dados["dtCriacao"])));
+                    $candidato-> setDtEdicao(date('d-m-Y',strtotime($dados["dtEdicao"])));
+                    $candidato-> setNomeMae($dados["nomemae"]);
+                    $candidato-> setNomePai($dados["nomepai"]);
+                    $candidato-> setMorada($dados["morada"]);
+                    $candidato-> setSenha($dados["senha"]);
+            
+                return $candidato;
+            
+        }
+
+        
 
          # FECHANDO O COMANDO;
          $query->close();

@@ -31,110 +31,143 @@ if(isset($_GET['id'])) {
 
 
 
-        <?php
+<?php
 
         include_once('../includes/header-sub.php');
 
         ?>
-                <div class="container-fluid">
+<div class="container-fluid">
 
-                    <div class="card o-hidden border-0 shadow-lg my-1">
-                        <div class="card-body p-0">
-                            <!-- Nested Row within Card Body -->
-                            <div class="row">
-                                <div class="col-lg-12">
-                                    <div class="p-5">
-                                        <div class="text-left">
-                                            <h1 class="h4 text-gray-900 mb-2 font-weight-bold"
-                                                style="text-transform: uppercase">Editar
-                                                utilizador</h1>
-                                            <hr>
-                                        </div>
-                                        <form class="user" method="POST">
-                                            <div class="form-group row">
-                                                <div class="col-sm-6 mb-3 mb-sm-0">
-                                                    <label for="nome">Nome</label>
-                                                    <input type="text" class="form-control " id="nome"
-                                                        placeholder="Nome" required="required" name="nome" value="<?php echo $user->getNome(); ?>">
-                                                </div>
-                                                <div class="col-sm-6">
-                                                    <label for="email">Email</label>
-                                                    <input type="email" class="form-control" id="email"
-                                                        placeholder="Email" required="required" name="email" value="<?php echo $user->getEmail(); ?>">
-                                                </div>
-                                            </div>
-                                            <div class="form-group row">
+    <div class="card o-hidden border-0 shadow-lg my-1">
+        <div class="card-body p-0">
+            <!-- Nested Row within Card Body -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="p-5">
+                        <div class="text-left">
+                            <h1 class="h4 text-gray-900 mb-2 font-weight-bold" style="text-transform: uppercase">Editar
+                                utilizador</h1>
+                            <hr>
+                        </div>
+                        <form class="user" method="POST">
+                            <div class="form-group row">
+                                <div class="col-sm-6 mb-3 mb-sm-0">
+                                    <label for="nome">Nome</label>
+                                    <input type="text" class="form-control " id="nome" placeholder="Nome"
+                                        required="required" name="nome" value="<?php echo $user->getNome(); ?>">
+                                </div>
+                                <div class="col-sm-6">
+                                    <label for="email">Email</label>
+                                    <input type="email" class="form-control" id="email" placeholder="Email"
+                                        required="required" name="email" value="<?php echo $user->getEmail(); ?>">
+                                </div>
+                            </div>
+                            <div class="form-group row">
 
-                                                <div class="col-sm-6 mb-3 mb-sm-0">
-                                                    <div class="form-group">
-                                                        <label for="telefone">Telefone</label>
-                                                        <input type="tel" class="form-control" id="telefone"
-                                                            placeholder="Telefone" required="required" name="telefone" value="<?php echo $user->getTelefone(); ?>">
-                                                    </div>
-                                                </div>
+                                <div class="<?php echo $user->getIdTipoUtilizador() != 11 ? 'col-sm-3 mb-3 mb-sm-0' : 'col-sm-6 mb-3 mb-sm-0' ?>">
+                                    <div class="form-group">
+                                        <label for="telefone">Telefone</label>
+                                        <input type="tel" class="form-control" id="telefone" placeholder="Telefone"
+                                            required="required" name="telefone"
+                                            value="<?php echo $user->getTelefone(); ?>">
+                                    </div>
+                                </div>
 
-                                                <div class="col-sm-3 mb-3 mb-sm-0">
-                                                    <label for="senha">Senha</label>
-                                                    <input type="password" class="form-control" id="senha"
-                                                        placeholder="Senha" required="required" name="senha">
-                                                </div>
+                                    <?php 
 
-                                                <div class="col-sm-3 mb-3 mb-sm-0">
-                                                    <label for="confsenha">Confirmar senha</label>
-                                                    <input type="password" class="form-control" id="confsenha"
-                                                        placeholder="Confirmar senha" required="required"
-                                                        name="confsenha">
-                                                </div>
-                                            </div>
-                                            <div class="form-group row">
+                                    include_once('../../controller/crud-sexo.php');
+                                    $select = new CrudSexo();
 
-                                                <div class="col-sm-3 mb-3 mb-sm-0 ">
-                                                    <label>Sexo</label>
-                                                    <select class="custom-select" required="required" name="sexo">
-                                                    <?php 
+                                    if($user->getIdTipoUtilizador() != 11) {
+                                        echo '<div class="col-sm-3 mb-3 mb-sm-0 ">
+                                        <label>Sexo</label>
+                                        <select class="custom-select" required="required" name="sexo">';
+                                        $select->select($user->getIdSexo());
+                                        echo ' </select>
+                                        </div>';
+                                    }
+
+                                    ?>
+
+                                <div class="col-sm-3 mb-3 mb-sm-0">
+                                    <label for="senha">Senha</label>
+                                    <input type="password" class="form-control" id="senha" placeholder="Senha"
+                                        required="required" name="senha">
+                                </div>
+
+                                <div class="col-sm-3 mb-3 mb-sm-0">
+                                    <label for="confsenha">Confirmar senha</label>
+                                    <input type="password" class="form-control" id="confsenha"
+                                        placeholder="Confirmar senha" required="required" name="confsenha">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+
+                                
+                                                     <?php 
 
                                                         include_once('../../controller/crud-sexo.php');
                                                         $select = new CrudSexo();
-                                                        $select->select($user->getIdSexo());
+
+                                                        if($user->getIdTipoUtilizador() == 11) {
+                                                            echo '<div class="col-sm-3 mb-3 mb-sm-0 ">
+                                                            <label>Sexo</label>
+                                                            <select class="custom-select" required="required" name="sexo">';
+                                                            $select->select($user->getIdSexo());
+                                                            echo ' </select>
+                                                            </div>';
+                                                        }
+                                                       
                                                      ?>
-                                                    </select>
-                                                </div>
-                                                <div class="col-sm-3 mb-3 mb-sm-0 ">
-                                                    <label>Estado</label>
-                                                    <select class="custom-select" required="required" name="estado">
-                                                        <?php
+                                   
+
+                                                      <?php
 
                                                         include_once('../../controller/crud-estado.php');
                                                         $select = new CrudEstado();
-                                                        $select->select($user->getIdEstado());
+                                                        
+
+                                                      if($user->getIdTipoUtilizador() == 11) {
+                                                          echo '<div class="col-sm-3 mb-3 mb-sm-0 ">
+                                                                  <label>Estado</label>
+                                                                    <select class="custom-select" required="required" name="estado">';
+                                                                    $select->select($user->getIdEstado());
+                                                             echo ' </select>
+                                                                 </div>';
+                                                      }
 
                                                         ?>
-                                                    </select>
-                                                </div>
 
 
-                                                <div class="col-sm-6 mb-3 mb-sm-0 ">
-                                                    <label>Tipo de utilizador</label>
 
-                                                    <select class="custom-select" required name="tipoutilizador">
-                                                        <?php
+
+                                                         <?php
 
                                                           include_once('../../controller/crud-tipoUser.php');
                                                           $select = new CrudTipoUser();
-                                                          $select->select($user->getIdTipoUtilizador());
-                                                        
+
+                                                          if($user->getIdTipoUtilizador() == 11) {
+                                                                echo '<div class="col-sm-6 mb-3 mb-sm-0 ">
+                                                                <label>Tipo de utilizador</label>
+            
+                                                                <select class="custom-select" required name="tipoutilizador">';
+                                                                    $select->select($user->getIdTipoUtilizador());
+                                                                
+                                                                echo '</select> </div>';
+                                                            
+                                                          } 
+
                                                         ?>
-                                                    </select>
-                                                </div>
 
 
-                                            </div>
-                                            <button class="btn btn-primary" name="editar">
-                                                EDITAR
-                                            </button>
+
+                            </div>
+                            <button class="btn btn-primary" name="editar">
+                                EDITAR
+                            </button>
 
 
-                                            <?php
+                            <?php
                                             include_once('../../model/utilizador.php');
                                             include_once('../../controller/crud-utilizador.php');
 
@@ -171,15 +204,15 @@ if(isset($_GET['id'])) {
                                           }
                                           ?>
 
-                                        </form>
+                        </form>
 
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
 
-     <?php
+    <?php
      include_once('../includes/footer-sub.php');
     ?>

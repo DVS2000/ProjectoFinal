@@ -26,7 +26,7 @@
         <div class="modal-body">Tens certeza que deseja terminar sessão da tua conta ?</div>
         <div class="modal-footer">
           <button class="btn btn-secondary" type="button" data-dismiss="modal">Não</button>
-          <a class="btn btn-primary" href="login.html">Sim</a>
+          <a class="btn btn-primary" href="../../Util/logoutAdmin.php">Sim</a>
         </div>
       </div>
     </div>

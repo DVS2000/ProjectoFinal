@@ -11,7 +11,25 @@ include_once('Util/clear-var.php');
 
 include_once('controller/relatorio-candidato.php');
 
+
+session_start();
+
 $status = 0;
+$dados = new Candidato();
+
+    if(isset($_SESSION['idCandidato'])) {
+
+        $idCandidato = $_SESSION['idCandidato'];
+        $getCand   = new CrudCandidato();
+        $dados = $getCand->getById($idCandidato);
+        $_SESSION['idCandidato'] = $dados->getId();
+
+    } else if(isset($_COOKIE['idCandidato'])) {
+
+        $idCandidato = $_COOKIE['idCandidato'];
+        $getCand   = new CrudCandidato();
+        $dados = $getCand->getById($idCandidato);
+    }
 
 if(isset($_POST['criarConta'])) {
 
@@ -66,7 +84,34 @@ if(isset($_POST['criarConta'])) {
 
     }
 
-}
+
+    } else if(isset($_POST['entrar'])) {
+        
+        $clear = new Clear();
+
+        $telefone           = $clear->int('telEmail');
+        $email              = $clear->email('telEmail');
+        $senha              = md5($clear->specialChars('senha'));
+
+        $candidato = new Candidato();
+        $candidato->setTelefone($telefone);
+        $candidato->setEmail($email);
+        $candidato->setSenha($senha);
+
+        $login = new CrudCandidato();
+        $cand = $login->login($candidato);
+
+        if($cand->getid() == null) {
+            echo "Não tens acesso";
+        } else {
+            $dados = $login->getById($cand->getId());
+            setcookie('idCandidato', $dados->getId(), time() + 3600);
+            $_SESSION['idCandidato'] = $dados->getId();
+
+        }
+
+
+} 
 
 
 ?>
@@ -76,22 +121,23 @@ if(isset($_POST['criarConta'])) {
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="src/bootstrap/css/bootstrap.min.css">
-    <link href="sr/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="src/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link href="src/css/sb-admin-2.min.css" rel="stylesheet">
     <link href="src/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+
     <link
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
         rel="stylesheet">
 
     <link rel="stylesheet" href="src/style/style.css">
-    <link rel="stylesheet" href="src/assets/style/animate.css">
+    <link rel="stylesheet" href="src/style/animate.css">
     <title>Escola de Condução</title>
 </head>
 
 <body data-spy="scroll" data-target=".navbar" data-offset="6">
+
+
     <?php
 
 
@@ -136,7 +182,26 @@ if(isset($_POST['criarConta'])) {
                 </button>
                 <h3>Tens que ter no mínimo 18 de idade.</h3>
             </div>';
+
+    } else if(isset($_GET['sucesso']) && $_GET['sucesso'] == "true") {
+        echo '<div class="alert alert-success alert-dismissible fade show" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    <span class="sr-only">Close</span>
+                </button>
+                <h3>Inscrição efectuado com sucesso.</h3>
+            </div>';
+    } else if(isset($_GET['sucesso']) && $_GET['sucesso'] == "false") {
+
+        echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    <span class="sr-only">Close</span>
+                </button>
+                <h3>Inscrição não foi efectuado com sucesso.</h3>
+            </div>';
     }
+
 
 
 
@@ -172,14 +237,41 @@ if(isset($_POST['criarConta'])) {
                 </ul>
 
                 <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a data-toggle="modal" data-target="#loginModal" class="nav-link mybtn py-0 mt-2 mr-2"
-                            style="cursor: pointer">Entrar</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link mybtn2 py-0 mt-2" style="cursor: pointer" data-toggle="modal"
-                            data-target="#criarConta">Criar Conta</a>
-                    </li>
+                    <?php 
+                        if($dados->getid() == null) {
+                            echo '<li class="nav-item">
+                                    <a data-toggle="modal" data-target="#loginModal" class="nav-link mybtn py-0 mt-2 mr-2"
+                                        style="cursor: pointer">Entrar</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link mybtn2 py-0 mt-2" style="cursor: pointer" data-toggle="modal"
+                                        data-target="#criarConta">Criar Conta</a>
+                                </li>';
+                        } else {
+                            echo ' <div class="topbar-divider d-none d-sm-block"></div>
+                            <li class="nav-item dropdown no-arrow">
+                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <button class="btn btn-primary btn-circle">
+                                    <h4>'.substr($dados->getNome(), 0,1).'</h4>
+                                </button>   
+                            <span class="ml-2  text-gray-600 small">'.$dados->getNome().'</span>
+                                
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+                                <a class="dropdown-item" href="#">
+                                <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                                Editar Perfil
+                                </a>
+                                
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                                <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                Terminar sessão
+                                </a>
+                                </div>';
+                        }
+                   ?>
+
                 </ul>
             </div>
         </div>
@@ -259,23 +351,13 @@ if(isset($_POST['criarConta'])) {
         <!--AQUI TEMOS OS INDICADORES DO CAROUSEL-->
         <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
             <span aria-hidden="true">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-                    <title>ic_chevron_left_24px</title>
-                    <g fill="#ffffff">
-                        <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"></path>
-                    </g>
-                </svg>
+                <i class="fa fa-chevron-left" aria-hidden="true"></i>
             </span>
             <span class="sr-only">Previous</span>
         </a>
         <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
             <span aria-hidden="true">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-                    <title>ic_chevron_right_24px</title>
-                    <g fill="#ffffff">
-                        <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path>
-                    </g>
-                </svg>
+                <i class="fa fa-chevron-right" aria-hidden="true"></i>
             </span>
             <span class="sr-only">Next</span>
         </a>
@@ -305,104 +387,55 @@ if(isset($_POST['criarConta'])) {
     </div>
 
     <!---====================== AQUI AONDE FICAM OS CURSOS ==========================--->
-    <div class="teste" id="curso"></div>
+    <div id="curso"></div>
+
+
     <div class="mb-5 animated wow fadeInUp" data-wow-delay=".2s"
         style="visibility: visible;-webkit-animation-delay: .4s; -moz-animation-delay: .4s; animation-delay: .4s;">
         <div class="container mt-40 mb-5">
             <h3 class="text-left mytitle">CURSOS DE ALTA QUALIDADE</h3>
             <div class="row mt-30">
-                <div class="col-md-4 col-sm-6">
-                    <div class="box3">
-                        <img src="assets/imgs/img-3.jpg">
-                        <div class="box-content">
-                            <h3 class="title">DORIVALDO</h3>
-                            <p class="description">
-                                Lorem ipsum dolor sit amet, consectetur adipisicing elit. A ad adipisci pariatur qui.
-                            </p>
 
-                            <a data-toggle="modal" data-target="#loginModal" class="btn btn-outline-primary"
-                                style="cursor: pointer;">SABER MAIS</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4 col-sm-6">
-                    <div class="box3">
-                        <img src="assets/imgs/img-3.jpg">
-                        <div class="box-content">
-                            <h3 class="title">Kristiana</h3>
-                            <p class="description">
-                                Lorem ipsum dolor sit amet, consectetur adipisicing elit. A ad adipisci pariatur qui.
-                            </p>
-                            <button class="btn btn-outline-primary">
-                                SABER MAIS
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4 col-sm-6">
-                    <div class="box3">
-                        <img src="assets/imgs/img-3.jpg">
-                        <div class="box-content">
-                            <h3 class="title">Kristiana</h3>
-                            <p class="description">
-                                Lorem ipsum dolor sit amet, consectetur adipisicing elit. A ad adipisci pariatur qui.
-                            </p>
-                            <button class="btn btn-outline-primary">
-                                SABER MAIS
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+                <?php
 
-        <div class="container mt-40">
-            <h3 class="text-center">NOSSOS SERVIÇOS</h3>
-            <hr>
-            <div class="row mt-30">
-                <div class="col-md-4 col-sm-6">
-                    <div class="box3">
-                        <img src="assets/imgs/img-3.jpg">
-                        <div class="box-content">
-                            <h3 class="title">DORIVALDO</h3>
-                            <p class="description">
-                                Lorem ipsum dolor sit amet, consectetur adipisicing elit. A ad adipisci pariatur qui.
-                            </p>
-                            <button class="btn btn-outline-primary">
-                                SABER MAIS
-                            </button>
+                    include_once('model/curso.php');
+                    include_once('controller/crud-curso.php');
+                    $select = new CrudCurso();
 
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4 col-sm-6">
-                    <div class="box3">
-                        <img src="assets/imgs/img-3.jpg">
-                        <div class="box-content">
-                            <h3 class="title">Kristiana</h3>
-                            <p class="description">
-                                Lorem ipsum dolor sit amet, consectetur adipisicing elit. A ad adipisci pariatur qui.
-                            </p>
-                            <button class="btn btn-outline-primary">
-                                SABER MAIS
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4 col-sm-6">
-                    <div class="box3">
-                        <img src="http://bestjquery.com/tutorial/hover-effect/demo169/images/img-3.jpg">
-                        <div class="box-content">
-                            <h3 class="title">Kristiana</h3>
-                            <p class="description">
-                                Lorem ipsum dolor sit amet, consectetur adipisicing elit. A ad adipisci pariatur qui.
-                            </p>
-                            <button class="btn btn-outline-primary">
-                                SABER MAIS
-                            </button>
-                        </div>
-                    </div>
-                </div>
+                    $curso = $select->select();
+
+                    foreach ($curso as $key => $value) {
+                        echo "<div class='col-md-4 col-sm-6'>
+                                <div class='box3'>
+                                    <img src='src/imgs/".$value->getId().".jpg'>
+                                    <div class='box-content'>
+                                        <h3 class='title'>".$value->getDescricao()."</h3>
+                                        <h4 class='text-white'>
+                                            ".$value->getPreco()."Kzs
+                                        </h4>
+                                        <div class='row d-flex justify-content-center mb-2'>
+                                        <button class='btn btn-outline-primary mr-2' data-toggle='modal' data-target='#requisitos".$value->getId()."'>
+                                            <i class='fa fa-eye' aria-hidden='true'></i>
+                                            Requisitos
+                                        </button> 
+
+                                        <button class='btn btn-outline-primary' data-toggle='modal' data-target='#plano".$value->getId()."'>
+                                            <i class='fa fa-book' aria-hidden='true'></i>
+                                            Plano de aula
+                                        </button> 
+                                        </div>";
+                                        if($dados->getId() != null)  {
+                                            echo "<button class='btn btn-outline-primary' data-toggle='modal' data-target='#inscrever".$value->getId()."'>
+                                                INSCREVER-SE
+                                            </button> ";
+                                            }
+                                        
+                                    echo "</div>
+                                    </div>
+                                </div>";
+                    }
+                    ?>
+
             </div>
         </div>
     </div>
@@ -415,18 +448,7 @@ if(isset($_POST['criarConta'])) {
                 <div class="row mt-3">
                     <div class="col-sm-4">
                         <div class="card p-2">
-                            <svg class="svg" xmlns="http://www.w3.org/2000/svg" width="64" height="64"
-                                viewBox="0 0 64 64">
-                                <title>gift-2</title>
-                                <g fill="#ffc107">
-                                    <path data-color="color-2"
-                                        d="M62,13H48.889C50.19,11.728,51,9.958,51,8c0-3.859-3.14-7-7-7 c-6.807,0-10.432,6.225-12,9.981C30.432,7.225,26.807,1,20,1c-3.86,0-7,3.141-7,7c0,1.958,0.81,3.728,2.111,5H2 c-0.552,0-1,0.447-1,1v8c0,0.553,0.448,1,1,1h60c0.552,0,1-0.447,1-1v-8C63,13.447,62.552,13,62,13z M44,3c2.757,0,5,2.243,5,5 s-2.243,5-5,5H33.371C34.423,10.067,37.621,3,44,3z M15,8c0-2.757,2.243-5,5-5c6.364,0,9.57,7.066,10.626,10H20 C17.243,13,15,10.757,15,8z">
-                                    </path>
-                                    <path fill="#ffc107" d="M57,25H36v36h17c2.209,0,4-1.791,4-4V25z"></path>
-                                    <path fill="#ffc107" d="M28,25H7v32c0,2.209,1.791,4,4,4h17V25z"></path>
-                                </g>
-                            </svg>
-                            <hr>
+
                             <p class="text-justify">
                                 Ao longo da sua vida a escola manteve o seu foco nas necessidades dos emigrantes tendo
                                 sido igualmente adaptada e melhorada para o público nacional. A Escola de Condução ‘do
@@ -437,18 +459,7 @@ if(isset($_POST['criarConta'])) {
                     </div>
                     <div class="col-sm-4">
                         <div class="card p-2">
-                            <svg class="svg" xmlns="http://www.w3.org/2000/svg" width="64" height="64"
-                                viewBox="0 0 64 64">
-                                <title>gift-2</title>
-                                <g fill="#ffc107">
-                                    <path data-color="color-2"
-                                        d="M62,13H48.889C50.19,11.728,51,9.958,51,8c0-3.859-3.14-7-7-7 c-6.807,0-10.432,6.225-12,9.981C30.432,7.225,26.807,1,20,1c-3.86,0-7,3.141-7,7c0,1.958,0.81,3.728,2.111,5H2 c-0.552,0-1,0.447-1,1v8c0,0.553,0.448,1,1,1h60c0.552,0,1-0.447,1-1v-8C63,13.447,62.552,13,62,13z M44,3c2.757,0,5,2.243,5,5 s-2.243,5-5,5H33.371C34.423,10.067,37.621,3,44,3z M15,8c0-2.757,2.243-5,5-5c6.364,0,9.57,7.066,10.626,10H20 C17.243,13,15,10.757,15,8z">
-                                    </path>
-                                    <path fill="#ffc107" d="M57,25H36v36h17c2.209,0,4-1.791,4-4V25z"></path>
-                                    <path fill="#ffc107" d="M28,25H7v32c0,2.209,1.791,4,4,4h17V25z"></path>
-                                </g>
-                            </svg>
-                            <hr>
+
                             <p class="text-justify">
                                 Ao longo da sua vida a escola manteve o seu foco nas necessidades dos emigrantes tendo
                                 sido igualmente adaptada e melhorada para o público nacional. A Escola de Condução ‘do
@@ -459,18 +470,8 @@ if(isset($_POST['criarConta'])) {
                     </div>
                     <div class="col-sm-4">
                         <div class="card p-2">
-                            <svg class="svg" xmlns="http://www.w3.org/2000/svg" width="64" height="64"
-                                viewBox="0 0 64 64">
-                                <title>gift-2</title>
-                                <g fill="#ffc107">
-                                    <path data-color="color-2"
-                                        d="M62,13H48.889C50.19,11.728,51,9.958,51,8c0-3.859-3.14-7-7-7 c-6.807,0-10.432,6.225-12,9.981C30.432,7.225,26.807,1,20,1c-3.86,0-7,3.141-7,7c0,1.958,0.81,3.728,2.111,5H2 c-0.552,0-1,0.447-1,1v8c0,0.553,0.448,1,1,1h60c0.552,0,1-0.447,1-1v-8C63,13.447,62.552,13,62,13z M44,3c2.757,0,5,2.243,5,5 s-2.243,5-5,5H33.371C34.423,10.067,37.621,3,44,3z M15,8c0-2.757,2.243-5,5-5c6.364,0,9.57,7.066,10.626,10H20 C17.243,13,15,10.757,15,8z">
-                                    </path>
-                                    <path fill="#ffc107" d="M57,25H36v36h17c2.209,0,4-1.791,4-4V25z"></path>
-                                    <path fill="#ffc107" d="M28,25H7v32c0,2.209,1.791,4,4,4h17V25z"></path>
-                                </g>
-                            </svg>
-                            <hr>
+
+
                             <p class="text-justify">
                                 Ao longo da sua vida a escola manteve o seu foco nas necessidades dos emigrantes tendo
                                 sido igualmente adaptada e melhorada para o público nacional. A Escola de Condução ‘do
@@ -586,15 +587,66 @@ if(isset($_POST['criarConta'])) {
     </div>
 
 
-    <a href="#carouselExampleIndicators" class="back-to-top" style="display: block;">
-        <div class="ripple-container"></div>
-        <svg class="mysvg" xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48">
-            <title>ic_arrow_upward_48px</title>
-            <g fill="#ffffff">
-                <path d="M8 24l2.83 2.83L22 15.66V40h4V15.66l11.17 11.17L40 24 24 8 8 24z"></path>
-            </g>
-        </svg>
-    </a>
+
+    <footer class="page-footer font-small  py-3" style="background: #1C2331" id="contactos">
+        <!-- Footer Links -->
+        <div class="container text-center text-md-left mt-5 text-light">
+
+            <!-- Grid row -->
+            <div class="row mt-3">
+
+                <!-- Grid column -->
+                <div class="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
+
+                    <!-- Content -->
+                    <h6 class="text-uppercase font-weight-bold">Sobre a empresa</h6>
+                    <hr class="deep-purple accent-2 mb-4 mt-0 d-inline-block mx-auto" style="width: 60px;">
+                    <p> A escola nasceu em 1986 em Santa Comba Dão e foi chamada ‘do Emigrante’ em honra ao seufundador
+                        Antonino de
+                        Sousa Gonçalves que, tendo sido emigrante durante muitos anos em países tão diversos como
+                        aÁrabia Saudita
+                    </p>
+
+                </div>
+                <!-- Grid column -->
+
+                <!-- Grid column -->
+                <div class="col-md-4 col-lg-2 col-xl-2 mx-auto mb-4">
+
+                    <!-- Links -->
+                    <h6 class="text-uppercase font-weight-bold ">Mapa do site</h6>
+                    <hr class="deep-purple accent-2 mb-4 mt-0 d-inline-block mx-auto" style="width: 60px;">
+                    <ul class="text-light list-unstyled">
+                        <li><a href="#carouselExampleIndicators" class="text-white">Página inicial</a></li>
+                        <li><a href="#escola" class="text-white">A escola</a></li>
+                        <li><a href="#curso" class="text-white">Cursos</a></li>
+                        <li><a href="#galeria" class="text-white">Galeria</a></li>
+                        <li><a href="#contactos" class="text-white">Contactos</a></li>
+                    </ul>
+
+
+                </div>
+                <div class="col-md-4 col-lg-4 col-xl-3 mx-auto mb-md-0 mb-4">
+
+                    <!-- Links -->
+                    <h6 class="text-uppercase font-weight-bold">Contactos</h6>
+                    <hr class="deep-purple accent-2 mb-4 mt-0 d-inline-block mx-auto" style="width: 60px;">
+                    <p>
+                        <i class="fas fa-home mr-3"></i> Rua da Samba-Luanda</p>
+                    <p>
+                        <i class="fas fa-envelope mr-3"></i> jelu@gmail.com</p>
+                    <p>
+                        <i class="fas fa-phone mr-3"></i> 925-726-859</p>
+                </div>
+                <!-- Grid column -->
+
+            </div>
+            <!-- Grid row -->
+
+        </div>
+        <!-- Footer Links -->
+    </footer>
+
 
     <div class="modal fade" id="loginModal" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
@@ -606,23 +658,25 @@ if(isset($_POST['criarConta'])) {
                             <div class="text-left">
                                 <h1 class="h4 text-gray-900 mb-4">ENTRAR</h1>
                             </div>
-                            <form class="user">
+                            <form class="user" method="POST">
                                 <div class="form-group">
 
                                     <input type="text" class="form-control form-control-user"
-                                        style="border-radius: 30px" placeholder="Telefone ou E-mail">
+                                        style="border-radius: 30px" placeholder="Telefone ou E-mail" name="telEmail"
+                                        required="required">
                                 </div>
                                 <div class="form-group">
                                     <input type="password" class="form-control form-control-user"
-                                        style="border-radius: 30px" placeholder="Senha">
+                                        style="border-radius: 30px" placeholder="Senha" name="senha"
+                                        required="required">
                                 </div>
 
                                 <div class="row">
                                     <div class="col-sm-6 mb-3">
-                                        <a href="index.html" class="btn btn-primary btn-block"
-                                            style="border-radius: 30px">
+                                        <button class="btn btn-primary btn-block" style="border-radius: 30px"
+                                            name="entrar">
                                             ENTRAR
-                                        </a>
+                                        </button>
                                     </div>
                                     <div class="col-sm-6">
                                         <a href="" class="btn btn-outline-danger btn-block" style="border-radius: 30px"
@@ -635,7 +689,8 @@ if(isset($_POST['criarConta'])) {
                                 <a class="small" href="forgot-password.html">Esqueceu a senha?</a>
                             </div>
                             <div class="text-center">
-                                <a href="#" class="small" data-toggle="modal" data-target="#criarConta">Criar uma
+                                <a href="#" class="small" data-dismiss="modal" data-toggle="modal"
+                                    data-target="#criarConta">Criar uma
                                     conta!</a>
                             </div>
                         </div>
@@ -646,7 +701,6 @@ if(isset($_POST['criarConta'])) {
             </div>
         </div>
     </div>
-
 
 
     <div class="modal fade" id="criarConta" tabindex="-1" role="dialog">
@@ -788,7 +842,7 @@ if(isset($_POST['criarConta'])) {
                                         <button class="btn btn-primary btn-block" name="criarConta"
                                             style="border-radius: 30px">
                                             CRIAR CONTA
-                                            </button>
+                                        </button>
                                     </div>
                                     <div class="col-sm-6">
                                         <a href="" class="btn btn-outline-danger btn-block" style="border-radius: 30px"
@@ -807,37 +861,162 @@ if(isset($_POST['criarConta'])) {
                         </div>
                     </div>
                 </div>
-
-
             </div>
         </div>
     </div>
 
 
 
+    <?php
 
+    if($dados->getId() != null) {
+        echo '
+        <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Terminar Sessão?</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">×</span>
+                </button>
+              </div>
+              <div class="modal-body">Tens certeza que deseja terminar sessão da tua conta ?</div>
+              <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Não</button>
+                <a class="btn btn-primary" href="Util/logout.php">Sim</a>
+              </div>
+            </div>
+          </div>
+        </div>';
+    }
+
+
+
+
+
+  
+
+        include_once('controller/crud-formPag.php');
+
+        $options="";
+        $formPag = new CrudFormPag();
+
+        $formsPags = $formPag->select();
+        foreach ($formsPags as $key => $value) {
+            $options.= $value;
+        }
+        $select = new CrudCurso();
+        $dados  = $select->select();
+        foreach ($dados as $key => $value) {
+
+            echo '
+            <div class="modal fade" id="requisitos'.$value->getId().'" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">'.$value->getDescricao().' - Requisitos Necessário</h5>
+                            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">×</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">'.$value->getRequisitos().'</div>
+                        <div class="modal-footer">
+                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Fechar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>    
+            ';
+
+            echo '
+            <div class="modal fade" id="plano'.$value->getId().'" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">'.$value->getDescricao().' - Plano de Aula</h5>
+                            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">×</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">'.$value->getPlanoAula().'</div>
+                        <div class="modal-footer">
+                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Fechar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>    
+            ';
+
+
+
+            echo '<div class="modal fade" id="inscrever'.$value->getId().'" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content"
+                style="border-bottom: .25rem solid #0B508C!important; border-top: .25rem solid #0B508C!important;">
+                <div class="modal-body">
+                    <div class="col-lg-12 sm-6">
+                        <div class="p-3">
+                            <div class="text-left">
+                                <h1 class="h4 text-gray-900 mb-4">INSCREVER-SE</h1>
+                            </div>
+                            <form class="user" method="POST" action="view/inscricao/">
+
+                                <div class="form-group">
+                                    <select style="border-radius: 30px; height: 50px;" class="custom-select" required
+                                        name="formPag" required="required">
+                                            '.$options.'
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                <input type="hidden" name="idCurso" value="'.$value->getId().'">
+                                    <input type="text" class="form-control form-control-user" disabled
+                                        style="border-radius: 30px; font-size: 14pt" placeholder="Valor a pagar"
+                                        name="valor" value="'.$value->getPreco().' kzs" required="required">
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-sm-6 mb-3">
+                                        <button class="btn btn-primary btn-block" style="border-radius: 30px"
+                                            name="cofirm">
+                                            CONFIRMAR
+                                        </button>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <a href="" class="btn btn-outline-danger btn-block" style="border-radius: 30px"
+                                            data-dismiss="modal">CANCELAR</a>
+                                    </div>
+                                </div>
+                            </form>
+                            <hr>
+                            <div class="alert alert-warning">
+                                <p><strong>Atenção:</strong> O pagamento vía cash tem um limite de até 6 dias para fazer
+                                    o pagamento.</p>
+                            </div>
+                            <hr>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>';
+        
+        }
+
+    ?>
 
     <script src="src/jquery/jquery.js"></script>
     <script src="src/popper/popper.min.js"></script>
     <script src="src/bootstrap/js/bootstrap.min.js"></script>
 
     <!-- Custom scripts for all pages-->
-    <script src="js/sb-admin-2.min.js"></script>
+    <script src="src/js/sb-admin-2.min.js"></script>
 
 
-    <script>
-        $(function () {
 
-            /*FUNÇÃO QUE PERMITE CONTROLAR O BOTÃO QUE FAZ VOLTAR NO TOP*/
-            var offset = 200;
-            var duration = 500;
-            $(window).scroll(() => {
-                $(this).scrollTop() > offset
-                    ? $('.back-to-top').fadeIn(400)
-                    : $('.back-to-top').fadeOut(400);
-            });
-        });
-    </script>
 </body>
 
 </html>

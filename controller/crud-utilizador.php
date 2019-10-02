@@ -327,7 +327,6 @@ class CrudUtilizador extends Conexao {
 
      # CRINAOD A FUNÇÃO PARA FAZER O SELECT DO UTILIZADOR APARTIR DO ID
      public function getById($id) {
-        $this->connect();
 
         $query  = $this->conexao->prepare("SELECT * FROM verUtilizador WHERE idutilizador = ?");
         $query->bind_param('i', $id);
@@ -356,4 +355,42 @@ class CrudUtilizador extends Conexao {
        
     }
 
+    # CRIANDO A FUNÇÃO PARA FAZER LOGIN
+    public function login(Utilizador $model) {
+
+        $email     = $model->getEmail();
+        $telefone  = $model->getTelefone();
+        $senha     = $model->getSenha();
+        
+        $query = $this->conexao->prepare("SELECT * FROM verUtilizador WHERE email = ? AND senha = ? OR telefone = ? AND senha = ? ");
+        $query     ->bind_param('ssss', $email, $senha, $telefone, $senha);
+        if($query->execute()) {
+
+            $result      = $query->get_result();
+            $dados = $result->fetch_assoc();
+                 $objecto   =  new Utilizador();
+                
+                    $objecto->  setId($dados["idutilizador"]);
+                    $objecto->  setNome($dados["nome"]);
+                    $objecto->  setEmail($dados["email"]);
+                    $objecto->  setTelefone($dados["telefone"]);
+                    $objecto->  setTipoUtilizador($dados['TipoUtil']);
+                    $objecto->  setSexo($dados['sexo']);
+                    $objecto->  setIdSexo($dados["idsexo"]);
+                    $objecto->  setDtCriacao(date('d-m-Y', strtotime($dados["dtcriacao"])));
+                    $objecto->  setDtEdicao(date('d-m-Y', strtotime($dados["dtedicao"])));
+                    $objecto->  setIdTipoUtilizador($dados["idtbTipoUtilizador"]);
+
+        }
+
+       return $objecto; 
+
+       #FECHANDO A COMANDO
+       $query->close();
+       #FECHANDO A CONEXÃO
+       $this->conexao->close();
+    }
+
 }
+
+

@@ -1,20 +1,37 @@
 
+
 <?php
 
+
+include_once('../model/candidato.php');
+include_once('../controller/crud-candidato.php');
+
+
+include_once('../model/curso.php');
+include_once('../controller/crud-curso.php');
+
+
+$select       = new CrudCandidato();
+$candidatos   = $select->select();
+
+
+$select       = new CrudCurso();
+$curso        = $select->select();
+
 # INCLUIDON O CABEÇALHO
-include_once('includes/header.php')
+include_once('includes/header.php');
 
 ?>
 
         <div class="container-fluid">
 
           <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
+            <h1 class="h3 mb-0 text-gray-800" style="text-transform: uppercase;"><?php echo $user->getTipoUtilizador() ?></h1>
           </div>
 
 
           <div class="row animated wow fadeIn" style="visibility: visible; -webkit-animation-delay: .3s; -moz-animation-delay: .3s; animation-delay: .3s;">
-            <div class="col-xl-4 col-md-6 mb-4" data-wow-delay=".4s">
+            <div class="<?php  echo $user->getIdTipoUtilizador() != 11 ? 'col-xl-6 col-md-6 mb-4' : 'col-xl-4 col-md-6 mb-4'; ?>" data-wow-delay=".4s">
                 <div class="card border-left-info shadow-sm h-100 py-2">
                   <a href="candidato/vertodos.php" style="text-decoration: none">
                     <div class="card-body">
@@ -23,7 +40,7 @@ include_once('includes/header.php')
                             <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Candidatos escritos</div>
                             <div class="row no-gutters align-items-center">
                               <div class="col-auto">
-                                <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">500</div>
+                                <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800"><?php echo count($candidatos); ?></div>
                               </div>
                             </div>
                           </div>
@@ -37,7 +54,7 @@ include_once('includes/header.php')
               </div>
   
               <!-- Pending Requests Card Example -->
-              <div class="col-xl-4 col-md-6 mb-4">
+              <div class="<?php  echo $user->getIdTipoUtilizador() != 11 ? 'col-xl-6 col-md-6 mb-4' : 'col-xl-4 col-md-6 mb-4'; ?>">
                 <div class="card border-left-warning shadow-sm h-100 py-2">
                   <div class="card-body">
                     <div class="row no-gutters align-items-center">
@@ -54,23 +71,29 @@ include_once('includes/header.php')
               </div>
           
 
-            <div class="col-xl-4 col-md-6 mb-4">
-              <a href="curso/vertodos.php" style="text-decoration: none">
-                <div class="card border-left-success shadow-sm h-100 py-2">
-                    <div class="card-body">
-                      <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                          <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Cursos</div>
-                          <div class="h5 mb-0 font-weight-bold text-gray-800">3</div>
-                        </div>
-                        <div class="col-auto">
-                          <i class="fas fa-address-card fa-2x text-gray-300"></i>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-              </a>
-            </div>
+            <?php
+
+                if($user->getIdTipoUtilizador() == 11){
+                  echo '<div class="col-xl-4 col-md-6 mb-4">
+                        <a href="curso/vertodos.php" style="text-decoration: none">
+                          <div class="card border-left-success shadow-sm h-100 py-2">
+                              <div class="card-body">
+                                <div class="row no-gutters align-items-center">
+                                  <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Cursos</div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800">'.count($curso).'</div>
+                                  </div>
+                                  <div class="col-auto">
+                                    <i class="fas fa-address-card fa-2x text-gray-300"></i>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                        </a>
+                      </div>';
+                }
+
+            ?>
           </div>
 
 

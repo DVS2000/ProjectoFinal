@@ -38,8 +38,8 @@
 	<tbody>';
 
 
-	include_once('../php/model/utilizador.php');
-    include_once('../php/controller/crud-utilizador.php');
+	include_once('../../model/utilizador.php');
+    include_once('../../controller/crud-utilizador.php');
      $select = new CrudUtilizador();
      $dados  = $select->select();
               foreach ($dados as $key => $value) {
@@ -65,8 +65,11 @@
 
 	$dompdf->setPaper('A4', 'landscape');
 
+
+	$page = file_get_contents('recibo.html');
+
 	// Carrega seu HTML
-	$dompdf->load_html($html);
+	$dompdf->load_html($page);
 
 
 	//Renderizar o html

@@ -104,9 +104,11 @@ class CrudCurso extends Conexao {
         $dtEdicao               = $model->getDtEdicao();
         $planoAula              = $model->getPlanoAula();
 
+     
+
 
         $query = $this->conexao->prepare("SELECT * FROM tbCurso  WHERE descricao = ? AND idCurso <> ?");
-        $query->bind_param('ss', $descricao, $id);
+        $query->bind_param('si', $descricao, $id);
 
         
         if($query->execute()) {
@@ -134,7 +136,7 @@ class CrudCurso extends Conexao {
                   dtEdicao        =  ?
                   WHERE idCurso   =  ?");
 
-                $query->bind_param('sssssss', $descricao, $preco, $requisitos, $planoAula, $idEstado, $dtEdicao, $id);
+                $query->bind_param('ssssssi', $descricao, $preco, $requisitos, $planoAula, $idEstado, $dtEdicao, $id);
                     if($query->execute()) {
                         echo '<div class="alert alert-success mt-5 alert-dismissible fade show" role="alert">
                                             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -213,8 +215,8 @@ class CrudCurso extends Conexao {
                 $curso->       setPlanoAula($dados['planoAula']);
                 $curso->       setIdEstado($dados["idestado"]);
                 $curso->       setEstado($dados["estado"]);
-                $curso->       setDtCriacao($dados["dtCriacao"]);
-                $curso->       setDtEdicao($dados["dtEdicao"]);
+                $curso->       setDtCriacao(date('d-m-Y', strtotime($dados["dtCriacao"])));
+                $curso->       setDtEdicao(date('d-m-Y', strtotime($dados["dtEdicao"])));
                 $cursos[] = $curso;
             }
         }
@@ -247,8 +249,8 @@ class CrudCurso extends Conexao {
                 $curso->       setPlanoAula($dados['planoAula']);
                 $curso->       setIdEstado($dados["idestado"]);
                 $curso->       setEstado($dados["estado"]);
-                $curso->       setDtCriacao($dados["dtCriacao"]);
-                $curso->       setDtEdicao($dados["dtEdicao"]);
+                $curso->       setDtCriacao(date('d-m-Y', strtotime($dados["dtCriacao"])));
+                $curso->       setDtEdicao(date('d-m-Y', strtotime($dados["dtEdicao"])));
                 $cursos[] = $curso;
             }
         } else {
@@ -317,8 +319,8 @@ class CrudCurso extends Conexao {
                 $curso->       setRequisitos($dados["requisitos"]);
                 $curso->       setIdEstado($dados["idestado"]);
                 $curso->       setEstado($dados["estado"]);
-                $curso->       setDtCriacao($dados["dtCriacao"]);
-                $curso->       setDtEdicao($dados["dtEdicao"]);
+                $curso->       setDtCriacao(date('d-m-Y', strtotime($dados["dtCriacao"])));
+                $curso->       setDtEdicao(date('d-m-Y', strtotime($dados["dtEdicao"])));
                 $cursos[] = $curso;
 
             }

@@ -18,7 +18,7 @@ include_once('../includes/header-sub.php');
             </div>
         </form>
 
-        <a href="#" class="ml-auto btn btn-sm btn-primary shadow-sm">
+        <a href="../../util/relatorio/relatorio-candidato.php" class="ml-auto btn btn-sm btn-primary shadow-sm">
             <i class="fas fa-download fa-sm text-white-50">
 
             </i> Gerar relatório</a>
@@ -160,6 +160,8 @@ include_once('../includes/header-sub.php');
                                         <th scope="col">Nome do pai</th>
                                         <th scope="col">Nome da Mãe</th>
                                         <th scope="col">Morada</th>
+                                        <th scope="col">Data de criação</th>
+                                        <th scope="col">Data de edição</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -167,7 +169,8 @@ include_once('../includes/header-sub.php');
                                     <td>'.$value->getNomePai().'</td>
                                     <td>'.$value->getNomeMae().'</td>
                                     <td>'.$value->getMorada().'</td>
-                                   
+                                    <td>'.$value->getDtCriacao().'</td>
+                                    <td>'.$value->getDtEdicao().'</td>
                                   </tr>
                                 </tbody>
                              </table>

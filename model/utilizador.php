@@ -36,7 +36,7 @@ class Utilizador {
 
     # CREIANDO O GET E SET DO SENHA DO UTILIZADOR
     public function getSenha() { return $this->senha; }
-    public function setSenha($senha) { $this->senha = md5($senha); }
+    public function setSenha($senha) { $this->senha = $senha; }
 
     # CRIANDO O GET E SET DA DATA DA CRIAÇÃO DA CONTA DO UTLIZADOR
     public function getDtCriacao() { return $this->dtCriacao; }

@@ -6,7 +6,7 @@ if(isset($_SESSION['idUtilizador'])) {
     header('Location: index.php');
 } else if(isset($_COOKIE['idUtilizador'])) {
     header('Location: index.php');
-}
+} 
 
 
 
@@ -63,8 +63,7 @@ if(isset($_SESSION['idUtilizador'])) {
                     </button>
                 </div>
                 <div class="col-sm-6">
-                    <a href="" class="btn btn-outline-danger btn-block" style="border-radius: 30px"
-                        data-dismiss="modal">CANCELAR</a>
+                    
                 </div>
             </div>
 
@@ -98,7 +97,7 @@ if(isset($_SESSION['idUtilizador'])) {
                         echo "Não tens acesso";
                     } else {
                         $dados = $login->getById($user->getId());
-                        setcookie('idUtilizador', $dados->getId(), time() + 3600);
+                        setcookie('idUtilizador', $dados->getId(), time() + 36000 * 6);
                         $_SESSION['idUtilizador'] = $dados->getId();
                         header('Location: index.php');
 
@@ -109,12 +108,9 @@ if(isset($_SESSION['idUtilizador'])) {
         </form>
         <hr>
         <div class="text-center">
-            <a class="small" href="forgot-password.html">Esqueceu a senha?</a>
+            <a class="small" href="esqueceu-senha.php?tipo=utilizador">Esqueceu a senha?</a>
         </div>
-        <div class="text-center">
-            <a href="#" class="small" data-dismiss="modal" data-toggle="modal" data-target="#criarConta">Criar uma
-                conta!</a>
-        </div>
+        
     </div>
 </div>
 <div class="col-sm-3">

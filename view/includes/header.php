@@ -35,7 +35,7 @@ if(isset($_SESSION['idUtlizador'])) {
 <html lang="pt-pt">
 
 <head>
-  <title>Escola de Condução JELU</title>
+  <title>Escola de Condução - ADMIN</title>
   <link href="../src/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
   <link rel="stylesheet" href="../src/style/style.css">
   <link rel="stylesheet" href="../src/style/animate.css">
@@ -80,8 +80,8 @@ if(isset($_SESSION['idUtlizador'])) {
         </a>
         <div id="collapseInscricao" class="collapse" data-parent="#meuSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
-            <a class="collapse-item" href="utilities-border.html">Ver todas</a>
-            <a class="collapse-item" href="utilities-other.html">Desactivados</a>
+            <a class="collapse-item" href="inscricao/vertodos.php">Ver todas</a>
+            <a class="collapse-item" href="inscricao/reciclagem.php">Desactivados</a>
           </div>
         </div>
       </li>
@@ -97,7 +97,7 @@ if(isset($_SESSION['idUtlizador'])) {
         <div class="collapse" id="collapseCandidato" data-parent="#meuSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <a href="candidato/vertodos.php" class="collapse-item">Ver todos</a>
-            <a href="#" class="collapse-item">Desactivados</a>
+            <a href="candidato/reciclagem.php" class="collapse-item">Desactivados</a>
           </div>
         </div>
       </li>
@@ -110,7 +110,7 @@ if(isset($_SESSION['idUtlizador'])) {
             <i class="fas fa-users fa-cog"></i>
             <span>Utilizador</span>
           </a>
-          <div id="collapseUtilizador" class="collapse" aria-labelledby="headingTwo" data-parent="#meuSidebar">
+          <div id="collapseUtilizador" class="collapse"  data-parent="#meuSidebar">
             <div class="bg-white py-2 collapse-inner rounded">         
               <a class="collapse-item" href="utilizador/">Novo</a>
               <a class="collapse-item" href="utilizador/vertodos.php">Ver Todos</a>
@@ -124,14 +124,15 @@ if(isset($_SESSION['idUtlizador'])) {
             <i class="fa fa-book" aria-hidden="true"></i>
             <span>Curso</span>
           </a>
-          <div id="collapseCurso" class="collapse" aria-labelledby="headingTwo" data-parent="#meuSidebar">
+          <div id="collapseCurso" class="collapse"  data-parent="#meuSidebar">
             <div class="bg-white py-2 collapse-inner rounded">         
               <a class="collapse-item" href="curso/">Novo</a>
               <a class="collapse-item" href="curso/vertodos.php">Ver Todos</a>
               <a class="collapse-item" href="curso/reciclagem.php">Desactivados</a>
             </div>
           </div>
-        </li>';
+        </li>'
+        ;
 
         }
 
@@ -139,49 +140,46 @@ if(isset($_SESSION['idUtlizador'])) {
       ?>
 
 
-     
-
-     
-
-      <!-- Divider -->
-      <hr class="sidebar-divider">
-
-      <!-- Heading -->
-      <div class="sidebar-heading">
-       TABELAS
-      </div>
-
-
-      <li class="nav-item">
-          <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#email">
-           <i class="fa fa-envelope" aria-hidden="true"></i>
-            <span>E-mail</span>
+        <li class="nav-item">
+          <a href="#" class="nav-link collapsed" data-toggle="collapse" data-target="#collapseNacional">
+            <i class="fa fa-book" aria-hidden="true"></i>
+            <span>Pagamento</span>
           </a>
-          <div id="email" class="collapse" aria-labelledby="headingPages" data-parent="#meuSidebar">
-            <div class="bg-white py-2 collapse-inner rounded">
-              <a class="collapse-item" href="404.html">Enviados</a>
-              <a class="collapse-item" href="404.html">Não Enviados</a>
-             
+          <div id="collapseNacional" class="collapse"  data-parent="#meuSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">         
+              <a class="collapse-item" href="pagamento/vertodos.php">Ver Confirmados</a>
+              <a class="collapse-item" href="pagamento/reciclagem.php">Não confirmados</a>
             </div>
           </div>
         </li>
 
-      <!-- Nav Item - Pages Collapse Menu -->
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#candidato" aria-expanded="true" aria-controls="collapsePages">
-          <i class="fas fa-clipboard-list    "></i>
-          <span>Nacionalidade</span>
-        </a>
-        <div id="candidato" class="collapse" aria-labelledby="headingPages" data-parent="#meuSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <a class="collapse-item" href="nacionalidade/">Nova</a>
-            <a class="collapse-item" href="nacionalidade/vertodos.php">Ver Todas</a>
-            <div class="collapse-divider"></div>
-            <a class="collapse-item" href="nacionalidade/reciclagem.php">Desactivados</a>
-          </div>
-        </div>
-      </li>
 
+      <?php
+
+
+        if($user->getIdTipoUtilizador() == 11) { 
+      echo '
+      <hr class="sidebar-divider">
+        <div class="sidebar-heading">
+        TABELAS
+        </div>
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#candidato" aria-expanded="true" aria-controls="collapsePages">
+              <i class="fas fa-clipboard-list    "></i>
+              <span>Nacionalidade</span>
+            </a>
+            <div id="candidato" class="collapse" aria-labelledby="headingPages" data-parent="#meuSidebar">
+              <div class="bg-white py-2 collapse-inner rounded">
+                <a class="collapse-item" href="nacionalidade/">Nova</a>
+                <a class="collapse-item" href="nacionalidade/vertodos.php">Ver Todas</a>
+                <div class="collapse-divider"></div>
+                <a class="collapse-item" href="nacionalidade/reciclagem.php">Desactivados</a>
+              </div>
+            </div>
+          </li>';
+        }
+
+        ?>
 
       <hr class="sidebar-divider d-none d-md-block">
 
@@ -208,7 +206,7 @@ if(isset($_SESSION['idUtlizador'])) {
                 <span class="ml-2 d-none d-lg-inline text-gray-600 small"><?php echo $user->getNome() ?></span>
               </a>
               <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-              <button class="dropdown-item" onClick='<?php echo 'window.location.replace("http://localhost/ProjectoFinal/view/utilizador/editar.php?id='.$user->getId().'")'; ?>'>
+              <button class="dropdown-item" onClick='<?php echo 'window.location.replace("http://localhost/projectofinal/view/utilizador/editar.php?id='.$user->getId().'")'; ?>'>
                   <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                   Editar Perfil
                 </button>

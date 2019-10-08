@@ -4,9 +4,12 @@
 class Inscricao{
     private $id;
     private $idCurso;
+    private $curso;
     private $idCandidato;
+    private $nomeCand;
     private $dtCriacao;
     private $dtEdicao;
+    private $idEstado;
 
     # CRIANDO O GET E O SET DO ID  DA INSCRIÇÃO
     public function getId() { return $this->id; }
@@ -16,9 +19,17 @@ class Inscricao{
     public function getIdCurso() { return $this->idCurso; }
     public function setIdCurso($idCurso) { $this->idCurso = $idCurso; }
 
+    # CRIANDO O GET E O SET DO NOME DO CURSO DA INSCRIÇÃO
+    public function getCurso() { return $this->curso; }
+    public function setCurso($curso) { $this->curso = $curso; }
+
     # CRIANDO O GET O SET DO ID DO CANDIDATO INSCRITO
     public function getIdCandidato() { return $this->idCandidato; }
     public function setIdCandidato($idCandidato) { $this->idCandidato = $idCandidato; }
+
+    # CRINAOD O GET E O SET DO NOME DO CANDIDATO INSCRITO
+    public function getNomeCand() { return $this->nomeCand; }
+    public function setNomeCand($nomeCand) { $this->nomeCand = $nomeCand; }
 
     # CRIANDO O GET E O SET DA DATA DE CRIAÇÃO DA INSCRIÇÃO
     public function getDtCriacao() { return $this->dtCriacao; }
@@ -28,5 +39,7 @@ class Inscricao{
     public function getDtEdicao() { return $this->dtEdicao; }
     public function setDtEdicao($dtEdicao) { $this->dtEdicao = $dtEdicao; }
 
-
+    # CRIANDO O GET O SET DO ID DO ESTADO DA INSCRIÇÃO
+    public function getIdEstado() { return $this->idEstado; }
+    public function setIdEstado($idEstado) { $this->idEstado = $idEstado; }
 }

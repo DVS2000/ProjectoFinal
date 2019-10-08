@@ -10,6 +10,8 @@
     };
   });
 
+  
+
   // Close any open menu accordions when window is resized below 768px
   $(window).resize(function() {
     if ($(window).width() < 768) {

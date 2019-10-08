@@ -35,7 +35,7 @@ class CrudUtilizador extends Conexao {
 
             if($query->num_rows > 0 ) {
 
-                echo '<div class="alert alert-success mt-5 alert-dismissible fade show" role="alert">
+                return '<div class="alert alert-success mt-5 alert-dismissible fade show" role="alert">
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                       <span aria-hidden="true">&times;</span>
                       <span class="sr-only">Close</span>
@@ -50,17 +50,9 @@ class CrudUtilizador extends Conexao {
                 $query->bind_param('ssssssiii', $nome, $email, $telefone, $senha, $dtCriacao, $dtEdicao, $idTipoUser, $idEstado, $idSexo);
 
                 if($query->execute()) {
-                    echo '<div class="alert alert-success mt-5 alert-dismissible fade show" role="alert">
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                            <span class="sr-only">Close</span>
-                            </button>
-                            <h4 class="alert-heading">'.$nome.'</h4>
-                            <p>Foi adicionado!</p>
-                            <p class="mb-0">'.date('d-m-Y H:s').'</p>
-                            </div>';
+                    return 1;
                 } else {
-                    echo '<div class="alert alert-danger mt-5 alert-dismissible fade show" role="alert">
+                    return '<div class="alert alert-danger mt-5 alert-dismissible fade show" role="alert">
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                             <span class="sr-only">Close</span>
@@ -72,7 +64,7 @@ class CrudUtilizador extends Conexao {
                 }
             }
         } else {
-            echo '<div class="alert alert-success mt-5 alert-dismissible fade show" role="alert">
+            return '<div class="alert alert-success mt-5 alert-dismissible fade show" role="alert">
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                       <span aria-hidden="true">&times;</span>
                       <span class="sr-only">Close</span>
@@ -110,7 +102,7 @@ class CrudUtilizador extends Conexao {
 
             if($query->num_rows > 0 ) {
 
-                echo '<div class="alert alert-danger mt-5 alert-dismissible fade show" role="alert">
+                return '<div class="alert alert-danger mt-5 alert-dismissible fade show" role="alert">
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                       <span aria-hidden="true">&times;</span>
                       <span class="sr-only">Close</span>
@@ -135,18 +127,10 @@ class CrudUtilizador extends Conexao {
 
 
                 if($query->execute()) {
-                    echo '<div class="alert alert-success mt-5 alert-dismissible fade show" role="alert">
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                                <span class="sr-only">Close</span>
-                                </button>
-                                <h4 class="alert-heading">'.$nome.'</h4>
-                                <p>Foi editado!</p>
-                                <p class="mb-0">'.date('d-m-Y H:s').'</p>
-                            </div>';
+                    return 1;
 
                 } else {
-                    echo '<div class="alert alert-danger mt-5 alert-dismissible fade show" role="alert">
+                    return '<div class="alert alert-danger mt-5 alert-dismissible fade show" role="alert">
                             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                                 <span class="sr-only">Close</span>
@@ -159,7 +143,7 @@ class CrudUtilizador extends Conexao {
 
             }
         } else {
-            echo '<div class="alert alert-success mt-5 alert-dismissible fade show" role="alert">
+            return '<div class="alert alert-success mt-5 alert-dismissible fade show" role="alert">
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                       <span aria-hidden="true">&times;</span>
                       <span class="sr-only">Close</span>
@@ -291,6 +275,28 @@ class CrudUtilizador extends Conexao {
        $this->conexao->close();
     }
 
+    # CRIANDO A FUNÇÃO QUE FAZER O RESET DA SENHA DO UTILIZADOR
+    public function resetPassword($email, $newPassowrd) {
+
+        $query = $this->conexao->prepare("UPDATE tbUtilizador SET senha = ? WHERE email = ?");
+        $senha = md5($newPassowrd);
+
+        $query->bind_param('ss', $senha, $email);
+
+        if($query->execute()) {
+            return 1;
+        } else {
+            return '<div class="alert alert-success mt-5 alert-dismissible fade show" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+              <span class="sr-only">Close</span>
+            </button>
+               <h4 class="alert-heading">Ocorreu um erro.</h4>
+               <p>Tente mais tarde.</p>
+            </div>'; 
+        }
+    }
+
     # CRIANDO A FUNÇÃO PARA PESQUISAR UM OU MAIS UTILIZADORES
     public function search($nome) {
 
@@ -354,6 +360,40 @@ class CrudUtilizador extends Conexao {
        $this->conexao->close();
        
     }
+
+
+
+     # CRINAOD A FUNÇÃO PARA FAZER O SELECT DO UTILIZADOR APARTIR DO EMAIL
+     public function getByEmail($email) {
+
+        $query  = $this->conexao->prepare("SELECT * FROM verUtilizador WHERE email = ?");
+        $query->bind_param('s', $email);
+        $query->execute();
+        $result = $query->get_result();
+        $objecto =  new Utilizador();
+
+        while($dados =  $result->fetch_assoc()) {
+            
+            $objecto->  setId($dados["idutilizador"]);
+            $objecto->  setNome($dados["nome"]);
+            $objecto->  setEmail($dados["email"]);
+            $objecto->  setTelefone($dados["telefone"]);
+            $objecto->  setTipoUtilizador($dados['TipoUtil']);
+            $objecto->  setSexo($dados['sexo']);
+            $objecto->  setIdSexo($dados["idsexo"]);
+            $objecto->  setDtCriacao($dados["dtcriacao"]);
+            $objecto->  setDtEdicao($dados["dtedicao"]);
+            $objecto->  setIdTipoUtilizador($dados["idtbTipoUtilizador"]);
+        }
+
+        return $objecto; 
+        #FECHANDO A COMANDO
+       $query->close();
+       #FECHANDO A CONEXÃO
+       $this->conexao->close();
+       
+    }
+
 
     # CRIANDO A FUNÇÃO PARA FAZER LOGIN
     public function login(Utilizador $model) {

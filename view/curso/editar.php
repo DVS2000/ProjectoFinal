@@ -11,6 +11,8 @@
     $clean->connect();
 
     $id = $clean->intGET('id');
+
+
     if($id != null) {
 
         $selectCurso = new CrudCurso();
@@ -108,6 +110,17 @@ include_once('../includes/header-sub.php');
 
                                           if(isset($_POST['guardar'])) {
 
+
+                                            if(empty($_POST['requisitos']) || empty($_POST['requisitos'])) {
+                                                echo '<div class="alert alert-danger mt-5 alert-dismissible fade show" role="alert">
+                                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                  <span aria-hidden="true">&times;</span>
+                                                  <span class="sr-only">Close</span>
+                                                </button>
+                                                   <h4 class="alert-heading">Preencha todos os campos.</h4>
+                                                </div>';
+                                             } else {
+
                                             # ============LIMPANDO AS VARIÁVEIS============== #
                                             
                                             $nome         = $clean->specialChars('nome');
@@ -117,16 +130,19 @@ include_once('../includes/header-sub.php');
                                             $planoAula    = $clean->script($_POST['planoAula']);
 
                                                 $model = new Curso();
-                                                $model->setId($id);
+                                                $model->setId($clean->intGET('id'));
                                                 $model->setDescricao($nome);
                                                 $model->setPreco($preco);
                                                 $model->setIdEstado($estado);
                                                 $model->setRequisitos($resquitos);
                                                 $model->setPlanoAula($planoAula);
                                                 $model->setDtEdicao(date('Y-m-d H:s'));
+
+                                                
                                                 $insert = new CrudCurso();
                                                 $insert->update($model);
-                                                
+
+                                             }
 
                                           }
                                           ?>

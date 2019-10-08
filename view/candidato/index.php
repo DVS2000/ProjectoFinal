@@ -18,7 +18,7 @@ include_once('../includes/header-sub.php');
             </div>
         </form>
 
-        <a href="#" class="ml-auto btn btn-sm btn-primary shadow-sm">
+        <a href="../../util/relatorio/relatorio-candidato.php" class="ml-auto btn btn-sm btn-primary shadow-sm">
             <i class="fas fa-download fa-sm text-white-50">
 
             </i> Gerar relatório</a>
@@ -43,7 +43,7 @@ include_once('../includes/header-sub.php');
                                     <th scope="col">E-mail</th>
                                     <th scope="col">Telefone</th>
                                     <th scope="col">Data de nascimento</th>
-                                    <th scope="col">Nacionalidade</th>
+                                    <th scope="col">Sexo</th>
                                     <th></th>
                                     <th></th>
                                 </tr>
@@ -72,7 +72,7 @@ include_once('../includes/header-sub.php');
                                                             <td>'.$value->getEmail().'</td>
                                                             <td>'.$value->getTelefone().'</td>
                                                             <td>'.$value->getDtNasc().'</td>
-                                                            <td>'.$value->getNacionalidade().'</td>
+                                                            <td>'.$value->getSexo().'</td>
                                                         
                                                             <td>
                                                                 <a href="#" data-toggle="modal" data-target="#verMais'.$value->getId().'" class="btn btn-outline-success"><i class="fas fa-eye    "></i></a>
@@ -157,6 +157,7 @@ include_once('../includes/header-sub.php');
                               <table class="table table-striped">
                                 <thead>
                                     <tr>
+                                        <th scope="col">Nacionalidade</th>
                                         <th scope="col">Nome do pai</th>
                                         <th scope="col">Nome da Mãe</th>
                                         <th scope="col">Morada</th>
@@ -164,6 +165,7 @@ include_once('../includes/header-sub.php');
                                 </thead>
                                 <tbody>
                                     <tr>
+                                    <td>'.$value->getNacionalidade().'</td>
                                     <td>'.$value->getNomePai().'</td>
                                     <td>'.$value->getNomeMae().'</td>
                                     <td>'.$value->getMorada().'</td>

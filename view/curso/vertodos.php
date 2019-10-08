@@ -18,7 +18,7 @@ include_once('../includes/header-sub.php');
             </div>
         </form>
 
-        <a href="#" class="ml-auto btn btn-sm btn-primary shadow-sm">
+        <a href="../../util/relatorio/relatorio-curso.php" class="ml-auto btn btn-sm btn-primary shadow-sm">
             <i class="fas fa-download fa-sm text-white-50">
 
             </i> Gerar relatório</a>
@@ -66,7 +66,6 @@ include_once('../includes/header-sub.php');
                                                     echo '<tr>
                                                             <td>'.$value->getDescricao().'</td>
                                                             <td>'.$value->getPreco().' Kzs</td>
-                                                            
                                                             <td>'.$value->getDtCriacao().'</td>
                                                             <td>'.$value->getDtEdicao().'</td>
                                                             <td>

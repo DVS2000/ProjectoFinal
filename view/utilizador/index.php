@@ -17,7 +17,7 @@
                                                 utilizador</h1>
                                             <hr>
                                         </div>
-                                        <form class="user" method="POST">
+                                        <form class="user" method="POST" id="form">
                                             <div class="form-group row">
                                                 <div class="col-sm-6 mb-3 mb-sm-0">
                                                     <label for="nome">Nome</label>
@@ -48,7 +48,7 @@
 
                                                 <div class="col-sm-3 mb-3 mb-sm-0">
                                                     <label for="confsenha">Confirmar senha</label>
-                                                    <input type="password" class="form-control" id="confsenha"
+                                                    <input type="password" class="form-control" id="confirsenha" name="confirsenha"
                                                         placeholder="Confirmar senha" required="required"
                                                         name="confsenha">
                                                 </div>
@@ -101,49 +101,12 @@
                                             <button class="btn btn-primary" name="guardar">
                                                 GUARDAR
                                             </button>
-
-
-                                            <?php
-                                          include_once('../../model/utilizador.php');
-                                          include_once('../../controller/crud-utilizador.php');
-
-                                          # INCLUIDO O FICHEIRO QUE VAI FAZER A LIMPEZA DAS VARIAVEL
-                                          include_once('../../Util/clear-var.php');
-
-                                           $clean = new Clear();
-
-
-                                          if(isset($_POST['guardar'])) {
-
-
-                                                # LIMPANDO AS VARIAVÉIS
-                                                $nome               = $clean->specialChars('nome');
-                                                $email              = $clean->email('email');
-                                                $telefone           = $clean->int('telefone');
-                                                $senha              = $clean->specialChars('senha');
-                                                $sexo               = $clean->int('sexo');
-                                                $tipoUtilizador     = $clean->int('tipoutilizador');
-                                                $estado             = $clean->int('estado');
-
-                                                $model = new Utilizador();
-                                                $model->setNome($nome);
-                                                $model->setEmail($email);
-                                                $model->setTelefone($telefone);
-                                                $model->setSenha(md5($senha));
-                                                $model->setIdSexo($sexo);
-                                                $model->setIdTipoUtilizador($tipoUtilizador);
-                                                $model->setIdEstado($estado);
-                                                $model->setDtCriacao(date('Y-m-d H:s'));
-                                                $model->setDtEdicao(date('Y-m-d H:s'));
-
-                                                $insert = new CrudUtilizador();
-                                                $insert->insert($model);
-                                          }
-                                          ?>
-
                                         </form>
-
+                                        
+                                        <div class="aviso"></div>
                                     </div>
+
+                                    
                                 </div>
                             </div>
                         </div>
@@ -161,3 +124,61 @@
                 include_once('../includes/footer-sub.php');
 
                 ?>
+
+<script>
+    $(document).ready(function() {
+
+        aviso = $(".aviso");
+        $("#form").validate({
+            rules: {
+                nome: {
+                    required: true,
+                    minWords: 2,
+                    minlength: 2
+                },
+                email: {
+                    required: true,
+                    email: true,
+                    minlength: 6
+                },
+                telefone: {
+                    required: true,
+                    minlength: 9,
+                    
+                },
+                senha: {
+                    required: true,
+                    minlength: 4,
+                    maxlength: 15
+                },
+                confirsenha: {
+                    required: true,
+                    minlength: 4,
+                    maxlength: 15,
+                    equalTo: "#senha"
+                }
+            },
+            submitHandler:      function(_form) {
+                var form = new FormData($("#form")[0]);
+               // alert('Chegou');
+                $.ajax({
+                        url:            'action.php',
+                        type:           'post',
+                        dataType:       'json',
+                        cache:          false,
+                        processData:    false,
+                        contentType:    false,
+                        data:           form,
+                        timeout:        8000,
+                        success:        function(resultado) {
+                            if(resultado == 1) {
+                                window.location.replace('http://localhost/projectofinal/view/utilizador/vertodos.php');
+                            } else {
+                                aviso.append(resultado);
+                            }
+                        }          
+                });
+            }
+        })
+    });
+</script>

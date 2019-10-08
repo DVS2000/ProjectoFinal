@@ -19,7 +19,7 @@ if(isset($_POST['cofirm'])) {
     $formPag = $_POST['formPag'];
 
     $inscricao      = new Inscricao();
-    $idCandidato    = $_SESSION['idCandidato'];
+    $idCandidato    = $_SESSION['idCandidato'] == null ? $_COOKIE['idCandidato'] : $_SESSION['idCandidato'];
     $idCurso        = $_POST['idCurso'];
 
     $inscricao->setIdCandidato($idCandidato);
@@ -41,27 +41,35 @@ if(isset($_POST['cofirm'])) {
     $insert = new CrudInscricao();
     
     $email = new SendEmail();
-    if($email->enviar($nome, $nomCurso, $emailCand)) {
-        $insert->insert($inscricao);
-
-        $insert = new CrudInscricao();
-        $maxId = $insert->getMaxId($idCandidato);
     
-        $pag = new Pagamento();
-        $pag->setIdFormPag($formPag);
-        $pag->setTempo(date('Y-m-d', strtotime('+6 days')));
-        $pag->setIdInscricao($maxId);
-        $pag->setEstado(0);
+    try {
+        if($email->enviar($nome, $nomCurso, $emailCand)) {
+            $insert->insert($inscricao);
     
-        $insertPag = new CrudPagamento();
-        $insertPag->insert($pag);
-    
-        header('Location: ../../index.php?sucesso=true');
-    } else {
-        header('Location: ../../index.php?sucesso=false');
+            $insert = new CrudInscricao();
+            $maxId = $insert->getMaxId($idCandidato);
+        
+            $pag = new Pagamento();
+            $pag->setIdFormPag($formPag);
+            $pag->setTempo(date('Y-m-d', strtotime('+6 days')));
+            $pag->setIdInscricao($maxId);
+            $pag->setEstado(0);
+        
+            $insertPag = new CrudPagamento();
+            $insertPag->insert($pag);
+        
+            $_SESSION['inscricao'] = 1;
+            header('Location: ../../index.php');
+        } else {
+            $_SESSION['inscricao'] = 2;
+            header('Location: ../../index.php');
+        }
+    } catch (\Throwable $th) {
+        $_SESSION['inscricao'] = 3;
+        header('Location: ../../index.php');
     }
 
 
 } else {
-    header('Location: ../../index.php?sucesso=false');
+    echo '<script>window.location.replace("http://localhost/projectofinal/");</script>';
 }

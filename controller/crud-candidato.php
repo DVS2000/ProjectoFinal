@@ -11,6 +11,8 @@ class CrudCandidato extends Conexao {
         parent::connect();
     }
 
+    # :::::::::::::::::::: CRUD :::::::::::::::::::::::: #
+
     # CRIANDO A FUNÇÃO PARA FAZER O INSERT DO CANDIDATO
     public function insert(Candidato $model) {
 
@@ -29,6 +31,7 @@ class CrudCandidato extends Conexao {
         $idSexo         = $model->getIdSexo();
         $senha          = $model->getSenha();
 
+        # $this->conexao == DESTE JEITO PEGAMOS A VARIVÉAVEL CONEXÃO DA CLASSE CONEXÃO
         $query = $this->conexao->prepare("SELECT * FROM tbCandidato WHERE email = ? OR telefone = ? AND bi = ?");
         $query->bind_param('sss', $email, $telefone, $bi);
 
@@ -66,6 +69,7 @@ class CrudCandidato extends Conexao {
     public function update(Candidato $model) {
 
 
+
         $id             = $model->getId();
         $nome           = $model->getNome();
         $bi             = $model->getBi();
@@ -83,16 +87,16 @@ class CrudCandidato extends Conexao {
         $senha          = $model->getSenha();
 
 
-        $query = $this->conexao->prepare("SELECT * FROM tbCandidato WHERE email = ? OR telefone = ? OR bi = ? AND idcandidato");
-        $query->bind_param('sss', $email, $telefone, $bi, $id);
+        $query = $this->conexao->prepare("SELECT * FROM tbCandidato WHERE email = ? AND idcandidato <> ? OR telefone = ? AND idcandidato <> ? OR bi = ? AND idcandidato <> ?");
+        $query->bind_param('sisisi', $email,$id, $telefone, $id, $bi, $id);
 
         if($query->execute()) {
-            $result = $query->store_result();
-            if($result->num_rows > 0) {
-                echo "Candidato existente";
+            $query->store_result();
+            if($query->num_rows > 0) {
+                return 1;
 
             } else {
-                $query = "UPDATE tbcandidato SET
+                $query = $this->conexao->prepare("UPDATE tbcandidato SET
                 nome              = ?,
                 bi                = ?,
                 email             = ?,
@@ -105,13 +109,13 @@ class CrudCandidato extends Conexao {
                 nomepai           = ?,
                 morada            = ?,
                 senha             = ?
-                WHERE idcandidato = ?";
-                $query->bind_param('ssssssssssssss', $nome, $bi, $email, $telefone, $dtNasc, $idNacional, $idEstado, $dtEdicao,$nomeMae, $nomePai, $morada, $senha, $id);
+                WHERE idcandidato = ?");
+                $query->bind_param('sssssiisssssi', $nome, $bi, $email, $telefone, $dtNasc, $idNacional, $idEstado, $dtEdicao,$nomeMae, $nomePai, $morada, $senha, $id);
 
                 if($query->execute()) {
-                    echo "Correu tudo bem";
+                    return 2;
                 } else {
-                    echo "Não correu tudo bem";
+                    return 3;
                 }
 
             }
@@ -130,7 +134,7 @@ class CrudCandidato extends Conexao {
 
 
         $query = $this->conexao->prepare("DELETE FROM tbCandidato WHERE idCandidato = ?");
-        $query->bind_param('s', $id);
+        $query->bind_param('i', $id);
 
         if($query->execute()) {
             echo "Correu tudo bem";
@@ -149,7 +153,7 @@ class CrudCandidato extends Conexao {
 
 
         $candidatos = array();
-        $query = $this->conexao->prepare("SELECT * FROM verCandidato WHERE idestado = 1");
+        $query = $this->conexao->prepare("SELECT * FROM verCandidato WHERE idestado = 1 ORDER BY nome");
         if($query->execute()) {
 
             $result      = $query->get_result();
@@ -160,7 +164,7 @@ class CrudCandidato extends Conexao {
                 $candidato-> setBi($dados["bi"]);
                 $candidato-> setEmail($dados["email"]);
                 $candidato-> setTelefone($dados["telefone"]);
-                $candidato-> setDtNasc($dados["dtNasc"]);
+                $candidato-> setDtNasc(date('d-m-Y', strtotime($dados["dtNasc"])));
                 $candidato-> setIdNacionalidade($dados["idnacionalidade"]);
                 $candidato-> setNacionalidade($dados["nacionalidade"]);
                 $candidato-> setIdEstado($dados["idestado"]);
@@ -169,6 +173,7 @@ class CrudCandidato extends Conexao {
                 $candidato-> setNomeMae($dados["nomemae"]);
                 $candidato-> setNomePai($dados["nomepai"]);
                 $candidato-> setMorada($dados["morada"]);
+                $candidato->setSexo($dados['sexo']);
 
 
                 $candidatos[] = $candidato;
@@ -182,6 +187,10 @@ class CrudCandidato extends Conexao {
          #FECHANDO A CONEXÃO
          $this->conexao->close();
     }
+
+
+
+    #:::::::::::::::::::::::: FUNCÕES ADICIONAL :::::::::::::::::::::::::::::::#
 
     # CRIANDO A FUNÇÃO PARA ACTIVAR O CANDIDATO
     public function enable($id) {
@@ -225,7 +234,7 @@ class CrudCandidato extends Conexao {
 
 
          $candidatos = array();
-         $query = $this->conexao->prepare("SELECT * FROM verCandidato WHERE nome LIKE ? OR bi LIKE ? OR email LIKE ? OR telefone LIKE ?");
+         $query = $this->conexao->prepare("SELECT * FROM verCandidato WHERE nome LIKE ? OR bi LIKE ? OR email LIKE ? OR telefone LIKE ? ORDER BY nome");
          $query->bind_param('ssss', $search, $search, $search, $search);
          if($query->execute()) {
 
@@ -285,6 +294,7 @@ class CrudCandidato extends Conexao {
                 $candidato-> setNomeMae($dados["nomemae"]);
                 $candidato-> setNomePai($dados["nomepai"]);
                 $candidato-> setMorada($dados["morada"]);
+                $candidato->setSexo($dados['sexo']);
 
 
                 $candidatos[] = $candidato;
@@ -299,31 +309,101 @@ class CrudCandidato extends Conexao {
          $this->conexao->close();
     }
 
+
+     # CRIANDO A FUNÇÃO QUE FAZER O RESET DA SENHA DO UTILIZADOR
+     public function resetPassword($email, $newPassowrd) {
+
+        $query = $this->conexao->prepare("UPDATE tbCandidato SET senha = ? WHERE email = ?");
+        $senha = md5($newPassowrd);
+
+        $query->bind_param('ss', $senha, $email);
+
+        if($query->execute()) {
+            return 1;
+        } else {
+            return '<div class="alert alert-success mt-5 alert-dismissible fade show" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+              <span class="sr-only">Close</span>
+            </button>
+               <h4 class="alert-heading">Ocorreu um erro.</h4>
+               <p>Tente mais tarde.</p>
+            </div>'; 
+        }
+
+        # FECHANDO O COMANDO;
+        $query->close();
+        #FECHANDO A CONEXÃO
+        $this->conexao->close();
+    }
+
     # CRINAOD A FUNÇÃO QUE RETURNA O CANDIDATO VIA ID
     public function getById($id) {
 
         $candidato = new Candidato();
-        $query = $this->conexao->prepare("SELECT * FROM tbcandidato WHERE idcandidato = ?");
-        $query->bind_param('s', $id);
+        $query = $this->conexao->prepare("SELECT * FROM verCandidato WHERE idcandidato = ?");
+        $query->bind_param('i', $id);
         if($query->execute()) {
 
             $result      = $query->get_result();
             while($dados = $result->fetch_assoc()) {
-               
-                $candidato-> setId($dados["idCandidato"]);
-                $candidato-> setNome($dados["nome"]);
-                $candidato-> setBi($dados["bi"]);
-                $candidato-> setEmail($dados["email"]);
-                $candidato-> setTelefone($dados["telefone"]);
-                $candidato-> setDtNasc($dados["dtNasc"]);
-                $candidato-> setIdNacionalidade($dados["idnacionalidade"]);
-                $candidato-> setIdEstado($dados["idEstado"]);
-                $candidato-> setDtCriacao(date('d-m-Y', strtotime($dados["dtCriacao"])));
-                $candidato-> setDtEdicao(date('d-m-Y',strtotime($dados["dtEdicao"])));
-                $candidato-> setNomeMae($dados["nomemae"]);
-                $candidato-> setNomePai($dados["nomepai"]);
-                $candidato-> setMorada($dados["morada"]);
+                $candidato = new Candidato();
+                if($dados['idestado'] == 1) {
+                    $candidato-> setId($dados["idCandidato"]);
+                    $candidato-> setNome($dados["nome"]);
+                    $candidato-> setBi($dados["bi"]);
+                    $candidato-> setEmail($dados["email"]);
+                    $candidato-> setTelefone($dados["telefone"]);
+                    $candidato-> setDtNasc(date('d-m-Y', strtotime($dados["dtNasc"])));
+                    $candidato-> setIdNacionalidade($dados["idnacionalidade"]);
+                    $candidato-> setNacionalidade($dados["nacionalidade"]);
+                    $candidato-> setIdEstado($dados["idestado"]);
+                    $candidato-> setDtCriacao(date('d-m-Y', strtotime($dados["dtCriacao"])));
+                    $candidato-> setDtEdicao(date('d-m-Y',strtotime($dados["dtEdicao"])));
+                    $candidato-> setNomeMae($dados["nomemae"]);
+                    $candidato-> setNomePai($dados["nomepai"]);
+                    $candidato-> setMorada($dados["morada"]);
+                    $candidato->setIdSexo($dados['idsexo']);
+                    $candidato->setSexo($dados['sexo']);
+                }
+            }
 
+            return $candidato;
+        }
+    }
+    
+
+
+
+        # CRINAOD A FUNÇÃO QUE RETURNA O CANDIDATO VIA ID
+    public function getByEmail($email) {
+
+        $candidato = new Candidato();
+        $query = $this->conexao->prepare("SELECT * FROM verCandidato WHERE email = ?");
+        $query->bind_param('s', $email);
+        if($query->execute()) {
+
+            $result      = $query->get_result();
+            while($dados = $result->fetch_assoc()) {
+                $candidato = new Candidato();
+                if($dados['idestado'] == 1) {
+                    $candidato-> setId($dados["idCandidato"]);
+                    $candidato-> setNome($dados["nome"]);
+                    $candidato-> setBi($dados["bi"]);
+                    $candidato-> setEmail($dados["email"]);
+                    $candidato-> setTelefone($dados["telefone"]);
+                    $candidato-> setDtNasc(date('d-m-Y', strtotime($dados["dtNasc"])));
+                    $candidato-> setIdNacionalidade($dados["idnacionalidade"]);
+                    $candidato-> setNacionalidade($dados["nacionalidade"]);
+                    $candidato-> setIdEstado($dados["idestado"]);
+                    $candidato-> setDtCriacao(date('d-m-Y', strtotime($dados["dtCriacao"])));
+                    $candidato-> setDtEdicao(date('d-m-Y',strtotime($dados["dtEdicao"])));
+                    $candidato-> setNomeMae($dados["nomemae"]);
+                    $candidato-> setNomePai($dados["nomepai"]);
+                    $candidato-> setMorada($dados["morada"]);
+                    $candidato->setIdSexo($dados['idsexo']);
+                    $candidato->setSexo($dados['sexo']);
+                }
             }
         }
 
@@ -351,21 +431,23 @@ class CrudCandidato extends Conexao {
 
             $dados = $result->fetch_assoc();
             $candidato = new Candidato();
-                    $candidato-> setId($dados["idCandidato"]);
-                    $candidato-> setNome($dados["nome"]);
-                    $candidato-> setBi($dados["bi"]);
-                    $candidato-> setEmail($dados["email"]);
-                    $candidato-> setTelefone($dados["telefone"]);
-                    $candidato-> setDtNasc($dados["dtNasc"]);
-                    $candidato-> setIdNacionalidade($dados["idnacionalidade"]);
-                    $candidato-> setNacionalidade($dados["nacionalidade"]);
-                    $candidato-> setIdEstado($dados["idestado"]);
-                    $candidato-> setDtCriacao(date('d-m-Y', strtotime($dados["dtCriacao"])));
-                    $candidato-> setDtEdicao(date('d-m-Y',strtotime($dados["dtEdicao"])));
-                    $candidato-> setNomeMae($dados["nomemae"]);
-                    $candidato-> setNomePai($dados["nomepai"]);
-                    $candidato-> setMorada($dados["morada"]);
-                    $candidato-> setSenha($dados["senha"]);
+                    if($dados['idestado'] == 1) {
+                        $candidato-> setId($dados["idCandidato"]);
+                        $candidato-> setNome($dados["nome"]);
+                        $candidato-> setBi($dados["bi"]);
+                        $candidato-> setEmail($dados["email"]);
+                        $candidato-> setTelefone($dados["telefone"]);
+                        $candidato-> setDtNasc($dados["dtNasc"]);
+                        $candidato-> setIdNacionalidade($dados["idnacionalidade"]);
+                        $candidato-> setNacionalidade($dados["nacionalidade"]);
+                        $candidato-> setIdEstado($dados["idestado"]);
+                        $candidato-> setDtCriacao(date('d-m-Y', strtotime($dados["dtCriacao"])));
+                        $candidato-> setDtEdicao(date('d-m-Y',strtotime($dados["dtEdicao"])));
+                        $candidato-> setNomeMae($dados["nomemae"]);
+                        $candidato-> setNomePai($dados["nomepai"]);
+                        $candidato-> setMorada($dados["morada"]);
+                        $candidato-> setSenha($dados["senha"]);
+                    }
             
                 return $candidato;
             
@@ -377,5 +459,19 @@ class CrudCandidato extends Conexao {
          $query->close();
          #FECHANDO A CONEXÃO
          $this->conexao->close();
+    }
+
+
+    # FUNÇÃO PARA PEGAR O ÚTILMO ID COM NÚMERO DO TELEFONE DO CANDIDATO
+    public function getMaxId($tel) {
+
+        $query = $this->conexao->prepare("SELECT MAX(idCandidato) FROM tbCandidato WHERE telefone = ?");
+        $query->bind_param('s', $tel);
+
+        $query->execute();
+        $result      = $query->get_result();
+        $dados = $result->fetch_array();
+
+        return $dados[0];
     }
 }

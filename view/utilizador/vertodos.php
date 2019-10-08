@@ -18,7 +18,7 @@
                         </div>
                     </form>
 
-                    <a href="#" class="ml-auto btn btn-sm btn-primary shadow-sm">
+                    <a href="../../util/relatorio/relatorio-utilizador.php" class="ml-auto btn btn-sm btn-primary shadow-sm">
                         <i class="fas fa-download fa-sm text-white-50">
 
                         </i> Gerar relatório</a>
@@ -77,7 +77,7 @@
                                                             <td>'.$value->getDtCriacao().'</td>
                                                             <td>'.$value->getDtEdicao().'</td>
                                                             <td>
-                                                                <a href="editar.php?id='.$value->getId().'" class="btn btn-outline-secondary"><i class="fas fa-pen    "></i></a>
+                                                                <a href="editar.php?id='.$value->getId().'" class="btn btn-outline-secondary"><i class="fas fa-pen"></i></a>
                                                             </td>
                                                             <td>
                                                                 <a href="#"  data-toggle="modal" data-target="#delete'.$value->getId().'" class="btn btn-outline-danger"><i class="far fa-trash-alt"></i></a>

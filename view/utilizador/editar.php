@@ -9,20 +9,22 @@ if(isset($_GET['id'])) {
     include_once('../../Util/clear-var.php');
     $clean = new Clear();
 
-    $id = $clean->intGET('id');
-        if($id != null) {
+    $iduser = $clean->intGET('id');
+        if($iduser != null) {
             $userData = new CrudUtilizador();
-            $user  = $userData->getById($id);
+            $user  = $userData->getById($iduser);
+
+           
             if($user == null) {
-                header('Location: ../index.html');
+                header('Location: ../');
             }
 
         } else {
-            header('Location: ../index.html');
+            header('Location: ../');
         } 
     
     } else {
-        header('Location: ../index.html');
+        header('Location: ../');
     } 
 
 
@@ -49,7 +51,8 @@ if(isset($_GET['id'])) {
                                 utilizador</h1>
                             <hr>
                         </div>
-                        <form class="user" method="POST">
+                        <form class="user" method="POST" id="form">
+                        <input type="hidden" name="id" value="<?php echo $user->getId(); ?>">
                             <div class="form-group row">
                                 <div class="col-sm-6 mb-3 mb-sm-0">
                                     <label for="nome">Nome</label>
@@ -64,7 +67,8 @@ if(isset($_GET['id'])) {
                             </div>
                             <div class="form-group row">
 
-                                <div class="<?php echo $user->getIdTipoUtilizador() != 11 ? 'col-sm-3 mb-3 mb-sm-0' : 'col-sm-6 mb-3 mb-sm-0' ?>">
+                                <div
+                                    class="<?php echo $utilizador->getIdTipoUtilizador() != 11 ? 'col-sm-3 mb-3 mb-sm-0' : 'col-sm-6 mb-3 mb-sm-0' ?>">
                                     <div class="form-group">
                                         <label for="telefone">Telefone</label>
                                         <input type="tel" class="form-control" id="telefone" placeholder="Telefone"
@@ -73,12 +77,12 @@ if(isset($_GET['id'])) {
                                     </div>
                                 </div>
 
-                                    <?php 
+                                <?php 
 
                                     include_once('../../controller/crud-sexo.php');
                                     $select = new CrudSexo();
 
-                                    if($user->getIdTipoUtilizador() != 11) {
+                                    if($utilizador->getIdTipoUtilizador() != 11) {
                                         echo '<div class="col-sm-3 mb-3 mb-sm-0 ">
                                         <label>Sexo</label>
                                         <select class="custom-select" required="required" name="sexo">';
@@ -103,13 +107,13 @@ if(isset($_GET['id'])) {
                             </div>
                             <div class="form-group row">
 
-                                
-                                                     <?php 
+
+                                                 <?php 
 
                                                         include_once('../../controller/crud-sexo.php');
                                                         $select = new CrudSexo();
 
-                                                        if($user->getIdTipoUtilizador() == 11) {
+                                                        if($utilizador->getIdTipoUtilizador() == 11) {
                                                             echo '<div class="col-sm-3 mb-3 mb-sm-0 ">
                                                             <label>Sexo</label>
                                                             <select class="custom-select" required="required" name="sexo">';
@@ -119,15 +123,15 @@ if(isset($_GET['id'])) {
                                                         }
                                                        
                                                      ?>
-                                   
 
-                                                      <?php
+
+                                                  <?php
 
                                                         include_once('../../controller/crud-estado.php');
                                                         $select = new CrudEstado();
                                                         
 
-                                                      if($user->getIdTipoUtilizador() == 11) {
+                                                      if($utilizador->getIdTipoUtilizador() == 11) {
                                                           echo '<div class="col-sm-3 mb-3 mb-sm-0 ">
                                                                   <label>Estado</label>
                                                                     <select class="custom-select" required="required" name="estado">';
@@ -141,12 +145,12 @@ if(isset($_GET['id'])) {
 
 
 
-                                                         <?php
+                                                     <?php
 
                                                           include_once('../../controller/crud-tipoUser.php');
                                                           $select = new CrudTipoUser();
 
-                                                          if($user->getIdTipoUtilizador() == 11) {
+                                                          if($utilizador->getIdTipoUtilizador() == 11) {
                                                                 echo '<div class="col-sm-6 mb-3 mb-sm-0 ">
                                                                 <label>Tipo de utilizador</label>
             
@@ -166,43 +170,7 @@ if(isset($_GET['id'])) {
                                 EDITAR
                             </button>
 
-
-                            <?php
-                                            include_once('../../model/utilizador.php');
-                                            include_once('../../controller/crud-utilizador.php');
-
-                                            $clean = new Clear();
-                                            #ABRINDO A CONEXÃO
-                                            $clean->connect();
-
-
-                                          if(isset($_POST['editar'])) {
-
-                                                 # LIMPANDO AS VARIAVÉIS
-                                                $nome               = $clean->specialChars('nome');
-                                                $email              = $clean->email('email');
-                                                $telefone           = $clean->int('telefone');
-                                                $senha              = $clean->specialChars('senha');
-                                                $sexo               = $clean->int('sexo');
-                                                $tipoUtilizador     = $clean->int('tipoutilizador');
-                                                $estado             = $clean->int('estado');
-
-                                                $model = new Utilizador();
-                                                $model->setId($id);
-                                                $model->setNome($nome);
-                                                $model->setEmail($email);
-                                                $model->setTelefone($telefone);
-                                                $model->setSenha(md5($senha));
-                                                $model->setIdSexo($sexo);
-                                                $model->setIdTipoUtilizador($tipoUtilizador);
-                                                $model->setIdEstado($estado);
-                                                $model->setIdEstado($_POST['estado']);
-                                                $model->setDtEdicao(date('Y-m-d H:s'));
-
-                                                $insert = new CrudUtilizador();
-                                                $insert->update($model);
-                                          }
-                                          ?>
+                                <div class="aviso"></div>
 
                         </form>
 
@@ -216,3 +184,63 @@ if(isset($_GET['id'])) {
     <?php
      include_once('../includes/footer-sub.php');
     ?>
+
+
+
+<script>
+    $(document).ready(function() {
+
+        aviso = $(".aviso");
+        $("#form").validate({
+            rules: {
+                nome: {
+                    required: true,
+                    minWords: 2,
+                    minlength: 2
+                },
+                email: {
+                    required: true,
+                    email: true,
+                    minlength: 6
+                },
+                telefone: {
+                    required: true,
+                    minlength: 9,
+                    
+                },
+                senha: {
+                    required: true,
+                    minlength: 4,
+                    maxlength: 15
+                },
+                confirsenha: {
+                    required: true,
+                    minlength: 4,
+                    maxlength: 15,
+                    equalTo: "#senha"
+                }
+            },
+            submitHandler:      function(_form) {
+                var form = new FormData($("#form")[0]);
+               // alert('Chegou');
+                $.ajax({
+                        url:            'action.php',
+                        type:           'post',
+                        dataType:       'json',
+                        cache:          false,
+                        processData:    false,
+                        contentType:    false,
+                        data:           form,
+                        timeout:        8000,
+                        success:        function(resultado) {
+                            if(resultado == 1) {
+                                window.location.replace('http://localhost/projectofinal/view/utilizador/vertodos.php');
+                            } else {
+                                aviso.append(resultado);
+                            }
+                        }          
+                });
+            }
+        })
+    });
+</script>

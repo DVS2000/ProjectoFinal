@@ -3,6 +3,7 @@
 include_once('../includes/header-sub.php');
 
 ?>
+
                 <div class="container-fluid">
 
                     <div class="card o-hidden border-0 shadow-lg my-1">
@@ -17,7 +18,7 @@ include_once('../includes/header-sub.php');
                                                 Curso</h1>
                                             <hr>
                                         </div>
-                                        <form class="user" method="POST">
+                                        <form class="user" method="POST" id="form">
                                             <div class="form-group row">
                                                 <div class="col-sm-6 mb-3 mb-sm-0">
                                                     <label for="nome">Nome</label>
@@ -73,16 +74,24 @@ include_once('../includes/header-sub.php');
                                             </button>
 
                                             <?php
-                                          include_once('../../model/curso.php');
-                                          include_once('../../controller/crud-curso.php');
-                                          # INCLUIDO O FICHEIRO QUE VAI FAZER A LIMPEZA DAS VARIAVEL
-                                          include_once('../../Util/clear-var.php');
+                                            include_once('../../model/curso.php');
+                                            include_once('../../controller/crud-curso.php');
+                                            # INCLUIDO O FICHEIRO QUE VAI FAZER A LIMPEZA DAS VARIAVEL
+                                            include_once('../../Util/clear-var.php');
 
-                                           $clean = new Clear();
+                                            $clean = new Clear();
 
                                           if(isset($_POST['guardar'])) {
 
-
+                                                 if(empty($_POST['requisitos']) || empty($_POST['requisitos'])) {
+                                                    echo '<div class="alert alert-danger mt-5 alert-dismissible fade show" role="alert">
+                                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                      <span aria-hidden="true">&times;</span>
+                                                      <span class="sr-only">Close</span>
+                                                    </button>
+                                                       <h4 class="alert-heading">Preencha todos os campos.</h4>
+                                                    </div>';
+                                                 } else {
                                                 # ============LIMPANDO AS VARIÁVEIS============== #
                                                 $clean->connect();
                                                 $nome         = $clean->specialChars('nome');
@@ -101,8 +110,8 @@ include_once('../includes/header-sub.php');
                                                 $model->setDtCriacao(date('Y-m-d H:s'));
                                                 $model->setDtEdicao(date('Y-m-d H:s'));
                                                 $insert = new CrudCurso();
-                                                $insert->insert($model);
-                                                
+                                                $insert->insert($model); 
+                                             }
                                           }
                                           ?>
 
@@ -121,10 +130,11 @@ include_once('../includes/header-sub.php');
     <?php
     include_once('../includes/footer-sub.php');
     ?>
-        <!-- Page level custom scripts -->
+
         <script src="../../src/ckeditor.js"></script>
 
         <script>
+
         ClassicEditor
             .create(document.querySelector('#editor'), {
                 toolbar: [
@@ -173,3 +183,5 @@ include_once('../includes/header-sub.php');
                 console.error(err.stack);
             });
         </script>
+
+

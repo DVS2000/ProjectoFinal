@@ -30,7 +30,7 @@ class CrudNacionalidade extends Conexao {
             $query->store_result();
             if($query->num_rows > 0) {
 
-                echo '<div class="alert alert-danger mt-5 alert-dismissible fade show" role="alert">
+                return '<div class="alert alert-danger mt-5 alert-dismissible fade show" role="alert">
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                   <span class="sr-only">Close</span>
@@ -45,7 +45,7 @@ class CrudNacionalidade extends Conexao {
                  $query->bind_param('ssss',$descricao, $idEstado, $dtCriacao, $dtEdicao);
 
                 if($query->execute()) {
-                    echo '<div class="alert alert-success mt-5 alert-dismissible fade show" role="alert">
+                    return '<div class="alert alert-success mt-5 alert-dismissible fade show" role="alert">
                                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                         <span class="sr-only">Close</span>
@@ -55,7 +55,7 @@ class CrudNacionalidade extends Conexao {
                                         <p class="mb-0">'.date('d-m-Y H:s').'</p>
                                     </div>';
                         } else {
-                            echo '<div class="alert alert-success mt-5 alert-dismissible fade show" role="alert">
+                            return '<div class="alert alert-success mt-5 alert-dismissible fade show" role="alert">
                             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                                 <span class="sr-only">Close</span>
@@ -69,7 +69,7 @@ class CrudNacionalidade extends Conexao {
             }
 
         } else {
-            echo '<div class="alert alert-danger mt-5 alert-dismissible fade show" role="alert">
+            return '<div class="alert alert-danger mt-5 alert-dismissible fade show" role="alert">
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
               <span aria-hidden="true">&times;</span>
               <span class="sr-only">Close</span>
@@ -103,7 +103,7 @@ class CrudNacionalidade extends Conexao {
             $query->store_result();
 
             if($query->num_rows > 0) {
-                echo '<div class="alert alert-danger mt-5 alert-dismissible fade show" role="alert">
+                return '<div class="alert alert-danger mt-5 alert-dismissible fade show" role="alert">
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                   <span class="sr-only">Close</span>
@@ -116,22 +116,22 @@ class CrudNacionalidade extends Conexao {
                 $query = $this->conexao->prepare("UPDATE tbnacionalidade SET descricao = ?, idestado = ?, dtEdicao = ? WHERE idnacionalidade = ?");
                 $query->bind_param('ssss', $descricao, $idEstado, $dtEdicao, $id);
                 if($query->execute()) {
-                    echo '<div class="alert alert-success mt-5 alert-dismissible fade show" role="alert">
+                    return '<div class="alert alert-success mt-5 alert-dismissible fade show" role="alert">
                             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                                 <span class="sr-only">Close</span>
                                 </button>
-                                <h4 class="alert-heading">'.$model->getDescricao().'</h4>
+                                <h4 class="alert-heading">'.$descricao.'</h4>
                                 <p>Foi editado com sucesso!</p>
                                 <p class="mb-0">'.date('d-m-Y H:s').'</p>
                             </div>';
                 } else {
-                    echo '<div class="alert alert-success mt-5 alert-dismissible fade show" role="alert">
+                    return '<div class="alert alert-success mt-5 alert-dismissible fade show" role="alert">
                             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                                 <span class="sr-only">Close</span>
                                 </button>
-                                <h4 class="alert-heading">'.$model->getDescricao().'</h4>
+                                <h4 class="alert-heading">'.$descricao.'</h4>
                                 <p>Não foi editado com sucesso!</p>
                                 <p class="mb-0">'.date('d-m-Y H:s').'</p>
                             </div>';
@@ -139,7 +139,7 @@ class CrudNacionalidade extends Conexao {
             }
 
         } else {
-            echo '<div class="alert alert-danger mt-5 alert-dismissible fade show" role="alert">
+            return '<div class="alert alert-danger mt-5 alert-dismissible fade show" role="alert">
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
               <span aria-hidden="true">&times;</span>
               <span class="sr-only">Close</span>
@@ -176,7 +176,7 @@ class CrudNacionalidade extends Conexao {
     # CRIANDO A FUNÇÃO PARA LISTAR TODAS NACIONALIDADE
     public function select() {
 
-        $query     = $this->conexao->prepare("SELECT * FROM tbnacionalidade WHERE idestado <> 2");
+        $query     = $this->conexao->prepare("SELECT * FROM tbnacionalidade WHERE idestado <> 2 ORDER BY descricao");
         $query     ->execute();
         $result    = $query->get_result();
         $nacional  = array();
@@ -274,8 +274,8 @@ class CrudNacionalidade extends Conexao {
             $objecto->      setId($dados["idnacionalidade"]);
             $objecto->      setDescricao($dados["descricao"]);
             $objecto->      setIdEstado($dados["idestado"]);
-            $objecto->      setDtCriacao($dados["dtCriacao"]);
-            $objecto->      setDtEdicao($dados["dtEdicao"]);
+            $objecto->      setDtCriacao(date('d-m-Y', strtotime($dados["dtCriacao"])));
+            $objecto->      setDtCriacao(date('d-m-Y', strtotime($dados["dtEdicao"])));
             $nacional[] = $objecto;
         }
 
@@ -295,8 +295,8 @@ class CrudNacionalidade extends Conexao {
             $objecto->      setId($dados["idnacionalidade"]);
             $objecto->      setDescricao($dados["descricao"]);
             $objecto->      setIdEstado($dados["idestado"]);
-            $objecto->      setDtCriacao($dados["dtCriacao"]);
-            $objecto->      setDtEdicao($dados["dtEdicao"]);
+            $objecto->      setDtCriacao(date('d-m-Y', strtotime($dados["dtCriacao"])));
+            $objecto->      setDtCriacao(date('d-m-Y', strtotime($dados["dtEdicao"])));
             
         }
 

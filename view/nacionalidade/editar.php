@@ -46,10 +46,11 @@ if(isset($_GET['id'])) {
                                 Nacionalidade</h1>
                             <hr>
                         </div>
-                        <form class="user" method="POST">
+                        <form class="user" method="POST" id="form">
                             <div class="form-group row">
                                 <div class="col-sm-6 mb-3 mb-sm-0">
                                     <label for="nome">Nome</label>
+                                    <input type="hidden" name="id" value="<?php echo $nacional->getId(); ?>">
                                     <input type="text" class="form-control " id="nome" placeholder="Nome"
                                         required="required" name="nome"
                                         value="<?php echo $nacional->getDescricao(); ?>">
@@ -64,37 +65,14 @@ if(isset($_GET['id'])) {
                                                         $select->select($nacional->getIdEstado());
 
                                                         ?>
-                                    </select>
-                                </div>
-
-                            </div>
-
-
-                            <?php
-                                          include_once('../../model/nacionalidade.php');
-                                          include_once('../../controller/crud-nacionalidade.php');
-                                          if(isset($_POST['editar'])) {
-
-                                                # LIMPANDO AS VARIAVÉL
-                                                $descricao          = $clean->specialChars('nome');
-                                                $estado             = $clean->int('estado');
-
-                                                $model = new Nacionalidade();
-                                                $model->setId($id);
-                                                $model->setDescricao($descricao);                                               
-                                                $model->setIdEstado($estado);
-                                                $model->setDtEdicao(date('Y-m-d'));
-                                                $insert = new CrudNacionalidade();
-                                                $insert->update($model);
-                                          }
-                                          ?>
-
-
+                                                </select>
+                                            </div>
+                                        </div>
                             <button class="btn btn-primary ml-auto mt-2" name="editar">
                                 EDITAR
                             </button>
 
-
+                            <div class="aviso"></div>
                         </form>
 
 
@@ -108,6 +86,46 @@ if(isset($_GET['id'])) {
 </div>
 
 
-<?php
+                <?php
                 include_once('../includes/footer-sub.php');
                 ?>
+
+
+<script>
+    $(document).ready(function() {
+
+       
+
+        aviso = $(".aviso");
+
+        $("#form").validate({
+        rules: {
+            nome: {
+                required: true,
+                minlength:4
+            },
+        },
+        submitHandler: function(_form) {
+            var form = new FormData($("#form")[0]);
+            nome = $("#nome");
+            
+
+            $.ajax({
+                url:            'action.php',
+                type:           'post',
+                dataType:       'json',
+                cache:          false,
+                processData:    false,
+                contentType:    false,
+                data:           form,
+                timeout:        8000,
+                success:         function(resultado) {
+                    window.location.replace('http://localhost/projectofinal/view/nacionalidade/vertodos.php');
+                    nome.val('');
+                  //  aviso.append(resultado);
+                }   
+            });
+        }
+    });
+    });
+</script>

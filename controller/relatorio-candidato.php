@@ -26,7 +26,6 @@ class RelatorioCandidato extends Conexao {
             $mesActual      = date('m');
             $mesActual      = strpos($mesActual, '0') == 0 ? substr($mesActual, 1,1) : $mesActual;
 
-            echo $mes."<br>". $mesActual."<br>".$dados['mes']."<br>";
 
             if($mes != $mesActual) {
                 $query = $this->conexao->prepare("INSERT INTO tbrelatoriocandidato(numCandidatos, mes) VALUES(1, ?)");
@@ -44,4 +43,29 @@ class RelatorioCandidato extends Conexao {
                 echo "Ocorre um erro";
         }
     }
+
+
+    public function select() {
+
+        $query = $this->conexao->prepare("SELECT * FROM tbrelatoriocandidato ORDER BY mes");
+        
+        $relatorios = array();
+        if($query->execute()) {
+         $results =  $query->get_result();
+
+         while ($dados = $results->fetch_assoc()) {
+                $objecto = new ChartCandidato();
+                $objecto->setId($dados['id']);
+                $objecto->setNumCand($dados['numCandidatos']);
+                $objecto->setMes($dados['mes']);
+                $relatorios[] = $objecto;
+         }
+            
+          return $relatorios;
+        } else {
+            return new ChartCandidato();
+        }
+    }
 }
+
+

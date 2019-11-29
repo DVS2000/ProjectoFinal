@@ -102,7 +102,7 @@ if(isset($_GET['id'])) {
                                 <div class="col-sm-3 mb-3 mb-sm-0">
                                     <label for="confsenha">Confirmar senha</label>
                                     <input type="password" class="form-control" id="confsenha"
-                                        placeholder="Confirmar senha" required="required" name="confsenha">
+                                        placeholder="Confirmar senha" required="required" name="confirsenha">
                                 </div>
                             </div>
                             <div class="form-group row">

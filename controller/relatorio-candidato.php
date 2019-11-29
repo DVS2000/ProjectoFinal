@@ -12,7 +12,8 @@ class RelatorioCandidato extends Conexao {
 
     public function UpdateRelatorio() {
 
-        $query = "SELECT MAX(id) FROM tbrelatoriocandidato";
+        $mes = date("m");
+        $query = "SELECT MAX(id) FROM tbrelatoriocandidato WHERE mes = $mes";
         if($result = mysqli_query($this->conexao, $query)) {
             
             $dados = mysqli_fetch_array($result);
@@ -23,6 +24,7 @@ class RelatorioCandidato extends Conexao {
             $dados          = mysqli_fetch_assoc($result);
             $numCandidato   = $dados['numCandidatos'];
             $mes            = $dados['mes'];
+            $mes            = substr($mes, 0,1) == "0" ? substr($mes, 1,1) : $mes;
             $mesActual      = date('m');
             $mesActual      = strpos($mesActual, '0') == 0 ? substr($mesActual, 1,1) : $mesActual;
 

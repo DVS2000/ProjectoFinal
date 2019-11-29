@@ -383,7 +383,7 @@ $clear = new Clear();
                         style="visibility: visible; -webkit-animation-delay: .4s; -moz-animation-delay: .4s; animation-delay: .4s;">
                         A segurança é a nossa prioridade!
                     </h4>
-                    <a class="btn btn-outline-primary animated fadeInUp" data-toggle="modal" data-target="#loginModal"
+                    <a class="btn btn-outline-primary animated fadeInUp" href="#curso"
                         data-wow-delay=".4s"
                         style="visibility: visible; -webkit-animation-delay: .4s; -moz-animation-delay: .4s; animation-delay: .4s; cursor: pointer;">
                         FAZ A TUA PRÉ-INSCRIÇÃO
@@ -403,10 +403,10 @@ $clear = new Clear();
                     <h4 class="animated wow fadeInUp" data-wow-delay=".4s"
                         style="visibility: visible;-webkit-animation-delay: .4s; -moz-animation-delay: .4s; animation-delay: .4s;">
                         Prioridade ao ensino de uma condução segura e consciente.</h4>
-                    <a class="btn btn-outline-primary animated fadeInUp" data-toggle="modal" data-target="#loginModal"
+                    <a class="btn btn-outline-primary animated fadeInUp" href="#curso"
                         data-wow-delay=".4s"
                         style="visibility: visible; -webkit-animation-delay: .4s; -moz-animation-delay: .4s; animation-delay: .4s; cursor: pointer;">
-                        FAZ A TUA PRÉ-INSCRIÇÃO
+                        FAZ A TUA INSCRIÇÃO
                     </a>
                 </div>
             </div>
@@ -422,10 +422,10 @@ $clear = new Clear();
                         style="visibility: visible; -webkit-animation-delay: .4s; -moz-animation-delay: .4s; animation-delay: .4s;">
                         Nós ensinamos técnicas de condução defensiva para todas as situações. Aqui os campeões conduzem
                         com segurança.</h4>
-                    <a class="btn btn-outline-primary animated fadeInUp" data-toggle="modal" data-target="#loginModal"
+                    <a class="btn btn-outline-primary animated fadeInUp" href="#curso"
                         data-wow-delay=".4s"
                         style="visibility: visible; -webkit-animation-delay: .4s; -moz-animation-delay: .4s; animation-delay: .4s; cursor: pointer;">
-                        FAZ A TUA PRÉ-INSCRIÇÃO
+                        FAZ A TUA INSCRIÇÃO
                     </a>
                 </div>
             </div>
@@ -602,36 +602,27 @@ $clear = new Clear();
             <div class="container">
                 <div class="row mt-3">
                     <div class="col-sm-4">
-                        <div class="card p-2">
+                        <div class=" p-2">
 
                             <p class="text-justify">
-                                Ao longo da sua vida a escola manteve o seu foco nas necessidades dos emigrantes tendo
-                                sido igualmente adaptada e melhorada para o público nacional. A Escola de Condução ‘do
-                                Emigrante’ orgulha-se de servir há mais de 30 anos feitos de imenso sucesso – comprovado
-                                pelas suas taxas de aprovação que são das mais altas do país.
+                                
                             </p>
                         </div>
                     </div>
                     <div class="col-sm-4">
-                        <div class="card p-2">
+                        <div class=" p-2">
 
-                            <p class="text-justify">
-                                Ao longo da sua vida a escola manteve o seu foco nas necessidades dos emigrantes tendo
-                                sido igualmente adaptada e melhorada para o público nacional. A Escola de Condução ‘do
-                                Emigrante’ orgulha-se de servir há mais de 30 anos feitos de imenso sucesso – comprovado
-                                pelas suas taxas de aprovação que são das mais altas do país.
-                            </p>
+                            <h4 class="text-justify">
+                               
+                            </h4>
                         </div>
                     </div>
                     <div class="col-sm-4">
-                        <div class="card p-2">
+                        <div class=" p-2">
 
 
                             <p class="text-justify">
-                                Ao longo da sua vida a escola manteve o seu foco nas necessidades dos emigrantes tendo
-                                sido igualmente adaptada e melhorada para o público nacional. A Escola de Condução ‘do
-                                Emigrante’ orgulha-se de servir há mais de 30 anos feitos de imenso sucesso – comprovado
-                                pelas suas taxas de aprovação que são das mais altas do país.
+                                
                             </p>
                         </div>
                     </div>

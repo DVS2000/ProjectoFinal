@@ -18,11 +18,7 @@ include_once('../includes/header-sub.php');
             </div>
         </form>
 
-        <a href="#" class="ml-auto btn btn-sm btn-primary shadow-sm">
-            <i class="fas fa-download fa-sm text-white-50">
-
-            </i> Gerar relatório</a>
-
+      
     </div>
     <div class="card o-hidden border-0 shadow-lg my-1">
         <div class="card-body p-0">

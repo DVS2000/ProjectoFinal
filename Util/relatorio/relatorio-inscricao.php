@@ -3,7 +3,10 @@
 
 include_once('index.php');
 
-	
+	$sms = "";
+	if(isset($_GET['search'])) {
+		$sms = '<h1>PESQUISADO POR: '.$_GET['search'].'</h1> </br>';
+	}
 	$html = '  
 
 	<div class="mrl-auto">
@@ -11,6 +14,8 @@ include_once('index.php');
 	</div>
 	<div class="mr-auto">
 	<h1 style="text-transform: uppercase; font-size: 30pt;">Relatório de Todas Inscrição</h1>
+	'.$sms.'
+	
 	Data: '.date('d-m-Y').'
 	</div>
 
@@ -36,7 +41,16 @@ include_once('index.php');
 	include_once('../../controller/crud-inscricao.php');
 
      $select = new CrudInscricao();
-     $dados  = $select->select();
+		if(isset($_GET['search'])) {
+			$search = $_GET['search'];
+			if($search != null) {
+				$dados = $select->search($search);
+			} else {
+				$dados = $select->select();
+			}
+		} else {
+			$dados = $select->select();
+		}
               foreach ($dados as $key => $value) {
               $html .= '<tr>
 							<td>'.$value->getNomeCand().'</td>

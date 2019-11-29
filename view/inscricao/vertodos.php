@@ -18,7 +18,7 @@ include_once('../includes/header-sub.php');
             </div>
         </form>
 
-        <a href="../../util/relatorio/relatorio-inscricao.php" class="ml-auto btn btn-sm btn-primary shadow-sm">
+        <a href="<?php echo isset($_GET['search']) ? "../../util/relatorio/relatorio-inscricao.php?search=".$_GET['search'] : "../../util/relatorio/relatorio-inscricao.php"; ?>" class="ml-auto btn btn-sm btn-primary shadow-sm">
             <i class="fas fa-download fa-sm text-white-50">
 
             </i> Gerar relatório</a>

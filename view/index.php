@@ -107,16 +107,15 @@ include_once('includes/header.php');
 
 
           <div class="row animated wow fadeIn" style="visibility: visible; -webkit-animation-delay: .6s; -moz-animation-delay: .6s; animation-delay: .6s;">
-          
-            <!-- Area Chart -->
+
             <div class="col-xl-12 col-lg-7">
               <div class="card shadow-sm mb-4">
-                <!-- Card Header - Dropdown -->
+               
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                   <h6 class="m-0 font-weight-bold text-primary" style="text-transform: uppercase">Rendimento Anual dos Candidatos</h6>
-                  <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Gerar relatório</a>
+                  
                 </div>
-                <!-- Card Body -->
+               
                 <div class="card-body">
                   <div class="chart-area">
                     <canvas id="myAreaChart"></canvas>
@@ -126,10 +125,7 @@ include_once('includes/header.php');
             </div>
 
         </div>
-        <!-- /.container-fluid -->
-
       </div>
-      <!-- End of Main Content -->
 
    <?php
    # INCLUINDO O RODAPÉ

@@ -373,8 +373,6 @@ class CrudCandidato extends Conexao {
     }
     
 
-
-
         # CRINAOD A FUNÇÃO QUE RETURNA O CANDIDATO VIA ID
     public function getByEmail($email) {
 

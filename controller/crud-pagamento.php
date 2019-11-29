@@ -118,8 +118,8 @@ class CrudPagamento extends Conexao {
 
         $search = "%{$nomeCand}%";
 
-        $query = $this->conexao->prepare("SELECT * FROM verPagamento WHERE nome LIKE ? ORDER BY nome");
-        $query->bind_param('s', $search);
+        $query = $this->conexao->prepare("SELECT * FROM verPagamento WHERE nome LIKE ? AND estado = 1 OR curso LIKE ? AND estado = 1 ORDER BY nome");
+        $query->bind_param('ss', $search, $search);
 
         $pagamentos = array();
 

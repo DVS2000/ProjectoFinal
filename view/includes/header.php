@@ -160,9 +160,7 @@ if(isset($_SESSION['idUtlizador'])) {
         if($user->getIdTipoUtilizador() == 11) { 
       echo '
       <hr class="sidebar-divider">
-        <div class="sidebar-heading">
-        TABELAS
-        </div>
+       
         <li class="nav-item">
             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#candidato" aria-expanded="true" aria-controls="collapsePages">
               <i class="fas fa-clipboard-list    "></i>

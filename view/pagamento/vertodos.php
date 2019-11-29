@@ -18,7 +18,7 @@ include_once('../includes/header-sub.php');
             </div>
         </form>
 
-        <a href="../../util/relatorio/relatorio-pagamento.php" class="ml-auto btn btn-sm btn-primary shadow-sm">
+        <a href="<?php echo isset($_GET['search']) ? "../../util/relatorio/relatorio-pagamento.php?search=".$_GET['search'] : "../../util/relatorio/relatorio-pagamento.php"; ?>" class="ml-auto btn btn-sm btn-primary shadow-sm">
             <i class="fas fa-download fa-sm text-white-50">
 
             </i> Gerar relatório</a>
@@ -31,7 +31,7 @@ include_once('../includes/header-sub.php');
                     <div class="p-3 mt-5">
                         <div class="text-left">
                             <h1 class="h4 text-gray-900 mb-2 font-weight-bold" style="text-transform: uppercase">Todos
-                                Pagamentos</h1>
+                                Pagamentos Confirmados</h1>
                         </div>
                         <table class="table table-striped">
                             <thead>

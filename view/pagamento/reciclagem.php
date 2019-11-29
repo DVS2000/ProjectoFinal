@@ -18,11 +18,7 @@ include_once('../includes/header-sub.php');
             </div>
         </form>
 
-        <a href="#" class="ml-auto btn btn-sm btn-primary shadow-sm">
-            <i class="fas fa-download fa-sm text-white-50">
-
-            </i> Gerar relatório</a>
-
+      
     </div>
     <div class="card o-hidden border-0 shadow-lg my-3">
         <div class="card-body p-0">
@@ -31,7 +27,7 @@ include_once('../includes/header-sub.php');
                     <div class="p-3 mt-5">
                         <div class="text-left">
                             <h1 class="h4 text-gray-900 mb-2 font-weight-bold" style="text-transform: uppercase">Todos
-                                Pagamentos</h1>
+                                Pagamentos Não Confirmados</h1>
                         </div>
                         <table class="table table-striped">
                             <thead>

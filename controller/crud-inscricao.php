@@ -182,8 +182,8 @@ class CrudInscricao extends Conexao {
 
         $search = "%{$nomeCand}%";
 
-        $query = $this->conexao->prepare("SELECT * FROM verInscricao WHERE idEstado <> 2 AND nome LIKE ? ORDER BY nome");
-        $query->bind_param('s', $search);
+        $query = $this->conexao->prepare("SELECT * FROM verInscricao WHERE idEstado <> 2 AND nome LIKE ? OR idEstado <> 2 AND curso LIKE ? ORDER BY nome");
+        $query->bind_param('ss', $search, $search);
 
         if($query->execute()) {
             

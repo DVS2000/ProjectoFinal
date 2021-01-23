@@ -1,7 +1,5 @@
 <?php
 
-
-
 class Conexao {
 
     /* VARIAVES DO SERVIDOR */
@@ -19,6 +17,7 @@ class Conexao {
        $this->conexao = new mysqli(self::SERVERNAME, self::USERNAME, self::PASSWORD, self::BDNAME);
        $this->conexao->set_charset('UTF8');
 
+       # SE TIVER ALGUM ERRO ELE ENVIA O USER NA PÁGINA DE ERRO
         if(mysqli_connect_errno()) {
           header('Location: view/404.php');
         }

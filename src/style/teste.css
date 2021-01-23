@@ -64,21 +64,21 @@ html{
     margin-block: 0 auto;
     width: auto;
     height: 2px;
-    background-color: #0B508C;
+    background-color: #f0ad4e;
 }
 
 
 .mybtn:hover {
-    border-bottom: 2px solid #0B508C;
+    border-bottom: 2px solid #f0ad4e;
 }
 
 .mybtn2 {
-    background: #0B508C;
+    background: #f0ad4e;
     color: white !important;
     border-radius: 4px;
 }
 .mybtn2:hover {
-    border:1px solid #0B508C;
+    border:1px solid #f0ad4e;
     border-radius: 4px;
 }
 
@@ -87,7 +87,7 @@ html{
 }
 .mytitle::after {
     content: '';
-    background-color: #0B508C;
+    background-color: #f0ad4e;
     display: block;
     margin-block: 0px auto;
     width: 100px;
@@ -111,7 +111,7 @@ a.back-to-top {
     position: fixed;
     padding: 5px;
     bottom: 18px;
-    background-color: #0B508C;
+    background-color: #f0ad4e;
     border-radius: 100px;
     right: 15px;
     text-decoration: none;
@@ -133,14 +133,14 @@ a.back-to-top {
   }
 
   .btn-outline-primary:hover {
-      border-color: #0B508C !important;
-    background: #0B508C !important;
+      border-color: #f0ad4e !important;
+    background: #f0ad4e !important;
     color: #fff !important;
 }
 
 
 .btn-primary {
-    background-color: #0B508C !important;
+    background-color: #f0ad4e !important;
 }
 
 /*********************** Demo - 1 *******************/
@@ -178,8 +178,8 @@ body{background-color:#f1f1f2}
 .box3:after,.box3:before{display:block;background:rgba(0,0,0,.3);top:10%;bottom:10%;z-index:1;transform:scale(0,1)}
 .box3:after{top:10.8%;bottom:10.8%;transform:scale(1,0)}
 .box3:hover:after,.box3:hover:before{transform:scale(1);animation:animate 1.5s}
-.box3:hover:before{border-top:3px solid #0B508C;border-bottom:3px solid #0B508C}
-.box:hover:after{border-left:3px solid #0B508C;border-right:3px solid #fff}
+.box3:hover:before{border-top:3px solid #f0ad4e;border-bottom:3px solid #f0ad4e}
+.box:hover:after{border-left:3px solid #f0ad4e;border-right:3px solid #fff}
 .box img{width:100%;height:auto;transition:all .3s}
 .box3:hover img{transform:scale(1.2);filter:blur(5px);-moz-filter:blur(5px);-webkit-filter:blur(5px)}
 .box3 .box-content{padding:30px 10px;top:10%;bottom:10%;opacity:0;z-index:2}

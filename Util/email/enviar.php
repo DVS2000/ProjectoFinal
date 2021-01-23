@@ -39,7 +39,7 @@ class SendEmail {
    <head>
       <style>
          .banner-color {
-         background-color: #0B508C;
+         background-color: #f0ad4e;
          }
          .title-color {
          color: #0066cc;

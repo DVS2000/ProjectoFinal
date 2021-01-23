@@ -749,7 +749,7 @@ $clear = new Clear();
     <div class="modal fade" id="loginModal" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
             <div class="modal-content"
-                style="border-bottom: .25rem solid #0B508C!important; border-top: .25rem solid #0B508C!important;">
+                style="border-bottom: .25rem solid #f0ad4e!important; border-top: .25rem solid #f0ad4e!important;">
                 <div class="modal-body">
                     <div class="col-lg-12 sm-6">
                         <div class="p-3">
@@ -814,7 +814,7 @@ $clear = new Clear();
     <div class="modal fade" id="criarConta" tabindex="-1" role="dialog">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content"
-                style="border-bottom: .25rem solid #0B508C!important; border-top: .25rem solid #0B508C!important;">
+                style="border-bottom: .25rem solid #f0ad4e!important; border-top: .25rem solid #f0ad4e!important;">
                 <div class="modal-body">
                     <div class="col-lg-12 sm-6">
                         <div class="p-3">
@@ -1001,7 +1001,7 @@ $clear = new Clear();
                 <div class="modal fade" id="profile" tabindex="-1" role="dialog">
                 <div class="modal-dialog modal-lg" role="document">
                     <div class="modal-content"
-                        style="border-bottom: .25rem solid #0B508C!important; border-top: .25rem solid #0B508C!important;">
+                        style="border-bottom: .25rem solid #f0ad4e!important; border-top: .25rem solid #f0ad4e!important;">
                         <div class="modal-body">
                             <div class="col-lg-12 sm-6">
                                 <div class="p-3">
@@ -1113,7 +1113,7 @@ $clear = new Clear();
             <div class="modal fade" id="editProfile" tabindex="-1" role="dialog">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content"
-                style="border-bottom: .25rem solid #0B508C!important; border-top: .25rem solid #0B508C!important;">
+                style="border-bottom: .25rem solid #f0ad4e!important; border-top: .25rem solid #f0ad4e!important;">
                 <div class="modal-body">
                     <div class="col-lg-12 sm-6">
                         <div class="p-3">
@@ -1362,7 +1362,7 @@ $clear = new Clear();
             echo '<div class="modal fade" id="inscrever'.$value->getId().'" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
             <div class="modal-content"
-                style="border-bottom: .25rem solid #0B508C!important; border-top: .25rem solid #0B508C!important;">
+                style="border-bottom: .25rem solid #f0ad4e!important; border-top: .25rem solid #f0ad4e!important;">
                 <div class="modal-body">
                     <div class="col-lg-12 sm-6">
                         <div class="p-3">

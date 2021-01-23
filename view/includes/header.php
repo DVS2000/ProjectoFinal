@@ -50,7 +50,7 @@ if(isset($_SESSION['idUtlizador'])) {
   <div id="wrapper">
 
     <!-- Sidebar -->
-    <ul class="navbar-nav sidebar sidebar-dark accordion " style="background: #0B508C" id="meuSidebar">
+    <ul class="navbar-nav sidebar sidebar-dark accordion " style="background: #f0ad4e" id="meuSidebar">
 
       <!-- Sidebar - Brand -->
       <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.php">

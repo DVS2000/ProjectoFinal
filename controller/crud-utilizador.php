@@ -6,16 +6,19 @@ include_once('conexao.php');
 # CRIANDO O CRUD DO UTILIZADOR
 
 
-class CrudUtilizador extends Conexao {
+class CrudUtilizador extends Conexao
+{
 
     # MÉTODO CONSTRUCTOR DO CLASS CRUDCRUSO
-    function __construct() {
+    function __construct()
+    {
         # INICIALIZANDO A CONEXÃO
         parent::connect();
     }
 
     # CRIANDO A FUNÇÃO PARA FAZER O INSERT NO BANCO DE DADOS
-    public function insert(Utilizador $model) {
+    public function insert(Utilizador $model)
+    {
 
         $nome           = $model->getNome();
         $email          = $model->getEmail();
@@ -25,15 +28,15 @@ class CrudUtilizador extends Conexao {
         $dtEdicao       = $model->getDtEdicao();
         $idTipoUser     = $model->getIdTipoUtilizador();
         $idEstado       = $model->getIdEstado();
-        $idSexo         = $model->getIdSexo();           
-        
+        $idSexo         = $model->getIdSexo();
+
         $query = $this->conexao->prepare("SELECT * FROM tbutilizador WHERE email = ? OR  telefone = ?");
         $query->bind_param("ss", $email, $telefone);
-        if($query->execute()) {
+        if ($query->execute()) {
 
-           $query->store_result();
+            $query->store_result();
 
-            if($query->num_rows > 0 ) {
+            if ($query->num_rows > 0) {
 
                 return '<div class="alert alert-success mt-5 alert-dismissible fade show" role="alert">
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -43,13 +46,12 @@ class CrudUtilizador extends Conexao {
                        <h4 class="alert-heading">O E-mail ou Telefone já está registado.</h4>
                        <p>Tente um outro E-mail ou Telefone, Obrigado!</p>
                     </div>';
-
             } else {
-             $query  = $this->conexao->prepare("INSERT INTO tbutilizador(nome, email, telefone, senha, dtCriacao, dtEdicao, idtbTipoUtilizador, idEstado, idSexo) 
+                $query  = $this->conexao->prepare("INSERT INTO tbutilizador(nome, email, telefone, senha, dtCriacao, dtEdicao, idtbTipoUtilizador, idEstado, idSexo) 
                 VALUES (?,?,?,?,?,?,?,?,?)");
                 $query->bind_param('ssssssiii', $nome, $email, $telefone, $senha, $dtCriacao, $dtEdicao, $idTipoUser, $idEstado, $idSexo);
 
-                if($query->execute()) {
+                if ($query->execute()) {
                     return 1;
                 } else {
                     return '<div class="alert alert-danger mt-5 alert-dismissible fade show" role="alert">
@@ -57,9 +59,9 @@ class CrudUtilizador extends Conexao {
                             <span aria-hidden="true">&times;</span>
                             <span class="sr-only">Close</span>
                             </button>
-                            <h4 class="alert-heading">'.$nome.'</h4>
+                            <h4 class="alert-heading">' . $nome . '</h4>
                             <p>Não foi adicionado com sucesso!</p>
-                            <p class="mb-0">'.date('d-m-Y H:s').'</p>
+                            <p class="mb-0">' . date('d-m-Y H:s') . '</p>
                         </div>';
                 }
             }
@@ -81,7 +83,8 @@ class CrudUtilizador extends Conexao {
     }
 
     # CRIANDO A FUNÇÃO PARA FAZER O UPDATE DO UTILIZADOR NO BANCO DE DADOS
-    public function update(Utilizador $model) {
+    public function update(Utilizador $model)
+    {
 
         $id             = $model->getId();
         $nome           = $model->getNome();
@@ -91,16 +94,16 @@ class CrudUtilizador extends Conexao {
         $dtEdicao       = $model->getDtEdicao();
         $idTipoUser     = $model->getIdTipoUtilizador();
         $idEstado       = $model->getIdEstado();
-        $idSexo         = $model->getIdSexo(); 
+        $idSexo         = $model->getIdSexo();
 
         $query = $this->conexao->prepare("SELECT * FROM tbutilizador WHERE email = ? AND idUtilizador <> ? OR  telefone = ? AND idUtilizador <> ?");
         $query->bind_param('sisi', $email, $id, $telefone, $id);
 
-        if($query->execute()) {
+        if ($query->execute()) {
 
             $query->store_result();
 
-            if($query->num_rows > 0 ) {
+            if ($query->num_rows > 0) {
 
                 return '<div class="alert alert-danger mt-5 alert-dismissible fade show" role="alert">
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -110,7 +113,6 @@ class CrudUtilizador extends Conexao {
                        <h4 class="alert-heading">O E-mail ou Telefone já está registado.</h4>
                        <p>Tente um outro E-mail ou Telefone, Obrigado!</p>
                     </div>';
-
             } else {
                 $query = $this->conexao->prepare("UPDATE tbutilizador SET 
                   nome               = ?,
@@ -123,24 +125,22 @@ class CrudUtilizador extends Conexao {
                   idSexo             = ?
                   WHERE idUtilizador = ?");
 
-                  $query->bind_param('sssssiiii', $nome, $email, $telefone, $senha, $dtEdicao, $idTipoUser, $idEstado, $idSexo, $id);
+                $query->bind_param('sssssiiii', $nome, $email, $telefone, $senha, $dtEdicao, $idTipoUser, $idEstado, $idSexo, $id);
 
 
-                if($query->execute()) {
+                if ($query->execute()) {
                     return 1;
-
                 } else {
                     return '<div class="alert alert-danger mt-5 alert-dismissible fade show" role="alert">
                             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                                 <span class="sr-only">Close</span>
                                 </button>
-                                <h4 class="alert-heading">'.$nome.'</h4>
+                                <h4 class="alert-heading">' . $nome . '</h4>
                                 <p>Não foi editado!</p>
-                                <p class="mb-0">'.date('d-m-Y H:s').'</p>
+                                <p class="mb-0">' . date('d-m-Y H:s') . '</p>
                             </div>';
                 }
-
             }
         } else {
             return '<div class="alert alert-success mt-5 alert-dismissible fade show" role="alert">
@@ -161,11 +161,12 @@ class CrudUtilizador extends Conexao {
 
 
     # CRIANDO A FUNÇÃO PARA FAZER O DELETE DO UTILIZADOR NO BANCO DE DADOS
-    public function delete($id) {
+    public function delete($id)
+    {
 
         $query = $this->conexao->prepare("DELETE FROM tbUtilizador WHERE idutilizador = ?");
         $query->bind_param('i', $id);
-        if($query->execute()) {
+        if ($query->execute()) {
             echo "Correu tudo bem";
         } else {
             echo "Não correu tudo bem";
@@ -178,112 +179,117 @@ class CrudUtilizador extends Conexao {
     }
 
     # CRINAOD A FUNÇÃO PARA FAZER O SELECT DE TODOS OS UTILIZADORES
-    public function select() {
+    public function select()
+    {
 
         $query  = $this->conexao->prepare("SELECT * FROM verUtilizador WHERE idestado <> 2 ORDER BY nome");
         $query->execute();
         $result = $query->get_result();
 
         $users = array();
-        while($dados = $result->fetch_assoc()) {
+        while ($dados = $result->fetch_assoc()) {
             $objecto =  new Utilizador();
-            $objecto->  setId($dados["idutilizador"]);
-            $objecto->  setNome($dados["nome"]);
-            $objecto->  setEmail($dados["email"]);
-            $objecto->  setTelefone($dados["telefone"]);
-            $objecto->  setTipoUtilizador($dados['TipoUtil']);
-            $objecto->  setSexo($dados['sexo']);
-            $objecto->  setIdSexo($dados["idsexo"]);
-            $objecto->  setDtCriacao(date('d-m-Y', strtotime($dados["dtcriacao"])));
-            $objecto->  setDtEdicao(date('d-m-Y', strtotime($dados["dtedicao"])));
-            $objecto->  setIdTipoUtilizador($dados["idtbTipoUtilizador"]);
-           
+            $objecto->setId($dados["idutilizador"]);
+            $objecto->setNome($dados["nome"]);
+            $objecto->setEmail($dados["email"]);
+            $objecto->setTelefone($dados["telefone"]);
+            $objecto->setTipoUtilizador($dados['TipoUtil']);
+            $objecto->setSexo($dados['sexo']);
+            $objecto->setIdSexo($dados["idsexo"]);
+            $objecto->setDtCriacao(date('d-m-Y', strtotime($dados["dtcriacao"])));
+            $objecto->setDtEdicao(date('d-m-Y', strtotime($dados["dtedicao"])));
+            $objecto->setIdTipoUtilizador($dados["idtbTipoUtilizador"]);
+
             $users[] =  $objecto;
         }
 
-       return $users;  
-       #FECHANDO A COMANDO
-       $query->close();
-       #FECHANDO A CONEXÃO
-       $this->conexao->close();
+        return $users;
+        #FECHANDO A COMANDO
+        $query->close();
+        #FECHANDO A CONEXÃO
+        $this->conexao->close();
     }
 
     /* ===========FUNÇÕES ADICIONAL =========== */
 
     # CRINAOD A FUNÇÃO PARA FAZER O SELECT DE TODOS OS UTILIZADORES
-    public function selectDesactivado() {
+    public function selectDesactivado()
+    {
 
         $query  = $this->conexao->prepare("SELECT * FROM verUtilizador WHERE idestado = 2 ORDER BY nome");
         $query->execute();
         $result = $query->get_result();
 
         $users = array();
-        while($dados = $result->fetch_assoc()) {
+        while ($dados = $result->fetch_assoc()) {
             $objecto =  new Utilizador();
-            $objecto->  setId($dados["idutilizador"]);
-            $objecto->  setNome($dados["nome"]);
-            $objecto->  setEmail($dados["email"]);
-            $objecto->  setTelefone($dados["telefone"]);
-            $objecto->  setTipoUtilizador($dados['TipoUtil']);
-            $objecto->  setSexo($dados['sexo']);
-            $objecto->  setIdSexo($dados["idsexo"]);
-            $objecto->  setDtCriacao(date('d-m-Y', strtotime($dados["dtcriacao"])));
-            $objecto->  setDtEdicao(date('d-m-Y', strtotime($dados["dtedicao"])));
-            $objecto->  setIdTipoUtilizador($dados["idtbTipoUtilizador"]);
-           
+            $objecto->setId($dados["idutilizador"]);
+            $objecto->setNome($dados["nome"]);
+            $objecto->setEmail($dados["email"]);
+            $objecto->setTelefone($dados["telefone"]);
+            $objecto->setTipoUtilizador($dados['TipoUtil']);
+            $objecto->setSexo($dados['sexo']);
+            $objecto->setIdSexo($dados["idsexo"]);
+            $objecto->setDtCriacao(date('d-m-Y', strtotime($dados["dtcriacao"])));
+            $objecto->setDtEdicao(date('d-m-Y', strtotime($dados["dtedicao"])));
+            $objecto->setIdTipoUtilizador($dados["idtbTipoUtilizador"]);
+
             $users[] =  $objecto;
         }
 
-       return $users;  
-       #FECHANDO A COMANDO
-       $query->close();
-       #FECHANDO A CONEXÃO
-       $this->conexao->close();  
+        return $users;
+        #FECHANDO A COMANDO
+        $query->close();
+        #FECHANDO A CONEXÃO
+        $this->conexao->close();
     }
 
     # CRIANDO A FUNÇÃO PARA DESACTIVAR O UTILIZADOR NO BANCO DE DADOS
-    public function disable($id) {
+    public function disable($id)
+    {
 
         $query = $this->conexao->prepare("UPDATE tbutilizador SET idEstado = 2 WHERE idUtilizador = ?");
         $query->bind_param('i', $id);
-        if($query->execute()){
-           echo "Correu tudo bem";
+        if ($query->execute()) {
+            echo "Correu tudo bem";
         } else {
             echo "Não correu tudo bem";
         }
 
-       #FECHANDO A COMANDO
-       $query->close();
-       #FECHANDO A CONEXÃO
-       $this->conexao->close();
+        #FECHANDO A COMANDO
+        $query->close();
+        #FECHANDO A CONEXÃO
+        $this->conexao->close();
     }
 
     # CRIANDO A FUNÇÃO PARA ACTIVAR DO UTILIZADOR NO BANCO DE DADOS
-    public function enable($id) {
+    public function enable($id)
+    {
 
         $query = $this->conexao->prepare("UPDATE tbutilizador SET idEstado = 1 WHERE idUtilizador = ?");
         $query->bind_param('i', $id);
-        if($query->execute()){
-           echo "Correu tudo bem";
+        if ($query->execute()) {
+            echo "Correu tudo bem";
         } else {
             echo "Não correu tudo bem";
         }
 
-       #FECHANDO A COMANDO
-       $query->close();
-       #FECHANDO A CONEXÃO
-       $this->conexao->close();
+        #FECHANDO A COMANDO
+        $query->close();
+        #FECHANDO A CONEXÃO
+        $this->conexao->close();
     }
 
     # CRIANDO A FUNÇÃO QUE FAZER O RESET DA SENHA DO UTILIZADOR
-    public function resetPassword($email, $newPassowrd) {
+    public function resetPassword($email, $newPassowrd)
+    {
 
         $query = $this->conexao->prepare("UPDATE tbUtilizador SET senha = ? WHERE email = ?");
         $senha = md5($newPassowrd);
 
         $query->bind_param('ss', $senha, $email);
 
-        if($query->execute()) {
+        if ($query->execute()) {
             return 1;
         } else {
             return '<div class="alert alert-success mt-5 alert-dismissible fade show" role="alert">
@@ -293,12 +299,13 @@ class CrudUtilizador extends Conexao {
             </button>
                <h4 class="alert-heading">Ocorreu um erro.</h4>
                <p>Tente mais tarde.</p>
-            </div>'; 
+            </div>';
         }
     }
 
     # CRIANDO A FUNÇÃO PARA PESQUISAR UM OU MAIS UTILIZADORES
-    public function search($nome) {
+    public function search($nome)
+    {
 
         $search = "%{$nome}%";
 
@@ -308,63 +315,64 @@ class CrudUtilizador extends Conexao {
         $result = $query->get_result();
 
         $users = array();
-        while($dados = $result->fetch_assoc()) {
+        while ($dados = $result->fetch_assoc()) {
             $objecto =  new Utilizador();
-            $objecto->  setId($dados["idutilizador"]);
-            $objecto->  setNome($dados["nome"]);
-            $objecto->  setEmail($dados["email"]);
-            $objecto->  setTelefone($dados["telefone"]);
-            $objecto->  setTipoUtilizador($dados['TipoUtil']);
-            $objecto->  setSexo($dados['sexo']);
-            $objecto->  setIdSexo($dados["idsexo"]);
-            $objecto->  setDtCriacao(date('d-m-Y', strtotime($dados["dtcriacao"])));
-            $objecto->  setDtEdicao(date('d-m-Y', strtotime($dados["dtedicao"])));
-            $objecto->  setIdTipoUtilizador($dados["idtbTipoUtilizador"]);
-           
+            $objecto->setId($dados["idutilizador"]);
+            $objecto->setNome($dados["nome"]);
+            $objecto->setEmail($dados["email"]);
+            $objecto->setTelefone($dados["telefone"]);
+            $objecto->setTipoUtilizador($dados['TipoUtil']);
+            $objecto->setSexo($dados['sexo']);
+            $objecto->setIdSexo($dados["idsexo"]);
+            $objecto->setDtCriacao(date('d-m-Y', strtotime($dados["dtcriacao"])));
+            $objecto->setDtEdicao(date('d-m-Y', strtotime($dados["dtedicao"])));
+            $objecto->setIdTipoUtilizador($dados["idtbTipoUtilizador"]);
+
             $users[] =  $objecto;
         }
 
-       return $users;  
-       #FECHANDO A COMANDO
-       $query->close();
-       #FECHANDO A CONEXÃO
-       $this->conexao->close();
+        return $users;
+        #FECHANDO A COMANDO
+        $query->close();
+        #FECHANDO A CONEXÃO
+        $this->conexao->close();
     }
 
-     # CRINAOD A FUNÇÃO PARA FAZER O SELECT DO UTILIZADOR APARTIR DO ID
-     public function getById($id) {
+    # CRINAOD A FUNÇÃO PARA FAZER O SELECT DO UTILIZADOR APARTIR DO ID
+    public function getById($id)
+    {
 
         $query  = $this->conexao->prepare("SELECT * FROM verUtilizador WHERE idutilizador = ?");
         $query->bind_param('i', $id);
         $query->execute();
         $result = $query->get_result();
 
-        while($dados =  $result->fetch_assoc()) {
+        while ($dados =  $result->fetch_assoc()) {
             $objecto =  new Utilizador();
-            $objecto->  setId($dados["idutilizador"]);
-            $objecto->  setNome($dados["nome"]);
-            $objecto->  setEmail($dados["email"]);
-            $objecto->  setTelefone($dados["telefone"]);
-            $objecto->  setTipoUtilizador($dados['TipoUtil']);
-            $objecto->  setSexo($dados['sexo']);
-            $objecto->  setIdSexo($dados["idsexo"]);
-            $objecto->  setDtCriacao($dados["dtcriacao"]);
-            $objecto->  setDtEdicao($dados["dtedicao"]);
-            $objecto->  setIdTipoUtilizador($dados["idtbTipoUtilizador"]);
+            $objecto->setId($dados["idutilizador"]);
+            $objecto->setNome($dados["nome"]);
+            $objecto->setEmail($dados["email"]);
+            $objecto->setTelefone($dados["telefone"]);
+            $objecto->setTipoUtilizador($dados['TipoUtil']);
+            $objecto->setSexo($dados['sexo']);
+            $objecto->setIdSexo($dados["idsexo"]);
+            $objecto->setDtCriacao($dados["dtcriacao"]);
+            $objecto->setDtEdicao($dados["dtedicao"]);
+            $objecto->setIdTipoUtilizador($dados["idtbTipoUtilizador"]);
         }
 
-        return $objecto; 
+        return $objecto;
         #FECHANDO A COMANDO
-       $query->close();
-       #FECHANDO A CONEXÃO
-       $this->conexao->close();
-       
+        $query->close();
+        #FECHANDO A CONEXÃO
+        $this->conexao->close();
     }
 
 
 
-     # CRINAOD A FUNÇÃO PARA FAZER O SELECT DO UTILIZADOR APARTIR DO EMAIL
-     public function getByEmail($email) {
+    # CRINAOD A FUNÇÃO PARA FAZER O SELECT DO UTILIZADOR APARTIR DO EMAIL
+    public function getByEmail($email)
+    {
 
         $query  = $this->conexao->prepare("SELECT * FROM verUtilizador WHERE email = ?");
         $query->bind_param('s', $email);
@@ -372,65 +380,61 @@ class CrudUtilizador extends Conexao {
         $result = $query->get_result();
         $objecto =  new Utilizador();
 
-        while($dados =  $result->fetch_assoc()) {
-            
-            $objecto->  setId($dados["idutilizador"]);
-            $objecto->  setNome($dados["nome"]);
-            $objecto->  setEmail($dados["email"]);
-            $objecto->  setTelefone($dados["telefone"]);
-            $objecto->  setTipoUtilizador($dados['TipoUtil']);
-            $objecto->  setSexo($dados['sexo']);
-            $objecto->  setIdSexo($dados["idsexo"]);
-            $objecto->  setDtCriacao($dados["dtcriacao"]);
-            $objecto->  setDtEdicao($dados["dtedicao"]);
-            $objecto->  setIdTipoUtilizador($dados["idtbTipoUtilizador"]);
+        while ($dados =  $result->fetch_assoc()) {
+
+            $objecto->setId($dados["idutilizador"]);
+            $objecto->setNome($dados["nome"]);
+            $objecto->setEmail($dados["email"]);
+            $objecto->setTelefone($dados["telefone"]);
+            $objecto->setTipoUtilizador($dados['TipoUtil']);
+            $objecto->setSexo($dados['sexo']);
+            $objecto->setIdSexo($dados["idsexo"]);
+            $objecto->setDtCriacao($dados["dtcriacao"]);
+            $objecto->setDtEdicao($dados["dtedicao"]);
+            $objecto->setIdTipoUtilizador($dados["idtbTipoUtilizador"]);
         }
 
-        return $objecto; 
+        return $objecto;
         #FECHANDO A COMANDO
-       $query->close();
-       #FECHANDO A CONEXÃO
-       $this->conexao->close();
-       
+        $query->close();
+        #FECHANDO A CONEXÃO
+        $this->conexao->close();
     }
 
 
     # CRIANDO A FUNÇÃO PARA FAZER LOGIN
-    public function login(Utilizador $model) {
+    public function login(Utilizador $model)
+    {
 
         $email     = $model->getEmail();
         $telefone  = $model->getTelefone();
         $senha     = $model->getSenha();
-        
+
         $query = $this->conexao->prepare("SELECT * FROM verUtilizador WHERE email = ? AND senha = ? OR telefone = ? AND senha = ? ");
-        $query     ->bind_param('ssss', $email, $senha, $telefone, $senha);
-        if($query->execute()) {
+        $query->bind_param('ssss', $email, $senha, $telefone, $senha);
+        if ($query->execute()) {
 
             $result      = $query->get_result();
             $dados = $result->fetch_assoc();
-                 $objecto   =  new Utilizador();
-                
-                    $objecto->  setId($dados["idutilizador"]);
-                    $objecto->  setNome($dados["nome"]);
-                    $objecto->  setEmail($dados["email"]);
-                    $objecto->  setTelefone($dados["telefone"]);
-                    $objecto->  setTipoUtilizador($dados['TipoUtil']);
-                    $objecto->  setSexo($dados['sexo']);
-                    $objecto->  setIdSexo($dados["idsexo"]);
-                    $objecto->  setDtCriacao(date('d-m-Y', strtotime($dados["dtcriacao"])));
-                    $objecto->  setDtEdicao(date('d-m-Y', strtotime($dados["dtedicao"])));
-                    $objecto->  setIdTipoUtilizador($dados["idtbTipoUtilizador"]);
+            $objecto   =  new Utilizador();
 
+            $objecto->setId($dados["idutilizador"]);
+            $objecto->setNome($dados["nome"]);
+            $objecto->setEmail($dados["email"]);
+            $objecto->setTelefone($dados["telefone"]);
+            $objecto->setTipoUtilizador($dados['TipoUtil']);
+            $objecto->setSexo($dados['sexo']);
+            $objecto->setIdSexo($dados["idsexo"]);
+            $objecto->setDtCriacao(date('d-m-Y', strtotime($dados["dtcriacao"])));
+            $objecto->setDtEdicao(date('d-m-Y', strtotime($dados["dtedicao"])));
+            $objecto->setIdTipoUtilizador($dados["idtbTipoUtilizador"]);
         }
 
-       return $objecto; 
+        return $objecto;
 
-       #FECHANDO A COMANDO
-       $query->close();
-       #FECHANDO A CONEXÃO
-       $this->conexao->close();
+        #FECHANDO A COMANDO
+        $query->close();
+        #FECHANDO A CONEXÃO
+        $this->conexao->close();
     }
-
 }
-
-

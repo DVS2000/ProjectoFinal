@@ -378,7 +378,7 @@ class CrudCurso extends Conexao {
 
 
 
-    # Função para Pegar o curso vai id
+    # Função para Pegar o curso via id da Faculdade
     public function getByIdFaculdade($id) {
 
 
@@ -412,6 +412,44 @@ class CrudCurso extends Conexao {
         
         
         return $cursos;
+
+       # FECHANDO O COMANDO
+       $query->close();
+       # FECHANDO A CONEXÃO
+       $this->conexao->close();
+
+    }
+
+
+    # Função para Pegar o curso via id da Faculdade
+    public function getPrecoByID($id) {
+
+
+        $query = $this->conexao->prepare("SELECT * FROM verCursos WHERE idcurso = ?");
+        $query->bind_param('s', $id);
+
+
+        if($query->execute()) {
+
+            $result      = $query->get_result(); 
+            $curso       = new Curso();
+            while($dados = $result->fetch_assoc()) {
+                $curso->       setId($dados["idcurso"]);
+                $curso->       setDescricao($dados["descricao"]);
+                $curso->       setPreco($dados["preco"]);
+                $curso->       setRequisitos($dados["requisitos"]);
+                $curso->       setPlanoAula($dados["planoAula"]);
+                $curso->       setIdFaculdade($dados["idFaculdade"]);
+                $curso->       setFaculdade($dados["faculdade"]);
+                $curso->       setIdEstado($dados["idestado"]);
+                $curso->       setEstado($dados["estado"]);
+                $curso->       setDtCriacao($dados["dtCriacao"]);
+                $curso->       setDtEdicao($dados["dtEdicao"]);
+            }
+        }
+        
+        
+        return $curso;
 
        # FECHANDO O COMANDO
        $query->close();

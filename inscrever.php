@@ -155,8 +155,7 @@ if (isset($_SESSION['idCandidato'])) {
 
                             <div class="col-sm-4">
                                 <div class="form-group">
-                                    <select class="custom-select" style="border-radius: 30px" name="faculdade" id="faculdade">
-                                    </select>
+                                <input type="text" class="form-control form-control-user py-3" placeholder="Preço do curso" id="preco" name="preco" required="required" readonly >
                                 </div>
                             </div>
                         </div>
@@ -275,7 +274,11 @@ if (isset($_SESSION['idCandidato'])) {
             // TESTE
 
             $('#curso').change(function() {
-                alert($(this).val())
+                $.post('action_inscrever.php', {
+                    idCurso: $(this).val()
+                }, function(data) {
+                    $('#preco').val(`${data},00 AOA`)
+                })
             })
         })
     </script>

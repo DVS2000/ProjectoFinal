@@ -74,7 +74,7 @@ include_once('../includes/header-sub.php');
                                                                 <a  href="#" title="Ver requisitos."  data-toggle="modal" data-target="#requisitos'.$value->getId().'" class="btn btn-outline-success"><i class="fas fa-eye    "></i></a>
                                                             </td>
                                                             <td>
-                                                                <a  href="http://localhost/inscricaoonline/admin/'.$value->getPlanoAula().'" title="Ver plano de aula." class="btn btn-outline-success"><i class="fas fa-file-pdf"></i></a>
+                                                                <a  href="http://localhost/inscricaoonline/admin/'.$value->getPlanoAula().'" target="_blanck" title="Ver plano de aula." class="btn btn-outline-success"><i class="fas fa-file-pdf"></i></a>
                                                             </td>
                                                             <td>
                                                                 <a href="editar.php?id='.$value->getId().'" class="btn btn-outline-secondary"><i class="fas fa-pen"></i></a>

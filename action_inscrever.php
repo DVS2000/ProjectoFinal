@@ -6,7 +6,7 @@ include_once('model/curso.php');
 # INCLUINDO O CONTROLLER DO CURSO
 include_once('controller/crud-curso.php');
 
-if($_POST['idFaculdade']) {
+if(isset($_POST['idFaculdade'])) {
 
     $idFaculdade = $_POST['idFaculdade'];
 
@@ -16,6 +16,15 @@ if($_POST['idFaculdade']) {
 
 
     echo json_encode($dados);
+} else if(isset($_POST['idCurso'])) {
+
+    $idCurso = $_POST['idCurso'];
+
+    $curso = new CrudCurso();
+
+    $dados = $curso->getPrecoByID($idCurso);
+
+    echo $dados->getPreco();
 }
 
 ?>

@@ -14,8 +14,6 @@ class Candidato {
     private $idEstado;
     private $dtCriacao;
     private $dtEdicao;
-    private $nomeMae;
-    private $nomePai;
     private $morada;
     private $idSexo;
     private $sexo;
@@ -61,14 +59,6 @@ class Candidato {
     # CRIANDO O GET E O SET DA DATA DE EDIÇÃO DO CANDIDATO
     public function getDtEdicao()  { return $this->dtEdicao; } 
     public function setDtEdicao($dtEdicao) { $this->dtEdicao = $dtEdicao; }
-
-    # CRIANDO O GET E O SET DO NOME DA MAE DO CANDIDATO
-    public function getNomeMae() { return $this->nomeMae; }
-    public function setNomeMae($nomeMae) { $this->nomeMae = $nomeMae; }
-
-    # CRIANDO O GET E O SET DO NOME DA MÃE DO CANDIDATO
-    public function getNomePai() { return $this->nomePai;  }
-    public function setNomePai($nomePai) { $this->nomePai = $nomePai; }
 
     # CRIANDO O GET E O SET DO NOME DO PAI DO CANDIDATO.
     public function getMorada() { return $this->morada; }

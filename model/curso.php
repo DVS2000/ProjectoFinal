@@ -8,10 +8,12 @@ class Curso {
     private $preco;
     private $requisitos;
     private $planoAula;
+    private $idFaculdade;
     private $idEstado;
     private $dtCriacao;
     private $dtEdicao;
     private $estado;
+    private $faculdade;
 
     # CRIANDO OS GETS E OS SETS DO Curso
 
@@ -30,6 +32,14 @@ class Curso {
     # CRIANDO O GET E O SET DO REQUISITOS DO CURSO
     public function getRequisitos() { return $this->requisitos;  }
     public function setRequisitos($requisitos) { $this->requisitos = $requisitos; }
+
+    # CRIANDO O GET E O SET DO ID FACULDADE DO CURSO
+    public function getIdFaculdade() { return $this->idFaculdade; }
+    public function setIdFaculdade($idFaculdade) { $this->idFaculdade = $idFaculdade; }
+
+    # CRIANDO O GET E O SET DA FACULDADE DO CURSO
+    public function getFaculdade() { return $this->faculdade; }
+    public function setFaculdade($faculdade) { $this->faculdade = $faculdade; }
 
     # CRIANDO O GET E O SET DO ESTADO DO CURSO
     public function getIdEstado() { return $this->idEstado; }

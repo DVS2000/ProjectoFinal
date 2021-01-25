@@ -23,6 +23,7 @@ class CrudCurso extends Conexao {
         $descricao              = $model->getDescricao();
         $preco                  = $model->getPreco();
         $requisitos             = $model->getRequisitos();
+        $idFaculdade            = $model->getIdFaculdade();
         $idEstado               = $model->getIdEstado();
         $dtCriao                = $model->getDtCriacao();
         $dtEdicao               = $model->getDtEdicao();
@@ -49,8 +50,8 @@ class CrudCurso extends Conexao {
 
 
             } else {
-                $query = $this->conexao->prepare("INSERT INTO tbCurso (descricao, preco, requisitos, idEstado, dtCriacao, dtEdicao, planoAula)  VALUES(?,?,?,?,?,?,?)");
-                $query->bind_param('sssssss', $descricao, $preco, $requisitos, $idEstado, $dtCriao, $dtEdicao, $planoAula);    
+                $query = $this->conexao->prepare("INSERT INTO tbCurso (descricao, preco, requisitos, idFaculdade, idEstado, dtCriacao, dtEdicao, planoAula)  VALUES(?,?,?,?,?,?,?,?)");
+                $query->bind_param('ssssssss', $descricao, $preco, $requisitos, $idFaculdade, $idEstado, $dtCriao, $dtEdicao, $planoAula);    
                 if($query->execute()) {
                         echo '<div class="alert alert-success mt-5 alert-dismissible fade show" role="alert">
                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -100,6 +101,7 @@ class CrudCurso extends Conexao {
         $descricao              = $model->getDescricao();
         $preco                  = $model->getPreco();
         $requisitos             = $model->getRequisitos();
+        $idFaculdade            = $model->getIdFaculdade();
         $idEstado               = $model->getIdEstado();
         $dtEdicao               = $model->getDtEdicao();
         $planoAula              = $model->getPlanoAula();
@@ -131,12 +133,13 @@ class CrudCurso extends Conexao {
                   descricao       =  ?,
                   preco           =  ?,
                   requisitos      =  ?,
-                  planoAula       =  ?, 
+                  planoAula       =  ?,
+                  idFaculdade     =  ?, 
                   idEstado        =  ?,
                   dtEdicao        =  ?
                   WHERE idCurso   =  ?");
 
-                $query->bind_param('ssssssi', $descricao, $preco, $requisitos, $planoAula, $idEstado, $dtEdicao, $id);
+                $query->bind_param('sssssssi', $descricao, $preco, $requisitos, $planoAula, $idFaculdade, $idEstado, $dtEdicao, $id);
                     if($query->execute()) {
                         echo '<div class="alert alert-success mt-5 alert-dismissible fade show" role="alert">
                                             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -213,6 +216,8 @@ class CrudCurso extends Conexao {
                 $curso->       setPreco($dados["preco"]);
                 $curso->       setRequisitos($dados["requisitos"]);
                 $curso->       setPlanoAula($dados['planoAula']);
+                $curso->       setIdFaculdade($dados["idFaculdade"]);
+                $curso->       setFaculdade($dados["faculdade"]);
                 $curso->       setIdEstado($dados["idestado"]);
                 $curso->       setEstado($dados["estado"]);
                 $curso->       setDtCriacao(date('d-m-Y', strtotime($dados["dtCriacao"])));
@@ -352,6 +357,8 @@ class CrudCurso extends Conexao {
                 $curso->       setPreco($dados["preco"]);
                 $curso->       setRequisitos($dados["requisitos"]);
                 $curso->       setPlanoAula($dados["planoAula"]);
+                $curso->       setIdFaculdade($dados["idFaculdade"]);
+                $curso->       setFaculdade($dados["faculdade"]);
                 $curso->       setIdEstado($dados["idestado"]);
                 $curso->       setEstado($dados["estado"]);
                 $curso->       setDtCriacao($dados["dtCriacao"]);
@@ -361,6 +368,50 @@ class CrudCurso extends Conexao {
         
         
         return $curso;
+
+       # FECHANDO O COMANDO
+       $query->close();
+       # FECHANDO A CONEXÃO
+       $this->conexao->close();
+
+    }
+
+
+
+    # Função para Pegar o curso vai id
+    public function getByIdFaculdade($id) {
+
+
+        $query = $this->conexao->prepare("SELECT * FROM verCursos WHERE idFaculdade = ?");
+        $query->bind_param('s', $id);
+
+        $count = 0;
+
+        $cursos = array();
+
+        if($query->execute()) {
+
+            $result      = $query->get_result(); 
+            $curso       = new Curso();
+            while($dados = $result->fetch_assoc()) {
+                $curso->       setId($dados["idcurso"]);
+                $curso->       setDescricao($dados["descricao"]);
+                $curso->       setPreco($dados["preco"]);
+                $curso->       setRequisitos($dados["requisitos"]);
+                $curso->       setPlanoAula($dados["planoAula"]);
+                $curso->       setIdFaculdade($dados["idFaculdade"]);
+                $curso->       setFaculdade($dados["faculdade"]);
+                $curso->       setIdEstado($dados["idestado"]);
+                $curso->       setEstado($dados["estado"]);
+                $curso->       setDtCriacao($dados["dtCriacao"]);
+                $curso->       setDtEdicao($dados["dtEdicao"]);
+                $cursos[$count] = array("id" => $dados["idcurso"], "descricao" => $dados["descricao"], "preco" => $dados["preco"]);
+                $count++;
+            }
+        }
+        
+        
+        return $cursos;
 
        # FECHANDO O COMANDO
        $query->close();

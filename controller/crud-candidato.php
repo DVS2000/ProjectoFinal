@@ -17,23 +17,17 @@ class CrudCandidato extends Conexao {
     public function insert(Candidato $model) {
 
         $nome           = $model->getNome();
-        $bi             = $model->getBi();
+        #$bi             = $model->getBi();
         $email          = $model->getEmail();
         $telefone       = $model->getTelefone();
-        $dtNasc         = $model->getDtNasc();
-        $idNacional     = $model->getIdNacionalidade();
-        $idEstado       = $model->getIdEstado();
         $dtCriacao      = $model->getDtCriacao();
         $dtEdicao       = $model->getDtEdicao();
-        $nomePai        = $model->getNomePai();
-        $nomeMae        = $model->getNomeMae();
-        $morada         = $model->getMorada();
-        $idSexo         = $model->getIdSexo();
+        //$idSexo         = $model->getIdSexo();
         $senha          = $model->getSenha();
 
         # $this->conexao == DESTE JEITO PEGAMOS A VARIVÉAVEL CONEXÃO DA CLASSE CONEXÃO
-        $query = $this->conexao->prepare("SELECT * FROM tbCandidato WHERE email = ? OR telefone = ? AND bi = ?");
-        $query->bind_param('sss', $email, $telefone, $bi);
+        $query = $this->conexao->prepare("SELECT * FROM tbCandidato WHERE email = ? OR telefone = ?");
+        $query->bind_param('ss', $email, $telefone);
 
         if($query->execute()) {
             $query->store_result();
@@ -41,9 +35,9 @@ class CrudCandidato extends Conexao {
                return 1;
 
             } else {
-                $query = $this->conexao->prepare("INSERT INTO tbcandidato(nome, bi, email, telefone, dtNasc, idnacionalidade, idEstado, dtCriacao, dtEdicao, nomemae, nomepai, morada, senha, idsexo)
-                        VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
-                $query->bind_param('sssssiissssssi', $nome, $bi, $email, $telefone, $dtNasc, $idNacional, $idEstado, $dtCriacao, $dtEdicao,$nomeMae, $nomePai, $morada, $senha, $idSexo);
+                $query = $this->conexao->prepare("INSERT INTO tbcandidato(nome, email, telefone, dtCriacao, dtEdicao, senha)
+                        VALUES(?,?,?,?,?,?)");
+                $query->bind_param('ssssss', $nome, $email, $telefone, $dtCriacao, $dtEdicao, $senha);
 
                 if($query->execute()) {
                     return 2;
@@ -80,8 +74,6 @@ class CrudCandidato extends Conexao {
         $idEstado       = $model->getIdEstado();
         $dtCriacao      = $model->getDtCriacao();
         $dtEdicao       = $model->getDtEdicao();
-        $nomePai        = $model->getNomePai();
-        $nomeMae        = $model->getNomeMae();
         $morada         = $model->getMorada();
         $idSexo         = $model->getIdSexo();
         $senha          = $model->getSenha();
@@ -105,12 +97,10 @@ class CrudCandidato extends Conexao {
                 idNacionalidade   = ?,
                 idEstado          = ?,
                 dtEdicao          = ?,
-                nomemae           = ?,
-                nomepai           = ?,
                 morada            = ?,
                 senha             = ?
                 WHERE idcandidato = ?");
-                $query->bind_param('sssssiisssssi', $nome, $bi, $email, $telefone, $dtNasc, $idNacional, $idEstado, $dtEdicao,$nomeMae, $nomePai, $morada, $senha, $id);
+                $query->bind_param('sssssiisssi', $nome, $bi, $email, $telefone, $dtNasc, $idNacional, $idEstado, $dtEdicao, $morada, $senha, $id);
 
                 if($query->execute()) {
                     return 2;
@@ -170,8 +160,6 @@ class CrudCandidato extends Conexao {
                 $candidato-> setIdEstado($dados["idestado"]);
                 $candidato-> setDtCriacao(date('d-m-Y', strtotime($dados["dtCriacao"])));
                 $candidato-> setDtEdicao(date('d-m-Y',strtotime($dados["dtEdicao"])));
-                $candidato-> setNomeMae($dados["nomemae"]);
-                $candidato-> setNomePai($dados["nomepai"]);
                 $candidato-> setMorada($dados["morada"]);
                 $candidato->setSexo($dados['sexo']);
 
@@ -252,8 +240,6 @@ class CrudCandidato extends Conexao {
                 $candidato-> setIdEstado($dados["idestado"]);
                 $candidato-> setDtCriacao(date('d-m-Y', strtotime($dados["dtCriacao"])));
                 $candidato-> setDtEdicao(date('d-m-Y',strtotime($dados["dtEdicao"])));
-                $candidato-> setNomeMae($dados["nomemae"]);
-                $candidato-> setNomePai($dados["nomepai"]);
                 $candidato-> setMorada($dados["morada"]);
 
 
@@ -291,8 +277,6 @@ class CrudCandidato extends Conexao {
                 $candidato-> setIdEstado($dados["idestado"]);
                 $candidato-> setDtCriacao(date('d-m-Y', strtotime($dados["dtCriacao"])));
                 $candidato-> setDtEdicao(date('d-m-Y',strtotime($dados["dtEdicao"])));
-                $candidato-> setNomeMae($dados["nomemae"]);
-                $candidato-> setNomePai($dados["nomepai"]);
                 $candidato-> setMorada($dados["morada"]);
                 $candidato->setSexo($dados['sexo']);
 
@@ -360,8 +344,6 @@ class CrudCandidato extends Conexao {
                     $candidato-> setIdEstado($dados["idestado"]);
                     $candidato-> setDtCriacao(date('d-m-Y', strtotime($dados["dtCriacao"])));
                     $candidato-> setDtEdicao(date('d-m-Y',strtotime($dados["dtEdicao"])));
-                    $candidato-> setNomeMae($dados["nomemae"]);
-                    $candidato-> setNomePai($dados["nomepai"]);
                     $candidato-> setMorada($dados["morada"]);
                     $candidato->setIdSexo($dados['idsexo']);
                     $candidato->setSexo($dados['sexo']);
@@ -396,8 +378,6 @@ class CrudCandidato extends Conexao {
                     $candidato-> setIdEstado($dados["idestado"]);
                     $candidato-> setDtCriacao(date('d-m-Y', strtotime($dados["dtCriacao"])));
                     $candidato-> setDtEdicao(date('d-m-Y',strtotime($dados["dtEdicao"])));
-                    $candidato-> setNomeMae($dados["nomemae"]);
-                    $candidato-> setNomePai($dados["nomepai"]);
                     $candidato-> setMorada($dados["morada"]);
                     $candidato->setIdSexo($dados['idsexo']);
                     $candidato->setSexo($dados['sexo']);
@@ -441,8 +421,6 @@ class CrudCandidato extends Conexao {
                         $candidato-> setIdEstado($dados["idestado"]);
                         $candidato-> setDtCriacao(date('d-m-Y', strtotime($dados["dtCriacao"])));
                         $candidato-> setDtEdicao(date('d-m-Y',strtotime($dados["dtEdicao"])));
-                        $candidato-> setNomeMae($dados["nomemae"]);
-                        $candidato-> setNomePai($dados["nomepai"]);
                         $candidato-> setMorada($dados["morada"]);
                         $candidato-> setSenha($dados["senha"]);
                     }

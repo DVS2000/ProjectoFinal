@@ -5,8 +5,8 @@ session_start();
 session_unset();
 session_destroy();
 
-setcookie('idUtilizador', null, -1, '/projectofinal/view');
+setcookie('idUtilizador', null, -1, '/inscricaoonline/admin');
 
-header('Location: ../view/login.php');
+header('Location: ../admin/login.php');
 
 ?>

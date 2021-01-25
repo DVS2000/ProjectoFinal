@@ -1,6 +1,6 @@
 <?php
 
-setcookie('idCandidato', null, -1, '/projectofinal');
+setcookie('idCandidato', null, -1, '/inscricaoonline');
 
 session_start();
 session_unset();

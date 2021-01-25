@@ -272,6 +272,8 @@ if (isset($_SESSION['idCandidato'])) {
                 });
             })
 
+            // TESTE
+
             $('#curso').change(function() {
                 alert($(this).val())
             })

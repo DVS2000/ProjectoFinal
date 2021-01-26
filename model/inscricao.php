@@ -10,6 +10,8 @@ class Inscricao{
     private $dtCriacao;
     private $dtEdicao;
     private $idEstado;
+    private $estadoInscricao;
+    private $faculdade;
 
     # CRIANDO O GET E O SET DO ID  DA INSCRIÇÃO
     public function getId() { return $this->id; }
@@ -42,4 +44,12 @@ class Inscricao{
     # CRIANDO O GET O SET DO ID DO ESTADO DA INSCRIÇÃO
     public function getIdEstado() { return $this->idEstado; }
     public function setIdEstado($idEstado) { $this->idEstado = $idEstado; }
+
+    # Crinaod o set o get do estado da inscricao
+    public function getEstadoInscricao() { return $this->estadoInscricao; }
+    public function setEstadoInscricao($estadoInscricao) { $this->estadoInscricao = $estadoInscricao; }
+
+    # Crinaod o set o get do estado da faculdade
+    public function getFaculdade() { return $this->faculdade; }
+    public function setFaculdade($faculdade) { $this->faculdade = $faculdade; }
 }

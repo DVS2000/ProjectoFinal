@@ -14,13 +14,13 @@ class CrudPagamento extends Conexao {
 
     public function insert(Pagamento $model) {
 
-        $idFormPag              = $model->getIdFormPag();
+        $comprovativo           = $model->getComprovativo();
         $tempo                  = $model->getTempo();
         $idInscricao            = $model->getIdInscricao();
         $estado                 = $model->getEstado();
 
-        $query = $this->conexao->prepare("INSERT INTO tbpagamento(idFormPag, tempo, idInscricao, estado) VALUES(?, ?, ?, ?)");
-        $query->bind_param('isii', $idFormPag, $tempo, $idInscricao, $estado);
+        $query = $this->conexao->prepare("INSERT INTO tbpagamento(comprovativo, tempo, idInscricao, estado) VALUES(?, ?, ?, ?)");
+        $query->bind_param('ssii', $comprovativo, $tempo, $idInscricao, $estado);
 
         if($query->execute()) {
             echo "Correu tudo bem";
@@ -40,12 +40,12 @@ class CrudPagamento extends Conexao {
         public function update(Pagamento $model) {
 
         $idPag              = $model->getId();
-        $idFormPag          = $model->getIdFormPag();
+        $comprovativo       = $model->getComprovativo();
         $dtEdicao           = date('Y-m-d');
         
 
-        $query = $this->conexao->prepare("UPDATE tbPagamento SET idFormPag = ?, dtEdicao = ? WHERE id = ?");
-        $query->bind_param('isi', $idFormPag, $dtEdicao, $idPag);
+        $query = $this->conexao->prepare("UPDATE tbPagamento SET comprovativo = ?, dtEdicao = ? WHERE id = ?");
+        $query->bind_param('ssi', $comprovativo, $dtEdicao, $idPag);
 
         if($query->execute()) {
             echo "Corre tudo bem";
@@ -95,7 +95,7 @@ class CrudPagamento extends Conexao {
                 $pagamento->setNomeCand($dados['nome']);
                 $pagamento->setCurso($dados['curso']);
                 $pagamento->setPreco($dados['preco']);
-                $pagamento->setFormPag($dados['formPag']);
+                $pagamento->setComprovativo($dados['comprovativo']);
                 $pagamento->setEstado($dados['estado']);
                 $pagamento->setIdInscricao($dados['idinscricao']);
                 $pagamento->setTempo(date('d-m-Y', strtotime($dados['tempo'])));
@@ -133,7 +133,7 @@ class CrudPagamento extends Conexao {
                 $pagamento->setNomeCand($dados['nome']);
                 $pagamento->setCurso($dados['curso']);
                 $pagamento->setPreco($dados['preco']);
-                $pagamento->setFormPag($dados['formPag']);
+                $pagamento->setComprovativo($dados['comprovativo']);
                 $pagamento->setEstado($dados['estado']);
                 $pagamento->setIdInscricao($dados['idinscricao']);
                 $pagamento->setTempo(date('d-m-Y', strtotime($dados['tempo'])));
@@ -164,7 +164,7 @@ class CrudPagamento extends Conexao {
                     $pagamento->setNomeCand($dados['nome']);
                     $pagamento->setCurso($dados['curso']);
                     $pagamento->setPreco($dados['preco']);
-                    $pagamento->setFormPag($dados['formPag']);
+                    $pagamento->setComprovativo($dados['comprovativo']);
                     $pagamento->setEstado($dados['estado']);
                     $pagamento->setIdInscricao($dados['idinscricao']);
                     $pagamento->setTempo(date('d-m-Y', strtotime($dados['tempo'])));
@@ -217,7 +217,7 @@ class CrudPagamento extends Conexao {
                     $pagamento->setNomeCand($dados['nome']);
                     $pagamento->setCurso($dados['curso']);
                     $pagamento->setPreco($dados['preco']);
-                    $pagamento->setFormPag($dados['formPag']);
+                    $pagamento->setComprovativo($dados['comprovativo']);
                     $pagamento->setEstado($dados['estado']);
                     $pagamento->setIdInscricao($dados['idinscricao']);
                     $pagamento->setTempo(date('d-m-Y', strtotime($dados['tempo'])));

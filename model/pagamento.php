@@ -4,14 +4,12 @@
 
 class Pagamento {
     private $id;
-    private $idFormPag;
-    private $formPag;
+    private $comprovativo;
     private $tempo;
     private $idInscricao;
     private $estado;
     private $dtPagamento;
     private $dtEdicao;
-
     private $nomeCand;
     private $curso;
     private $preco;
@@ -22,13 +20,9 @@ class Pagamento {
     public function getId() { return $this->id; }
     public function setId($id)  { $this->id = $id; }
 
-    # CRIANDO O GET E SER DO ID DA FORMA DE PAGAMENTO
-    public function getIdFormPag() { return $this->idFormPag; }
-    public function setIdFormPag($idFormPag) { $this->idFormPag = $idFormPag; }
-
     # CRIANDO O GET E O SET DA FORMA DE PAGAMENTO
-    public function getFormPag() { return $this->formPag; }
-    public function setFormPag($formPag) { $this->formPag = $formPag; }
+    public function getComprovativo() { return $this->comprovativo; }
+    public function setComprovativo($comprovativo) { $this->comprovativo = $comprovativo; }
 
     # CRIANDO O GET E O SET DO TEMPO DE LIMITE DO PAGAMENTO
     public function getTempo() { return $this->tempo; }

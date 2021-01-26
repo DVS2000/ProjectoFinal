@@ -18,6 +18,9 @@ class Candidato {
     private $idSexo;
     private $sexo;
     private $senha;
+    private $foto;
+    private $certificado;
+    private $bilhete;
 
 
     # CRIANDO O GET E SET DO ID DO CANDIDATO
@@ -79,4 +82,16 @@ class Candidato {
     # CRIANDO O GET O SET DA NACIONALIDADE DO CANDIDATO
     public function getNacionalidade() { return $this->nacionalidade; }
     public function setNacionalidade($nacionalidade) { $this->nacionalidade = $nacionalidade; }
+
+    # Criando o Get e o set para pegar a foto do candidato
+    public function getFoto() { return $this->foto; }
+    public function setFoto($foto) { $this->foto = $foto; }
+
+    # Criando o get e o set para pegar o certificado do candidato
+    public function getCertificado() { return $this->certificado; }
+    public function setCertificado($certificado) { $this->certificado = $certificado; }
+
+    # Criando o get e set para pegar o fiheiro do BI do candidato
+    public function getBilheteFile() { return $this->bilhete; }
+    public function setBilheteFile($bilhete) { $this->bilhete = $bilhete; }
 }

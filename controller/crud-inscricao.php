@@ -26,9 +26,9 @@ class CrudInscricao extends Conexao {
         $query->bind_param('iiss', $idCurso, $idCandidato, $dtCriacao, $dtEdicao);
 
         if($query->execute()) {
-            echo "Correu tudo bem";
+            return 2;
         } else {
-            echo "Não correu tudo bem";
+            return 1;
         }
 
 
@@ -97,6 +97,7 @@ class CrudInscricao extends Conexao {
                $inscricao->setIdCurso($dados['idCurso']);
                $inscricao->setCurso($dados['curso']);
                $inscricao->setIdCandidato($dados['idCandidato']);
+               $inscricao->setEstadoInscricao($dados['estado_inscricao']);
                $inscricao->setNomeCand($dados['nome']);
                $inscricao->setDtCriacao(date('d-m-Y', strtotime($dados["dtCriacao"])));
                $inscricao->setdtEdicao(date('d-m-Y', strtotime($dados["dtEdicao"])));
@@ -128,6 +129,7 @@ class CrudInscricao extends Conexao {
                $inscricao->setIdCurso($dados['idCurso']);
                $inscricao->setCurso($dados['curso']);
                $inscricao->setIdCandidato($dados['idCandidato']);
+               $inscricao->setEstadoInscricao($dados['estado_inscricao']);
                $inscricao->setNomeCand($dados['nome']);
                $inscricao->setDtCriacao(date('d-m-Y', strtotime($dados["dtCriacao"])));
                $inscricao->setdtEdicao(date('d-m-Y', strtotime($dados["dtEdicao"])));
@@ -197,6 +199,7 @@ class CrudInscricao extends Conexao {
                $inscricao->setIdCurso($dados['idCurso']);
                $inscricao->setCurso($dados['curso']);
                $inscricao->setIdCandidato($dados['idCandidato']);
+               $inscricao->setEstadoInscricao($dados['estado_inscricao']);
                $inscricao->setNomeCand($dados['nome']);
                $inscricao->setDtCriacao(date('d-m-Y', strtotime($dados["dtCriacao"])));
                $inscricao->setdtEdicao(date('d-m-Y', strtotime($dados["dtEdicao"])));
@@ -225,6 +228,8 @@ class CrudInscricao extends Conexao {
                $inscricao->setIdCurso($dados['idCurso']);
                $inscricao->setCurso($dados['curso']);
                $inscricao->setIdCandidato($dados['idCandidato']);
+               $inscricao->setEstadoInscricao($dados['estado_inscricao']);
+               $inscricao->setFaculdade($dados['faculdade']);
                $inscricao->setNomeCand($dados['nome']);
                $inscricao->setDtCriacao(date('d-m-Y', strtotime($dados["dtCriacao"])));
                $inscricao->setDtCriacao(date('d-m-Y', strtotime($dados["dtEdicao"])));
@@ -232,7 +237,7 @@ class CrudInscricao extends Conexao {
                $inscricoes[] = $inscricao;
             }
 
-            return $inscricoes;
+            return $inscricao;
         } 
     }
 
@@ -255,6 +260,7 @@ class CrudInscricao extends Conexao {
                $inscricao->setIdCurso($dados['idCurso']);
                $inscricao->setCurso($dados['curso']);
                $inscricao->setIdCandidato($dados['idCandidato']);
+               $inscricao->setEstadoInscricao($dados['estado_inscricao']);
                $inscricao->setNomeCand($dados['nome']);
                $inscricao->setDtCriacao(date('d-m-Y', strtotime($dados["dtCriacao"])));
                $inscricao->setDtCriacao(date('d-m-Y', strtotime($dados["dtEdicao"])));

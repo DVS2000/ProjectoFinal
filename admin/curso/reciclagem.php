@@ -43,6 +43,9 @@ include_once('../includes/header-sub.php');
                                                                 <a  href="#" title="Ver requisitos."  data-toggle="modal" data-target="#requisitos'.$value->getId().'" class="btn btn-outline-success"><i class="fas fa-eye    "></i></a>
                                                             </td>
                                                             <td>
+                                                                <a  href="http://localhost/inscricaoonline/'.$value->getPlanoAula().'" target="_blanck" title="Ver plano de aula." class="btn btn-outline-success"><i class="fas fa-file-pdf"></i></a>
+                                                            </td>
+                                                            <td>
                                                                 <a href="#"  data-toggle="modal" data-target="#recuperar'.$value->getId().'" class="btn btn-outline-danger"><i class="fas fa-trash-restore-alt"></i></a>
                                                             </td>
                                                         </tr>';
@@ -110,24 +113,34 @@ include_once('../includes/footer-sub.php');
             echo '
             <div class="modal fade" id="requisitos'.$value->getId().'" tabindex="-1" role="dialog"
             aria-hidden="true">
-            <div class="modal-dialog  modal-lg" role="document">
+            <div class="modal-dialog modal-lg " role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Requisitos Necessário</h5>
+                        <h5 class="modal-title">Requisitos do Curso</h5>
                         <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">×</span>
                         </button>
                     </div>
-                    <div class="modal-body">'.$value->getRequisitos().' <hr></div>
+                    <div class="modal-body">
+                    
+                    <div class="containeir-fluid">
+                        <div class="row">
+                        <div class="col-12">
+                        '.$value->getRequisitos().'
+                        </div>
+                      </div>
+                    </div>
+                    
+                    </div>
                    
-                    <h5 class="modal-title pl-3">Plano de Aula</h5>
-                    <div class="modal-body">'.$value->getPlanoAula().'</div>
+                    
+                   
                     <div class="modal-footer">
                         <button class="btn btn-outline-success" type="button" data-dismiss="modal">Fechar</button>
                     </div>
                 </div>
             </div>
-        </div>    
+        </div>      
         ';
         }
         ?>

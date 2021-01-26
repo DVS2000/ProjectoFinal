@@ -50,7 +50,6 @@ if(isset($_POST['cofirm'])) {
             $maxId = $insert->getMaxId($idCandidato);
         
             $pag = new Pagamento();
-            $pag->setIdFormPag($formPag);
             $pag->setTempo(date('Y-m-d', strtotime('+6 days')));
             $pag->setIdInscricao($maxId);
             $pag->setEstado(0);
@@ -71,5 +70,5 @@ if(isset($_POST['cofirm'])) {
 
 
 } else {
-    echo '<script>window.location.replace("http://localhost/projectofinal/");</script>';
+    echo '<script>window.location.replace("http://localhost/inscricaoonline/");</script>';
 }

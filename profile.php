@@ -41,6 +41,7 @@ if (isset($_SESSION['idCandidato'])) {
 
     $nome = $dados->getNome();
     $inscriCurso             = $inscricao->getByCandidato($dados->getId());
+    $letraInical = $dados->getFoto() == null ? substr($dados->getNome(), 0, 1) : '';
 } else if (isset($_COOKIE['idCandidato'])) {
 
     $idCandidato              = $_COOKIE['idCandidato'];
@@ -48,6 +49,7 @@ if (isset($_SESSION['idCandidato'])) {
     $dados                    = $getCand->getById($idCandidato);
     $inscriCurso = $inscricao->getByCandidato($dados->getId());
     $_SESSION['idCandidato']  = $_COOKIE['idCandidato'];
+    $letraInical = $dados->getFoto() == null ? substr($dados->getNome(), 0, 1) : '';
 }
 
 
@@ -82,7 +84,23 @@ if (isset($_SESSION['idCandidato'])) {
             <div class="col-lg-12 sm-6 card shadow mt-5">
                 <div class="p-3">
                     <div class="text-left">
-                        <h1 class="h4 text-gray-900 mb-4">FORMULÁRIO DE INSCRIÇÃO</h1>
+                        <h1 class="h4 text-gray-900 mb-4">
+                        <?php echo '
+                           <button style="
+                                height: 50px;
+                                border-radius: 100%;
+                                width: 50px;
+                                background: #f0ad4e;
+                                border-color: #ffff;
+                                background-image: url(\'http://localhost/inscricaoonline/' . $dados->getFoto() . '\');
+                                background-size: cover;
+                            " class="btn btn-primary btn-circle">
+                                    <h4 style="
+                                    margin-top: 5px;
+                                    color: #fff;">' . $letraInical . '</h4>
+                                </button>   
+                            <span class="ml-2  text-gray-600 small">' . $dados->getNome() . '</span>'  
+                            ?></h1>
                         <hr>
                     </div>
                     <form class="user" method="POST" name="inscricao" id="inscricao">
@@ -90,19 +108,19 @@ if (isset($_SESSION['idCandidato'])) {
                             <input type="hidden" name="id" value="<?php echo $dados->getId(); ?>">
                             <div class="col-sm-4">
                                 <div class="form-group">
-                                    <input type="text" value="<?php echo $dados->getNome(); ?>" readonly class="form-control form-control-user" placeholder="Nome" name="nome" required="required">
+                                    <input type="text" value="<?php echo $dados->getNome(); ?>" class="form-control form-control-user" placeholder="Nome" name="nome" required="required">
                                 </div>
                             </div>
 
                             <div class="col-sm-4">
                                 <div class="form-group">
-                                    <input type="tel" value="<?php echo $dados->getTelefone(); ?>" readonly class="form-control form-control-user" placeholder="Telefone" name="telefone" required="required" maxlength="9">
+                                    <input type="tel" value="<?php echo $dados->getTelefone(); ?>" class="form-control form-control-user" placeholder="Telefone" name="telefone" required="required" maxlength="9">
                                 </div>
                             </div>
 
                             <div class="col-sm-4">
                                 <div class="form-group">
-                                    <input type="email" value="<?php echo $dados->getEmail(); ?>" readonly class="form-control form-control-user" placeholder="E-mail" name="telEmail" required="required">
+                                    <input type="email" value="<?php echo $dados->getEmail(); ?>" class="form-control form-control-user" placeholder="E-mail" name="telEmail" required="required">
                                 </div>
                             </div>
                         </div>
@@ -110,105 +128,69 @@ if (isset($_SESSION['idCandidato'])) {
                         <div class="row">
                             <div class="col-sm-4">
                                 <div class="form-group">
-                                    <input type="text" class="form-control form-control-user " placeholder="Bilhete de Identidade" name="bi" required="required" maxlength="14">
+                                    <input type="text" class="form-control form-control-user " value="<?php echo $dados->getBi(); ?>" placeholder="Bilhete de Identidade" name="bi" required="required" maxlength="14">
                                 </div>
                             </div>
 
                             <div class="col-sm-2">
                                 <div class="form-group">
-                                    <input type="date" class="form-control form-control-user" placeholder="Data de Nascimento" name="dtNasc" required="required">
+                                    <input type="text" class="form-control form-control-user" value="<?php echo $dados->getDtNasc(); ?>" readonly name="dtNasc" required="required">
                                 </div>
                             </div>
 
                             <div class="col-sm-2">
                                 <div class="form-group">
-                                    <select class="custom-select" style="border-radius: 30px" name="nacionalidade" id="nacionalidade">
-                                        <?php
-
-                                        include_once('model/nacionalidade.php');
-                                        include_once('controller/crud-nacionalidade.php');
-                                        $select = new CrudNacionalidade();
-                                        $select->options();
-
-                                        ?>
-                                    </select>
+                                <input type="text" class="form-control form-control-user" value="<?php echo $dados->getNacionalidade(); ?>" readonly name="dtNasc" required="required">
                                 </div>
                             </div>
 
                             <div class="col-sm-4">
                                 <div class="form-group">
-                                    <input type="text" class="form-control form-control-user" placeholder="Morada" name="morada" required="required">
+                                    <input type="text" value="<?php echo $dados->getMorada(); ?>" class="form-control form-control-user" placeholder="Morada" name="morada" required="required">
                                 </div>
                             </div>
 
                         </div>
 
-
-                        <div class="row">
-                            <div class="col-sm-4">
-                                <div class="form-group">
-                                    <select class="custom-select" style="border-radius: 30px" name="faculdade" id="faculdade">
-                                        <?php
-
-                                        include_once('model/faculdade.php');
-                                        include_once('controller/crud-faculdade.php');
-                                        $select = new CrudFaculdade();
-                                        $select->options();
-
-                                        ?>
-                                    </select>
-                                </div>
-                            </div>
-
-
-                            <div class="col-sm-4">
-                                <div class="form-group">
-                                    <select class="custom-select" style="border-radius: 30px" name="curso" id="curso">
-                                    </select>
-                                </div>
-                            </div>
-
-
-                            <div class="col-sm-4">
-                                <div class="form-group">
-                                    <input type="text" class="form-control form-control-user py-3" placeholder="Preço do curso" id="preco" name="preco" readonly>
-                                    <a href="" target="_blanck" id="planoAula" class="form-control-user">Plano de Estudo</a>
-                                </div>
-                            </div>
-                        </div>
+                        <h1 class="h4 text-gray-900 mb-4 mt-3">
+                          <span class="ml-2  text-gray-600 small">Dados da Inscrição</span>
+                        </h1>
+                        <hr>
 
 
                         <div class="row">
-
-
-                            <div class="col-sm-12 input-group mb-3">
-                                <label class="input-group-text" for="foto">Fotográfia</label>
-                                <input type="file" class="form-control" id="foto" name="foto">
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                <input type="text" class="form-control form-control-user" value="<?php echo $inscriCurso->getFaculdade(); ?>" readonly required="required">
+                                </div>
                             </div>
 
-                            <div class="col-sm-12 input-group mb-3">
-                                <label class="input-group-text" for="certificado">Certificado</label>
-                                <input type="file" class="form-control custom-input-file" id="certificado" name="certificado">
+
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                  <input type="text" class="form-control form-control-user" value="<?php echo $inscriCurso->getCurso(); ?>" readonly required="required">
+                                </div>
                             </div>
 
-                            <div class="col-sm-12 input-group mb-3">
-                                <label class="input-group-text" for="bilhete">Bilhete de Identidade</label>
-                                <input type="file" class="form-control custom-input-file" id="bilhete" name="bilhete">
-                            </div>
 
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                  <input type="text" class="form-control form-control-user" value="Estado: <?php echo $inscriCurso->getEstadoInscricao(); ?>" readonly required="required">
+                                </div>
+                            </div>
                         </div>
 
 
                         <div class="row mb-3 mt-3">
                             <div class="col-sm-3">
-                                <button class="btn btn-primary btn-block" style="border-color: white;" name="inscrever">
-                                    Inscrever-ser
+                                <button class="btn btn-primary btn-block" style="border-color: white;" name="editar">
+                                    Editar Perfil
                                 </button>
                             </div>
 
                             <div class="col-sm-3 mb-3">
                                 <a class="btn btn-primary btn-block" href="index.php" style="border-color: white;">
-                                    Cancelar
+                                    Voltar
                                 </a>
                             </div>
 
@@ -386,6 +368,9 @@ if (isset($_SESSION['idCandidato'])) {
             });
         })
     </script>
+
+
+
 
 </body>
 

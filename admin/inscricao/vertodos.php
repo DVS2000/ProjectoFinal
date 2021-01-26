@@ -40,6 +40,7 @@ include_once('../includes/header-sub.php');
                                 <tr>
                                     <th scope="col">Nome do candidato</th>
                                     <th scope="col">Curso</th>
+                                    <th>Estado</th>
                                     <th scope="col">Data de inscrição</th>
                                     <th scope="col">Data de edição</th>
                                     <th></th>
@@ -68,6 +69,7 @@ include_once('../includes/header-sub.php');
                                                     echo '<tr>
                                                             <td>'.$value->getNomeCand().'</td>
                                                             <td>'.$value->getCurso().'</td>
+                                                            <td>'.$value->getEstadoInscricao().'</td>
                                                             <td>'.$value->getDtCriacao().'</td>
                                                             <td>'.$value->getDtEdicao().'</td>
                                                             

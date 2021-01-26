@@ -127,7 +127,7 @@ include_once('../includes/header-sub.php');
                                         $idFaculdade  = $clean->int('faculdade');
                                         $estado       = $clean->int('estado');
                                         $resquitos    = $clean->script($_POST['requisitos']);
-                                        $planoAula    = "upload/$newNAME";
+                                        $planoAula    = "admin/upload/$newNAME";
 
 
                                         $model = new Curso();

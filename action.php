@@ -103,8 +103,6 @@ if (isset($_POST['criarConta'])) {
     $candidato->setIdSexo($sexo);
     $candidato->setIdNacionalidade($nacionalidade);
     $candidato->setIdEstado(1);
-    $candidato->setNomePai($nomePai);
-    $candidato->setNomeMae($nomeMae);
     $candidato->setMorada($morada);
     $candidato->setSenha(md5($senha));
     $candidato->setDtCriacao(date('Y-m-d'));

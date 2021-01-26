@@ -25,6 +25,7 @@ $status = 0;
 $dados = new Candidato();
 $inscricao = new CrudInscricao();
 $clear = new Clear();
+$inscriCurso;
 
 if (isset($_SESSION['idCandidato'])) {
 
@@ -35,13 +36,19 @@ if (isset($_SESSION['idCandidato'])) {
 
     $nome = $dados->getNome();
     $inscriCurso             = $inscricao->getByCandidato($dados->getId());
+
+    $letraInical = $dados->getFoto() == null ? substr($dados->getNome(), 0, 1) : '';
 } else if (isset($_COOKIE['idCandidato'])) {
 
     $idCandidato              = $_COOKIE['idCandidato'];
     $getCand                  = new CrudCandidato();
     $dados                    = $getCand->getById($idCandidato);
     $inscriCurso = $inscricao->getByCandidato($dados->getId());
+    $letraInical = $dados->getFoto() == null ? substr($dados->getNome(), 0, 1) : '';
+    
     $_SESSION['idCandidato']  = $_COOKIE['idCandidato'];
+
+
 }
 
 ?>
@@ -102,6 +109,7 @@ if (isset($_SESSION['idCandidato'])) {
     <!-- END LOADER -->
 
     <!-- Start header -->
+
     <header class="top-header">
         <nav class="navbar header-nav navbar-expand-lg">
             <div class="container-fluid" style="padding-left: 0px !important; padding-right: 0px !important;">
@@ -127,16 +135,18 @@ if (isset($_SESSION['idCandidato'])) {
                                 width: 50px;
                                 background: #f0ad4e;
                                 border-color: #ffff;
+                                background-image: url(\'http://localhost/inscricaoonline/'.$dados->getFoto().'\');
+                                background-size: cover;
                             " class="btn btn-primary btn-circle">
                                     <h4 style="
                                     margin-top: 5px;
-                                    color: #fff;">' . substr($dados->getNome(), 0, 1) . '</h4>
+                                    color: #fff;">' . $letraInical . '</h4>
                                 </button>   
                             <span class="ml-2  text-gray-600 small">' . $dados->getNome() . '</span>
                                 
                             </a>
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#profile">
+                                <a class="dropdown-item" href="profile.php">
                                 <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                 Perfil
                                 </a>
@@ -175,7 +185,14 @@ if (isset($_SESSION['idCandidato'])) {
                                             <h4><span class="theme_color" style="color: #fff;">Simples, rápido e cômodo</span></h4>
                                             <br>
                                             <p style="color: #fff;">Evite longas filas de espera, evite aglomerações</p>
-                                            <a class="contact_bt "  href="inscrever.php" style="background-color:#f0ad4e;">Inscrever-se</a>
+                                            <?php
+
+                                            if (!isset($_SESSION['idCandidato'])) {
+                                                echo '<a class="contact_bt " data-dismiss="modal" data-target="#loginModal" data-toggle="modal"  href="#" style="background-color:#f0ad4e;">Inscrever-se</a>';
+                                            } else if (empty($inscriCurso)) {
+                                                echo '<a class="contact_bt "  href="inscrever.php" style="background-color:#f0ad4e;">Inscrever-se</a>';
+                                            }
+                                            ?>
                                         </div>
                                     </div>
                                 </div>
@@ -194,7 +211,14 @@ if (isset($_SESSION['idCandidato'])) {
                                             <h4><span class="theme_color" style="color: #fff;">Simples, rápido e cômodo</span></h4>
                                             <br>
                                             <p style="color: #fff;">Formamos líderes com programas contextualizados, que proporcionam as novas gerações, o desenvolvimento do espírito empreendedor para adaptar-se a realidade social, económica, cultural e política do país.</p>
-                                            <a class="contact_bt " href="inscrever.php" style="background-color:#f0ad4e;">Inscrever-se</a>
+                                            <?php
+
+                                            if (!isset($_SESSION['idCandidato'])) {
+                                                echo '<a class="contact_bt " data-dismiss="modal" data-target="#loginModal" data-toggle="modal"  href="#" style="background-color:#f0ad4e;">Inscrever-se</a>';
+                                            } else if (empty($inscriCurso)) {
+                                                echo '<a class="contact_bt "  href="inscrever.php" style="background-color:#f0ad4e;">Inscrever-se</a>';
+                                            }
+                                            ?>
                                         </div>
                                     </div>
                                 </div>
@@ -259,11 +283,11 @@ if (isset($_SESSION['idCandidato'])) {
                             </div>
                             <form class="user" method="POST" id="formLogin">
                                 <div class="form-group">
-                                    
+
                                     <input type="text" class="form-control form-control-user" placeholder="Telefone ou E-mail" name="telEmail" required="required">
                                 </div>
                                 <div class="form-group">
-                                    
+
                                     <input type="password" class="form-control form-control-user" placeholder="Senha" name="senha" required="required">
                                 </div>
 
@@ -308,7 +332,7 @@ if (isset($_SESSION['idCandidato'])) {
     <!-- end section -->
 
 
-    
+
 
     <div class="modal fade" id="criarConta" tabindex="-1" role="dialog">
         <div class="modal-dialog " role="document">
@@ -339,7 +363,7 @@ if (isset($_SESSION['idCandidato'])) {
                                     <input type="password" name="senha" class="form-control form-control-user" required="required" id="senha" placeholder="Senha">
                                 </div>
 
-                                <div class="form-group">    
+                                <div class="form-group">
                                     <input type="password" name="confirSenha" id="confirSenha" class="form-control form-control-user" required="required" placeholder="Confirmar senha">
                                 </div>
 
@@ -384,8 +408,7 @@ if (isset($_SESSION['idCandidato'])) {
 
     <div class="modal fade" id="candidatura" tabindex="-1" role="dialog">
         <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content"
-                style="border-bottom: .25rem solid #f0ad4e!important; border-top: .25rem solid #f0ad4e!important;">
+            <div class="modal-content" style="border-bottom: .25rem solid #f0ad4e!important; border-top: .25rem solid #f0ad4e!important;">
                 <div class="modal-body">
                     <div class="col-lg-12 sm-6">
                         <div class="p-3">
@@ -397,42 +420,32 @@ if (isset($_SESSION['idCandidato'])) {
                                 <div class="row">
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <input type="text" class="form-control form-control-user"
-                                                style="border-radius: 30px" placeholder="Nome completo" name="nome"
-                                                required="required">
+                                            <input type="text" class="form-control form-control-user" style="border-radius: 30px" placeholder="Nome completo" name="nome" required="required">
                                         </div>
                                     </div>
 
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <input type="email" class="form-control form-control-user"
-                                                style="border-radius: 30px" placeholder="E-mail" name="email"
-                                                required="required">
+                                            <input type="email" class="form-control form-control-user" style="border-radius: 30px" placeholder="E-mail" name="email" required="required">
                                         </div>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-sm-3">
                                         <div class="form-group">
-                                            <input type="text" class="form-control form-control-user"
-                                                style="border-radius: 30px" placeholder="Nº do Bilhete de identidade"
-                                                name="bi" required="required">
+                                            <input type="text" class="form-control form-control-user" style="border-radius: 30px" placeholder="Nº do Bilhete de identidade" name="bi" required="required">
                                         </div>
                                     </div>
 
                                     <div class="col-sm-3">
                                         <div class="form-group">
-                                            <input type="date" class="form-control form-control-user"
-                                                style="border-radius: 30px" placeholder="Nº do Bilhete de identidade"
-                                                name="dtNasc" required="required">
+                                            <input type="date" class="form-control form-control-user" style="border-radius: 30px" placeholder="Nº do Bilhete de identidade" name="dtNasc" required="required">
                                         </div>
                                     </div>
 
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <input type="text" name="nomePai" id=""
-                                                class="form-control form-control-user" required="required"
-                                                placeholder="Nome do pai">
+                                            <input type="text" name="nomePai" id="" class="form-control form-control-user" required="required" placeholder="Nome do pai">
                                         </div>
                                     </div>
                                 </div>
@@ -440,8 +453,7 @@ if (isset($_SESSION['idCandidato'])) {
                                 <div class="row">
                                     <div class="col-sm-3">
                                         <div class="form-group">
-                                            <select style="border-radius: 30px; height: 50px;" class="custom-select"
-                                                required name="sexo" required="required">
+                                            <select style="border-radius: 30px; height: 50px;" class="custom-select" required name="sexo" required="required">
                                                 <?php
 
                                                 include_once('model/sexo.php');
@@ -457,14 +469,13 @@ if (isset($_SESSION['idCandidato'])) {
 
                                     <div class="col-sm-3">
                                         <div class="form-group">
-                                            <select style="border-radius: 30px; height: 50px;" class="custom-select"
-                                                required name="nacionalidade" required="required">
+                                            <select style="border-radius: 30px; height: 50px;" class="custom-select" required name="nacionalidade" required="required">
 
                                                 <?php
-                                                    include_once('model/nacionalidade.php');
-                                                    include_once('controller/crud-nacionalidade.php');
-                                                     $select = new CrudNacionalidade();
-                                                     $select->options();
+                                                include_once('model/nacionalidade.php');
+                                                include_once('controller/crud-nacionalidade.php');
+                                                $select = new CrudNacionalidade();
+                                                $select->options();
                                                 ?>
 
                                             </select>
@@ -473,9 +484,7 @@ if (isset($_SESSION['idCandidato'])) {
 
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <input type="text" name="nomeMae" id=""
-                                                class="form-control form-control-user" required="required"
-                                                placeholder="Nome da mãe">
+                                            <input type="text" name="nomeMae" id="" class="form-control form-control-user" required="required" placeholder="Nome da mãe">
                                         </div>
                                     </div>
                                 </div>
@@ -484,25 +493,19 @@ if (isset($_SESSION['idCandidato'])) {
                                 <div class="row">
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <input type="tel" name="telefone" id=""
-                                                class="form-control form-control-user" required="required"
-                                                placeholder="Telefone">
+                                            <input type="tel" name="telefone" id="" class="form-control form-control-user" required="required" placeholder="Telefone">
                                         </div>
                                     </div>
 
                                     <div class="col-sm-3">
                                         <div class="form-group">
-                                            <input type="password" name="senha"
-                                                class="form-control form-control-user" required="required" id="senha"
-                                                placeholder="Senha">
+                                            <input type="password" name="senha" class="form-control form-control-user" required="required" id="senha" placeholder="Senha">
                                         </div>
                                     </div>
 
                                     <div class="col-sm-3">
                                         <div class="form-group">
-                                            <input type="password" name="confirSenha" id=""
-                                                class="form-control form-control-user" required="required"
-                                                placeholder="Confirmar senha">
+                                            <input type="password" name="confirSenha" id="" class="form-control form-control-user" required="required" placeholder="Confirmar senha">
                                         </div>
                                     </div>
                                 </div>
@@ -510,34 +513,31 @@ if (isset($_SESSION['idCandidato'])) {
                                 <div class="row">
                                     <div class="col-sm-12">
                                         <div class="form-group">
-                                            <input type="text" name="morada" id="" placeholder="Morada"
-                                                class="form-control form-control-user">
+                                            <input type="text" name="morada" id="" placeholder="Morada" class="form-control form-control-user">
                                         </div>
                                     </div>
                                 </div>
 
                                 <div class="row">
                                     <div class="col-sm-6 mb-3">
-                                        <button  class="btn btn-primary btn-block" name="criarConta"
-                                            style="border-radius: 30px" >
+                                        <button class="btn btn-primary btn-block" name="criarConta" style="border-radius: 30px">
                                             CRIAR CONTA
                                         </button>
                                     </div>
                                     <div class="col-sm-6">
-                                        <a href="" class="btn btn-outline-danger btn-block" style="border-radius: 30px"
-                                            data-dismiss="modal">CANCELAR</a>
+                                        <a href="" class="btn btn-outline-danger btn-block" style="border-radius: 30px" data-dismiss="modal">CANCELAR</a>
                                     </div>
                                 </div>
                             </form>
 
                             <div class="aviso-criar">
                                 <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                            <span class="sr-only">Close</span>
-                                        </button>
-                                        <h3 class="text-center" id="text-aviso-criar">Este candidato já foi registado.</h3>
-                            </div>
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                        <span class="sr-only">Close</span>
+                                    </button>
+                                    <h3 class="text-center" id="text-aviso-criar">Este candidato já foi registado.</h3>
+                                </div>
                             </div>
                             <hr>
                             <div class="text-center">
@@ -548,7 +548,7 @@ if (isset($_SESSION['idCandidato'])) {
                                     conta</a>
                             </div>
 
-                            
+
                         </div>
                     </div>
                 </div>
@@ -625,27 +625,6 @@ if (isset($_SESSION['idCandidato'])) {
             avisoCriar.hide();
             avisoEditar.hide();
 
-
-            /*
-             :::::::: ADICIONANDO FUNÇÃO AO jQuery Validade ::::::::
-              -> AQUI ADICIONAMOS UMA FUNÇÃO PARA 
-              -> VALIDAR A IDADE DO CANDIDO,
-              -> CASO ELE FOR MENOS DE IDADE 
-              -> IDADE O SISTEMA NÃO ACEITA A SUA INSCRICAO
-             */
-            jQuery.validator.addMethod("verifyDt", function(value, element) {
-                data = new Date();
-                date = data.getFullYear();
-                minhaData = value[0] + value[1] + value[2] + value[3];
-                idade = parseInt(date) - parseInt(value);
-                if (idade >= 18) {
-                    return true;
-                } else {
-                    return false;
-                }
-            }, "Precisa ser maior de idade");
-
-
             /*
              :::::::: VALIDANDO O FORMÚLARIO PARA FAZER O CADASTRO DO CANDIDATO ::::::::::::::::::
             */
@@ -686,8 +665,6 @@ if (isset($_SESSION['idCandidato'])) {
                         processData: false,
                         data: form,
                     }).done(function(res) {
-
-                        console.log(res)
                         /*
                         :::::: RESPOSTA(RESULTADO) ::::::::::
                             1 -> JÁ EXISTE NO NOSSO BANCO DE DADOS
@@ -711,97 +688,6 @@ if (isset($_SESSION['idCandidato'])) {
 
                     /*
                      */
-                }
-            });
-
-
-            /*
-             :::::::: VALIDANDO O FORMÚLARIO PARA EDITAR O PERFIL DO CANDIDATO ::::::::::::::::::
-            */
-            $("#editCand").validate({
-                rules: {
-                    nome: {
-                        required: true,
-                        maxlength: 100,
-                        minlength: 2,
-                        minWords: 2,
-                        maxWords: 5
-
-                    },
-                    email: {
-                        required: true,
-                        email: true
-                    },
-                    bi: {
-                        required: true,
-                        minlength: 10,
-                        maxlength: 20,
-                        maxWords: 1
-                    },
-                    telefone: {
-                        required: true,
-                        minlength: 9,
-                        maxlength: 12
-                    },
-                    nomePai: {
-                        required: true,
-                        maxlength: 100,
-                        minlength: 2,
-                        minWords: 2,
-                        maxWords: 5
-                    },
-                    nomeMae: {
-                        required: true,
-                        maxlength: 100,
-                        minlength: 2,
-                        minWords: 2,
-                        maxWords: 5
-                    },
-                    dtNasc: {
-                        required: true,
-                        verifyDt: true
-                    },
-                    morada: {
-                        required: true,
-                        minlength: 6
-                    },
-                    newsenha: {
-                        required: true,
-                        minlength: 4,
-                        maxlength: 10
-                    },
-                    confirSenha: {
-                        required: true,
-                        equalTo: "#newsenha"
-                    }
-
-                },
-                submitHandler: function(forms) {
-
-                    var form = new FormData($("#editCand")[0]);
-
-                    $.ajax({
-                        url: 'action.php',
-                        type: 'post',
-                        dataType: 'json',
-                        cache: false,
-                        processData: false,
-                        contentType: false,
-                        data: form,
-                        timeout: 8000,
-                        success: function(resultado) {
-
-                            if (resultado == 1) {
-                                avisoEditar.fadeIn('slow').fadeOut(15000);
-                                $("#text-aviso-editar").html("Este candidato já foi registado, Tente com outros dados.");
-                            } else if (resultado == 2) {
-                                window.location.reload();
-                            } else if (resultado == 3) {
-                                avisoEditar.fadeIn('slow').fadeOut(15000);
-                                $("#text-aviso-editar").val("Ocorre um erro!, tente mais tarde.");
-                            }
-                        }
-                    });
                 }
             });
 

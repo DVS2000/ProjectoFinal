@@ -1,22 +1,23 @@
 <?php
 
 
-    include_once('../../model/inscricao.php');
-    include_once('../../controller/crud-inscricao.php');
-    include_once('../../Util/clear-var.php');
+include_once('../../model/inscricao.php');
+include_once('../../controller/crud-inscricao.php');
+include_once('../../Util/clear-var.php');
 
-    $clean = new Clear();
+$clean = new Clear();
 
-    $idCurso  = $clean->int('curso');
-    $idInscri =  $clean->int('idInscricao');
-    $inscricao = new Inscricao();
+$estadoInscricao  = $clean->int('estado_inscricao');
+$idInscri         =  $clean->int('idInscricao');
+$inscricao = new Inscricao();
 
-    $inscricao->setId($idInscri);
-    $inscricao->setIdCurso($idCurso);
+$inscricao->setId($idInscri);
+$inscricao->setEstadoInscricao($estadoInscricao);
 
-   
-    $edit = new CrudInscricao();
-    $edit->update($inscricao);
-    header('Location: vertodos.php');
 
-    
+$edit = new CrudInscricao();
+echo $edit->update($inscricao);
+
+if (isset($_SERVER["HTTP_REFERER"])) {
+    header("Location: " . $_SERVER["HTTP_REFERER"]);
+}

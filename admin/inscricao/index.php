@@ -18,16 +18,23 @@ if(isset($_POST['cofirm'])) {
 
     $formPag = $_POST['formPag'];
 
-    $inscricao      = new Inscricao();
-    $idCandidato    = $_SESSION['idCandidato'] == null ? $_COOKIE['idCandidato'] : $_SESSION['idCandidato'];
-    $idCurso        = $_POST['idCurso'];
+    $inscricao              = new Inscricao();
+    $idCandidato            = $_SESSION['idCandidato'] == null ? $_COOKIE['idCandidato'] : $_SESSION['idCandidato'];
+    $idInscricao            = $_POST['idInscricao'];
+    $estadoInscricao        = $_POST['estado_inscricao'];
 
     $inscricao->setIdCandidato($idCandidato);
-    $inscricao->setIdCurso($idCurso);
+    $inscricao->setid($idInscricao);
+    $inscricao->setEstadoInscricao($estadoInscricao);
     $inscricao->setDtCriacao(date('Y-m-d'));
     $inscricao->setDtEdicao(date('Y-m-d'));
 
-    $getCandidato   = new CrudCandidato();
+    $insert = new CrudInscricao();
+    $status = $insert->update($inscricao);
+
+    header('Location: ../index.php');
+
+    /*$getCandidato   = new CrudCandidato();
     $candidato      = $getCandidato->getById($idCandidato);
     $nome           = $candidato->getNome();
     $emailCand      = $candidato->getEmail();
@@ -66,7 +73,7 @@ if(isset($_POST['cofirm'])) {
     } catch (\Throwable $th) {
         $_SESSION['inscricao'] = 3;
         header('Location: ../../index.php');
-    }
+    }*/
 
 
 } else {

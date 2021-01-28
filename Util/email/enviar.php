@@ -31,7 +31,7 @@ class SendEmail {
       // Create a message
       $data = date('d/m/Y');
       $message = (new Swift_Message('NOVA SENHA'))
-        ->setFrom([$email => 'Escola de Condução JELU'])
+        ->setFrom([$email => 'UNIVERSIDADE OSCAR RIBAS'])
         ->setTo([$emailSend])
         ->setBody($msg)
         ->addPart('
@@ -139,7 +139,7 @@ class SendEmail {
                                                    <tbody>
                                                       <tr>
                                                          <td align="center" valign="middle" width="100%" style="border-top:1px solid #d9d9d9;padding:12px 0px 20px 0px;text-align:center;color:#4c4c4c;font-weight:200;font-size:12px;line-height:18px">Atenciosamente,
-                                                            <br><b>ESCOLA DE CONDUÇÃO JELU</b>
+                                                            <br><b>UNIVERSIDADE OSCAR RIBAS</b>
                                                          </td>
                                                       </tr>
                                                    </tbody>
@@ -196,7 +196,7 @@ class SendEmail {
 
       $numRecibo = rand(1,9) + rand(1,9) + rand(1,9);
       $message = (new Swift_Message('BEM-VINDO A ESCOLA JELU'))
-        ->setFrom([$email => 'Escola de Condução JELU'])
+        ->setFrom([$email => 'UNIVERIDADE OSCAR RIBAS'])
         ->setTo([$send])
         ->setBody($msg)
         ->addPart('
@@ -248,7 +248,7 @@ class SendEmail {
 
             <header>
                <img  style="width: 100px; height: 50px;" src="https://scontent.flad1-1.fna.fbcdn.net/v/t1.15752-9/72316675_798029177317471_362662112146751488_n.png?_nc_cat=100&_nc_oc=AQlaYEZYbh_Mif750z6xQQaT1cVoxlTSzlHpl9ENUy1DZDUFrg0THpJzKSUa8-EbOuA&_nc_ht=scontent.flad1-1.fna&oh=a3014a7e6a082c021e864a16b2507ed5&oe=5E2E8B9A" alt="">
-               <h3>ESCOLA DE CONDUÇAO JELÚ</h3>
+               <h3>UNIVERSIDADE OSCAR RIBAS</h3>
                <span>Rua da samba 364 R/C Luanda-Angola</span> <br>
                <span>222 001 597 / 915 937 036</span>
                <h3 style="text-decoration: underline">Luanda</h3>
@@ -297,7 +297,7 @@ class SendEmail {
       $hora = (int)date('H') - 1;
       
       $message = (new Swift_Message('CONFIRMAÇÃO DO PAGAMENTO'))
-        ->setFrom([$email => 'Escola de Condução JELÚ'])
+        ->setFrom([$email => 'UNIVERSIDADE OSCAR RIBAS'])
         ->setTo([$send])
         ->setBody($msg)
         ->addPart('
@@ -343,7 +343,7 @@ class SendEmail {
             <header style="display:flex; justify-content: space-between;">
                 <div>
                     
-                    <h4 style="font-family:"Times New Roman", Times, serif">ESCOLA DE CONDUÇÃO JELÚ</h4>
+                    <h4 style="font-family:"Times New Roman", Times, serif">UNIVERSIDADE OSCAR RIBAS</h4>
                     <h4>Recibo de pagamento Nº '.$idPag.'</h4>
                     <hr style="width: 200px; height: 2px; font-weight: bolder; background: black;">
                 </div>

@@ -2,7 +2,7 @@
    <footer class="sticky-footer bg-white">
         <div class="container my-auto">
           <div class="copyright text-center my-auto">
-            <span>Copyright &copy; Todos direitos reservados Universidade Orcar Ribas <script> Date.now()</script> </span>
+            <span>Copyright &copy; Todos direitos reservados Universidade Oscar Ribas <?php echo date('Y'); ?> <script> Date.now()</script> </span>
           </div>
         </div>
       </footer>

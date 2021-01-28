@@ -70,34 +70,44 @@ if (isset($_SESSION['idUtlizador'])) {
       <!-- Divider -->
       <hr class="sidebar-divider">
 
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseInscricao">
-          <i class="fas fa-address-card"></i>
-          <span>Inscrição</span>
-        </a>
-        <div id="collapseInscricao" class="collapse" data-parent="#meuSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <a class="collapse-item" href="inscricao/vertodos.php">Ver todas</a>
-            <a class="collapse-item" href="inscricao/reciclagem.php">Desactivados</a>
+      <?php
+        if($user->getIdTipoUtilizador() == 12 || $user->getIdTipoUtilizador() == 11) {
+          echo '<li class="nav-item">
+          <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseInscricao">
+            <i class="fas fa-address-card"></i>
+            <span>Inscrição</span>
+          </a>
+          <div id="collapseInscricao" class="collapse" data-parent="#meuSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+              <a class="collapse-item" href="inscricao/pendente.php">Pendentes</a>
+              <a class="collapse-item" href="inscricao/aprovado.php">Aprovado</a>
+              <a class="collapse-item" href="inscricao/reprovado.php">Reprovado</a>
+            </div>
           </div>
-        </div>
-      </li>
+        </li>';
+        }
+      ?>
 
 
 
-      <li class="nav-item">
-        <a href="#" class="nav-link collapsed" data-toggle="collapse" data-target="#collapseCandidato">
-          <i class="fas fa-clipboard-list    "></i>
-          <span>Candidato</span>
-        </a>
+      <?php
 
-        <div class="collapse" id="collapseCandidato" data-parent="#meuSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <a href="candidato/vertodos.php" class="collapse-item">Ver todos</a>
-            <a href="candidato/reciclagem.php" class="collapse-item">Desactivados</a>
+        if($user->getIdTipoUtilizador() == 11) {
+          echo '<li class="nav-item">
+          <a href="#" class="nav-link collapsed" data-toggle="collapse" data-target="#collapseCandidato">
+            <i class="fas fa-clipboard-list    "></i>
+            <span>Candidato</span>
+          </a>
+  
+          <div class="collapse" id="collapseCandidato" data-parent="#meuSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+              <a href="candidato/vertodos.php" class="collapse-item">Ver todos</a>
+              <a href="candidato/reciclagem.php" class="collapse-item">Desactivados</a>
+            </div>
           </div>
-        </div>
-      </li>
+        </li>';
+        }
+      ?>
 
       <?php
 
@@ -150,18 +160,25 @@ if (isset($_SESSION['idUtlizador'])) {
       ?>
 
 
-      <li class="nav-item">
+      <?php
+
+      if($user->getIdTipoUtilizador() == 13 || $user->getIdTipoUtilizador() == 11) {
+        echo '<li class="nav-item">
         <a href="#" class="nav-link collapsed" data-toggle="collapse" data-target="#collapseNacional">
           <i class="fa fa-money-bill" aria-hidden="true"></i>
           <span>Pagamento</span>
         </a>
         <div id="collapseNacional" class="collapse" data-parent="#meuSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
-            <a class="collapse-item" href="pagamento/vertodos.php">Ver Confirmados</a>
-            <a class="collapse-item" href="pagamento/reciclagem.php">Não confirmados</a>
+              <a class="collapse-item" href="pagamento/pendente.php">Pendente</a>         
+              <a class="collapse-item" href="pagamento/aprovado.php">Confirmados</a>
+              <a class="collapse-item" href="pagamento/reprovado.php">Não confirmados</a>
           </div>
         </div>
-      </li>
+      </li>';
+      }
+
+      ?>
 
 
       <?php

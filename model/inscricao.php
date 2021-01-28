@@ -12,6 +12,10 @@ class Inscricao{
     private $idEstado;
     private $estadoInscricao;
     private $faculdade;
+    private $planoAula;
+    private $foto;
+    private $certificado;
+    private $bilhete;
 
     # CRIANDO O GET E O SET DO ID  DA INSCRIÇÃO
     public function getId() { return $this->id; }
@@ -49,7 +53,23 @@ class Inscricao{
     public function getEstadoInscricao() { return $this->estadoInscricao; }
     public function setEstadoInscricao($estadoInscricao) { $this->estadoInscricao = $estadoInscricao; }
 
-    # Crinaod o set o get do estado da faculdade
+    # Crinaod o set o get da faculdade do curso da inscrição
     public function getFaculdade() { return $this->faculdade; }
     public function setFaculdade($faculdade) { $this->faculdade = $faculdade; }
+
+    # Crinaod o set o get do plano curso em que o aluno se inscreveu
+    public function getPlanoAula() { return $this->planoAula; }
+    public function setPlanoAula($planoAula) { $this->planoAula = $planoAula; }
+
+    # Criando o Get e o set para pegar a foto do candidato
+    public function getFoto() { return $this->foto; }
+    public function setFoto($foto) { $this->foto = $foto; }
+
+    # Criando o get e o set para pegar o certificado do candidato
+    public function getCertificado() { return $this->certificado; }
+    public function setCertificado($certificado) { $this->certificado = $certificado; }
+
+    # Criando o get e set para pegar o fiheiro do BI do candidato
+    public function getBilheteFile() { return $this->bilhete; }
+    public function setBilheteFile($bilhete) { $this->bilhete = $bilhete; }
 }

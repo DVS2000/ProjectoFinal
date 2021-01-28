@@ -20,6 +20,7 @@ include_once('controller/crud-inscricao.php');
 
 session_start();
 
+
 $status = 0;
 
 $dados = new Candidato();
@@ -189,7 +190,7 @@ if (isset($_SESSION['idCandidato'])) {
 
                                             if (!isset($_SESSION['idCandidato'])) {
                                                 echo '<a class="contact_bt " data-dismiss="modal" data-target="#loginModal" data-toggle="modal"  href="#" style="background-color:#f0ad4e;">Inscrever-se</a>';
-                                            } else if (empty($inscriCurso)) {
+                                            } else if ($inscriCurso->getId() == null ) {
                                                 echo '<a class="contact_bt "  href="inscrever.php" style="background-color:#f0ad4e;">Inscrever-se</a>';
                                             }
                                             ?>
@@ -215,7 +216,7 @@ if (isset($_SESSION['idCandidato'])) {
 
                                             if (!isset($_SESSION['idCandidato'])) {
                                                 echo '<a class="contact_bt " data-dismiss="modal" data-target="#loginModal" data-toggle="modal"  href="#" style="background-color:#f0ad4e;">Inscrever-se</a>';
-                                            } else if (empty($inscriCurso)) {
+                                            } else if ($inscriCurso->getId() == null ) {
                                                 echo '<a class="contact_bt "  href="inscrever.php" style="background-color:#f0ad4e;">Inscrever-se</a>';
                                             }
                                             ?>

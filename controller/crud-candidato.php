@@ -67,14 +67,8 @@ class CrudCandidato extends Conexao
         $bi             = $model->getBi();
         $email          = $model->getEmail();
         $telefone       = $model->getTelefone();
-        $dtNasc         = $model->getDtNasc();
-        $idNacional     = $model->getIdNacionalidade();
-        $idEstado       = $model->getIdEstado();
-        $dtCriacao      = $model->getDtCriacao();
-        $dtEdicao       = $model->getDtEdicao();
         $morada         = $model->getMorada();
-        $idSexo         = $model->getIdSexo();
-        $senha          = $model->getSenha();
+        $dtEdicao       = $model->getDtEdicao();
 
 
         $query = $this->conexao->prepare("SELECT * FROM tbCandidato WHERE email = ? AND idcandidato <> ? OR telefone = ? AND idcandidato <> ? OR bi = ? AND idcandidato <> ?");
@@ -90,14 +84,10 @@ class CrudCandidato extends Conexao
                 bi                = ?,
                 email             = ?,
                 telefone          = ?,
-                dtNasc            = ?,
-                idNacionalidade   = ?,
-                idEstado          = ?,
-                dtEdicao          = ?,
                 morada            = ?,
-                senha             = ?
+                dtEdicao          = ?
                 WHERE idcandidato = ?");
-                $query->bind_param('sssssiisssi', $nome, $bi, $email, $telefone, $dtNasc, $idNacional, $idEstado, $dtEdicao, $morada, $senha, $id);
+                $query->bind_param('ssssssi', $nome, $bi, $email, $telefone, $morada, $dtEdicao, $id);
 
                 if ($query->execute()) {
                     return 2;

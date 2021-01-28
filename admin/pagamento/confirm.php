@@ -38,10 +38,10 @@ if(isset($_POST['cofirm'])) {
     $utilizador = $selectUtil->getById($_COOKIE['idUtilizador']);
 
 
-    if($email->enviarPag($pagamento->getNomeCand(), $pagamento->getCurso(), $candidato->getEmail(), $pagamento->getPreco(), $pagamento->getFormPag(), $utilizador->getTipoUtilizador(), $utilizador->getNome(), $pagamento->getId(), $inscricao->getId())) {
+    /*if($email->enviarPag($pagamento->getNomeCand(), $pagamento->getCurso(), $candidato->getEmail(), $pagamento->getPreco(), $pagamento->getFormPag(), $utilizador->getTipoUtilizador(), $utilizador->getNome(), $pagamento->getId(), $inscricao->getId())) {
         $select->cofirm($id);
         header('Location: reciclagem.php');
     } else {
       header('Location: reciclagem.php');
-    }
+    }*/
 }

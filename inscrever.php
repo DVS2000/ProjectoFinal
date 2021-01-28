@@ -70,7 +70,7 @@ if (isset($_SESSION['idCandidato'])) {
     <link rel="stylesheet" href="src/style/style.css">
     <link rel="stylesheet" href="src/style/animate.css">
 
-    <title>Escola de Condução</title>
+    <title>Formulário de Inscrição</title>
 </head>
 
 <body>
@@ -365,7 +365,6 @@ if (isset($_SESSION['idCandidato'])) {
                         processData: false,
                         data: form,
                     }).done(function(res) {
-                        alert('AQUI')
 
                         console.log(res)
 
@@ -379,8 +378,8 @@ if (isset($_SESSION['idCandidato'])) {
                             $("#text-aviso-criar").val("Ocorre um erro!, tente mais tarde.");
                         }
                     }).fail(function(res) {
-                        alert('ERRO')
-                        console.log(res)
+                        avisoCriar.fadeIn('slow').fadeOut(8000);
+                        $("#text-aviso-criar").val("Ocorre um erro!, tente mais tarde.");
                     });
                 }
             });

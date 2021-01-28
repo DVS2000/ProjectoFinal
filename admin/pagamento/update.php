@@ -7,19 +7,22 @@ include_once('../../controller/crud-pagamento.php');
 # INCLUIDO O FICHEIRO QUE VAI FAZER A LIMPEZA DAS VARIAVEL
 include_once('../../Util/clear-var.php');
 
+
 $clear = new Clear();
-$idPagmento = $clear->int('id');
-$idFormPag  = $clear->int('formPag');
 
+$clean = new Clear();
 
+$estado               = $clean->int('estado');
+$idPagameento         =  $clean->int('idPagamento');
 
 $pagamento = new Pagamento();
-$pagamento->setId($idPagmento);
-$pagamento->setIdFormPag($idFormPag);
+$pagamento->setId($idPagameento);
+$pagamento->setEstado($estado);
 
 
+$edit = new CrudPagamento();
+echo $edit->update($pagamento);
 
-
-$update = new CrudPagamento();
-$update->update($pagamento);
-header('Location: reciclagem.php');
+if (isset($_SERVER["HTTP_REFERER"])) {
+    header("Location: " . $_SERVER["HTTP_REFERER"]);
+}

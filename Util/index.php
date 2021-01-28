@@ -10,12 +10,12 @@
 	$dompdf = new DOMPDF();
 
 	// Carrega seu HTML
-	$dompdf->load_html('
+	$dompdf->loadhtml('
     <img src="img.jpeg" style="width: 400px; height: 200px;" style="position:absolute; left: 50%; top: 50%; transform:translate(-50%, -50%);"/>
   
         <div>
             
-            <h3 >ESCOLA DE CONDUÇÃO JELÚ</h3>
+            <h3>UNIVERSIDADE OSCAR RIBAS</h3>
             <h3>Recibo de pagamento Nº 115</h3>
             <hr style="width: 500px; height: 2px; font-weight: bolder; background: black;">
         </div>

@@ -26,11 +26,20 @@ include_once('model/inscricao.php');
 # INCLUINDO O CONTROLLER DA INSCRICAO
 include_once('controller/crud-inscricao.php');
 
+# INCLUINDO O MODEL DO PAGAMENTO
+include_once('model/pagamento.php');
+
+# INCLUINDO O CONTROLLER DO PAGAMENTO
+include_once('controller/crud-pagamento.php');
+
+
 $status = 0;
 
-$dados = new Candidato();
-$inscricao = new CrudInscricao();
-$clear = new Clear();
+$dados               = new Candidato();
+$inscricao           = new CrudInscricao();
+$pagamento           = new Pagamento();
+$pagamentoController = new CrudPagamento();
+$clear               = new Clear();
 
 if (isset($_SESSION['idCandidato'])) {
 
@@ -39,17 +48,19 @@ if (isset($_SESSION['idCandidato'])) {
     $getCand                 = new CrudCandidato();
     $dados                   = $getCand->getById($idCandidato);
 
-    $nome = $dados->getNome();
+    $nome                    = $dados->getNome();
     $inscriCurso             = $inscricao->getByCandidato($dados->getId());
-    $letraInical = $dados->getFoto() == null ? substr($dados->getNome(), 0, 1) : '';
+    $pagamento               = $pagamentoController->getByIdInscricao($inscriCurso->getId());
+    $letraInical             = $dados->getFoto() == null ? substr($dados->getNome(), 0, 1) : '';
 } else if (isset($_COOKIE['idCandidato'])) {
 
     $idCandidato              = $_COOKIE['idCandidato'];
     $getCand                  = new CrudCandidato();
     $dados                    = $getCand->getById($idCandidato);
-    $inscriCurso = $inscricao->getByCandidato($dados->getId());
+    $inscriCurso              = $inscricao->getByCandidato($dados->getId());
+    $pagamento                = $pagamentoController->getByIdInscricao($inscriCurso->getId());
     $_SESSION['idCandidato']  = $_COOKIE['idCandidato'];
-    $letraInical = $dados->getFoto() == null ? substr($dados->getNome(), 0, 1) : '';
+    $letraInical              = $dados->getFoto() == null ? substr($dados->getNome(), 0, 1) : '';
 }
 
 
@@ -72,12 +83,10 @@ if (isset($_SESSION['idCandidato'])) {
     <link rel="stylesheet" href="src/style/style.css">
     <link rel="stylesheet" href="src/style/animate.css">
 
-    <title>Escola de Condução</title>
+    <title>Perfil - <?php echo $dados->getNome() ?></title>
 </head>
 
 <body>
-
-
     <div class="container">
         <div class="row d-flex justify-content-center">
             <div class="col-sm-3"></div>
@@ -85,7 +94,7 @@ if (isset($_SESSION['idCandidato'])) {
                 <div class="p-3">
                     <div class="text-left">
                         <h1 class="h4 text-gray-900 mb-4">
-                        <?php echo '
+                            <?php echo '
                            <button style="
                                 height: 50px;
                                 border-radius: 100%;
@@ -99,11 +108,14 @@ if (isset($_SESSION['idCandidato'])) {
                                     margin-top: 5px;
                                     color: #fff;">' . $letraInical . '</h4>
                                 </button>   
-                            <span class="ml-2  text-gray-600 small">' . $dados->getNome() . '</span>'  
+                            <span class="ml-2  text-gray-600 small">' . $dados->getNome() . '</span>
+                            
+                            '
+
                             ?></h1>
                         <hr>
                     </div>
-                    <form class="user" method="POST" name="inscricao" id="inscricao">
+                    <form class="user" method="POST" name="profile" id="profile">
                         <div class="row">
                             <input type="hidden" name="id" value="<?php echo $dados->getId(); ?>">
                             <div class="col-sm-4">
@@ -120,7 +132,7 @@ if (isset($_SESSION['idCandidato'])) {
 
                             <div class="col-sm-4">
                                 <div class="form-group">
-                                    <input type="email" value="<?php echo $dados->getEmail(); ?>" class="form-control form-control-user" placeholder="E-mail" name="telEmail" required="required">
+                                    <input type="email" value="<?php echo $dados->getEmail(); ?>" class="form-control form-control-user" placeholder="E-mail" name="email" required="required">
                                 </div>
                             </div>
                         </div>
@@ -129,6 +141,12 @@ if (isset($_SESSION['idCandidato'])) {
                             <div class="col-sm-4">
                                 <div class="form-group">
                                     <input type="text" class="form-control form-control-user " value="<?php echo $dados->getBi(); ?>" placeholder="Bilhete de Identidade" name="bi" required="required" maxlength="14">
+                                    <div class="row p-0">
+                                        <a href="#" id="planoAula" class="pl-4 py-0 pr-2 form-control-user">Ver</a>
+                                        <?php echo '<a href="http://localhost/inscricaoonline/' . $dados->getFoto() . '" target="_blanck" id="planoAula" class="pl-2 py-0 pr-0 form-control-user">Fotográria</a>'; ?>
+                                        <?php echo '<a href="http://localhost/inscricaoonline/' . $dados->getCertificado() . '" target="_blanck" id="planoAula" class="pl-2 py-0 pr-0 form-control-user">Certificado</a>'; ?>
+                                        <?php echo '<a href="http://localhost/inscricaoonline/' . $dados->getBilheteFile() . '" target="_blanck" id="planoAula" class="pl-2 py-0 pr-0 form-control-user">Bilhete de Identidade</a>'; ?>
+                                    </div>
                                 </div>
                             </div>
 
@@ -140,7 +158,7 @@ if (isset($_SESSION['idCandidato'])) {
 
                             <div class="col-sm-2">
                                 <div class="form-group">
-                                <input type="text" class="form-control form-control-user" value="<?php echo $dados->getNacionalidade(); ?>" readonly name="dtNasc" required="required">
+                                    <input type="text" class="form-control form-control-user" value="<?php echo $dados->getNacionalidade(); ?>" readonly name="dtNasc" required="required">
                                 </div>
                             </div>
 
@@ -153,7 +171,7 @@ if (isset($_SESSION['idCandidato'])) {
                         </div>
 
                         <h1 class="h4 text-gray-900 mb-4 mt-3">
-                          <span class="ml-2  text-gray-600 small">Dados da Inscrição</span>
+                            <span class="ml-2  text-gray-600 small">Dados da Inscrição</span>
                         </h1>
                         <hr>
 
@@ -161,24 +179,51 @@ if (isset($_SESSION['idCandidato'])) {
                         <div class="row">
                             <div class="col-sm-4">
                                 <div class="form-group">
-                                <input type="text" class="form-control form-control-user" value="<?php echo $inscriCurso->getFaculdade(); ?>" readonly required="required">
+                                    <input type="text" class="form-control form-control-user" value="<?php echo $inscriCurso->getFaculdade(); ?>" readonly required="required">
                                 </div>
                             </div>
 
 
                             <div class="col-sm-4">
                                 <div class="form-group">
-                                  <input type="text" class="form-control form-control-user" value="<?php echo $inscriCurso->getCurso(); ?>" readonly required="required">
+                                    <input type="text" class="form-control form-control-user" value="<?php echo $inscriCurso->getCurso(); ?>" readonly required="required">
                                 </div>
                             </div>
 
 
                             <div class="col-sm-4">
                                 <div class="form-group">
-                                  <input type="text" class="form-control form-control-user" value="Estado: <?php echo $inscriCurso->getEstadoInscricao(); ?>" readonly required="required">
+                                    <input type="text" class="form-control form-control-user" value="Estado: <?php echo $inscriCurso->getEstadoInscricao(); ?>" readonly required="required">
+                                    <a href="<?php echo 'http://localhost/inscricaoonline/' . $inscriCurso->getPlanoAula() . ''; ?>" target="_blanck" id="planoAula" class="form-control-user">Plano de Estudo de <?php echo $inscriCurso->getCurso(); ?></a>
                                 </div>
                             </div>
                         </div>
+
+                        <?php
+
+                        if ($pagamento->getId() != null) {
+                            echo '
+                                <h1 class="h4 text-gray-900 mb-4 mt-1">
+                                <span class="ml-2  text-gray-600 small">Dados do Pagamento</span>
+                                </h1>
+                                <hr>
+
+                                <div class="row">
+
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <input type="text" class="form-control form-control-user" value="Estado: '.$pagamento->getEstado().'" readonly required="required">
+                                        <a href="http://localhost/inscricaoonline/'. $pagamento->getComprovativo().'" target="_blanck" id="comprovativo" class="form-control-user">Abrir o Compravativo de Pagamento</a>
+                                    </div>
+                                </div>
+                                </div>
+
+                                <hr>
+                                ';
+                        }
+
+
+                        ?>
 
 
                         <div class="row mb-3 mt-3">
@@ -199,6 +244,41 @@ if (isset($_SESSION['idCandidato'])) {
 
 
                 </form>
+
+
+                <?php
+                if ($inscriCurso->getEstadoInscricao() == "Aprovado") {
+                    if ($pagamento->getId() == null) {
+                        echo '
+                                <h1 class="h4 text-gray-900 mb-4 mt-1">
+                                <span class="ml-2  text-gray-600 small">Dados do Pagamento</span>
+                                </h1>
+                                <hr>
+
+
+                            <form name="pagamento" id="pagamento" method="post">
+                                <div class="row">
+                                <input type="hidden" name="idInscricao" value=' . $inscriCurso->getId() . '>
+                                
+                                <div class="col-sm-10">
+                                    <div class="input-group">
+                                        <label class="input-group-text" for="comprovativo">Comprovativo</label>
+                                        <input type="file" class="form-control custom-input-file" id="comprovativo" name="comprovativo">
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-2">
+                                    <button class="btn btn-primary btn-block" style="border-color: white;" name="pagar">
+                                            Pagar
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                            <hr>';
+                    }
+                }
+
+                ?>
 
                 <div class="aviso-criar">
                     <div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -235,56 +315,52 @@ if (isset($_SESSION['idCandidato'])) {
             avisoCriar = $(".aviso-criar");
             avisoCriar.hide();
 
-            $('#planoAula').hide();
-            $('#faculdade').change(function() {
-                $('#planoAula').hide();
-                const idFaculdade = $(this).val();
+            $("#pagamento").validate({
+                rules: {
+                    comprovativo: {
+                        required: true,
+                        extension: "pdf|png|jpg|jpeg"
+                    },
+                },
+                submitHandler: function(forms) {
 
-                $.post('action_inscrever.php', {
-                    idFaculdade: idFaculdade
-                }, function(data) {
+                    alert('AQUIII')
 
-                    $('#curso option').each(function() {
-                        $(this).remove()
+                    var form = new FormData($("#pagamento")[0]);
+
+                    $.ajax({
+                        url: 'action_profile.php',
+                        method: "POST",
+                        contentType: false,
+                        dataType: 'json',
+                        cache: false,
+                        processData: false,
+                        data: form,
+                    }).done(function(res) {
+
+                        alert(res);
+
+                        console.log(res)
+
+                        if (res == 2) {
+                            avisoCriar.fadeIn('slow').fadeOut(8000);
+                            $("#text-aviso-criar").html("Está operação não foi efetuada com sucesso.");
+                        } else if (res == 1) {
+                            window.location.replace("http://localhost/inscricaoonline/profile.php");
+                        } else if (res == 3) {
+                            avisoCriar.fadeIn('slow').fadeOut(8000);
+                            $("#text-aviso-criar").val("Ocorre um erro!, tente mais tarde.");
+                        }
+                    }).fail(function(res) {
+                        console.log(res)
+                        avisoCriar.fadeIn('slow').fadeOut(8000);
+                        $("#text-aviso-criar").val("Ocorre um erro!, tente mais tarde.");
                     });
-
-                    const datas = JSON.parse(decodeURIComponent(data));
-                    datas.forEach(element => $("#curso").append(`<option value="${element.id}">${element.descricao}</option>`))
-                });
-            })
-
-            $('#curso').change(function() {
-                $.post('action_inscrever.php', {
-                    idCurso: $(this).val()
-                }, function(data) {
-                    const dataJson = JSON.parse(data)
-                    $('#preco').val(`${dataJson.preco},00 AOA`)
-                    $('#planoAula').fadeIn('1500').attr('href', dataJson.planoAula).text(`Plano de Estudos ${dataJson.descricao}`)
-                })
-            })
-
-
-            /*
-             :::::::: ADICIONANDO FUNÇÃO AO jQuery Validade ::::::::
-              -> AQUI ADICIONAMOS UMA FUNÇÃO PARA 
-              -> VALIDAR A IDADE DO CANDIDO,
-              -> CASO ELE FOR MENOS DE IDADE 
-              -> IDADE O SISTEMA NÃO ACEITA A SUA INSCRICAO
-             */
-            jQuery.validator.addMethod("verifyDt", function(value, element) {
-                data = new Date();
-                date = data.getFullYear();
-                minhaData = value[0] + value[1] + value[2] + value[3];
-                idade = parseInt(date) - parseInt(value);
-                if (idade >= 18) {
-                    return true;
-                } else {
-                    return false;
                 }
-            }, "Precisa ser maior de idade");
+            })
 
 
-            $("#inscricao").validate({
+            $("#profile").validate({
                 rules: {
                     nome: {
                         required: true,
@@ -309,37 +385,17 @@ if (isset($_SESSION['idCandidato'])) {
                         minlength: 9,
                         maxlength: 12
                     },
-                    dtNasc: {
-                        required: true,
-                        verifyDt: true
-                    },
                     morada: {
                         required: true,
                         minlength: 6
                     },
-                    curso: {
-                        required: true
-                    },
-                    foto: {
-                        required: true,
-                        extension: "png|jpg|jpeg"
-                    },
-                    certificado: {
-                        required: true,
-                        extension: "pdf|png|jpg|jpeg"
-                    },
-                    bilhete: {
-                        required: true,
-                        extension: "pdf|png|jpg|jpeg"
-                    },
-
                 },
                 submitHandler: function(forms) {
 
-                    var form = new FormData($("#inscricao")[0]);
+                    var form = new FormData($("#profile")[0]);
 
                     $.ajax({
-                        url: 'action_inscrever.php',
+                        url: 'action_profile.php',
                         method: "POST",
                         contentType: false,
                         dataType: 'json',
@@ -347,7 +403,6 @@ if (isset($_SESSION['idCandidato'])) {
                         processData: false,
                         data: form,
                     }).done(function(res) {
-                        alert('AQUI')
 
                         console.log(res)
 
@@ -355,13 +410,14 @@ if (isset($_SESSION['idCandidato'])) {
                             avisoCriar.fadeIn('slow').fadeOut(8000);
                             $("#text-aviso-criar").html("Este nº de bilhete já foi registado, Tente com outro nº bilhete.");
                         } else if (res == 2) {
-                            window.location.replace("http://localhost/inscricaoonline/");
+                            window.location.replace("http://localhost/inscricaoonline/profile.php");
                         } else if (res == 3) {
                             avisoCriar.fadeIn('slow').fadeOut(8000);
                             $("#text-aviso-criar").val("Ocorre um erro!, tente mais tarde.");
                         }
                     }).fail(function(res) {
-                        alert('ERRO')
+                        avisoCriar.fadeIn('slow').fadeOut(8000);
+                        $("#text-aviso-criar").val("Ocorre um erro!, tente mais tarde.");
                         console.log(res)
                     });
                 }

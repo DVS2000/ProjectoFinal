@@ -23,6 +23,14 @@ include_once('model/inscricao.php');
 # INCLUINDO O CONTROLLER DA INSCRICAO
 include_once('controller/crud-inscricao.php');
 
+session_start();
+
+if (!isset($_SESSION['idCandidato'])) {
+    header('Location: index.php');
+} else if (!isset($_COOKIE['idCandidato'])) {
+    header('Location: index.php');
+}
+
 if(isset($_POST['idFaculdade'])) {
 
     $idFaculdade = $_POST['idFaculdade'];

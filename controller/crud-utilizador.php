@@ -416,21 +416,31 @@ class CrudUtilizador extends Conexao
 
             $result      = $query->get_result();
             $dados = $result->fetch_assoc();
+
+            if($dados != null) {
+                $objecto   =  new Utilizador();
+
+                $objecto->setId($dados["idutilizador"]);
+                $objecto->setNome($dados["nome"]);
+                $objecto->setEmail($dados["email"]);
+                $objecto->setTelefone($dados["telefone"]);
+                $objecto->setTipoUtilizador($dados['TipoUtil']);
+                $objecto->setSexo($dados['sexo']);
+                $objecto->setIdSexo($dados["idsexo"]);
+                $objecto->setDtCriacao(date('d-m-Y', strtotime($dados["dtcriacao"])));
+                $objecto->setDtEdicao(date('d-m-Y', strtotime($dados["dtedicao"])));
+                $objecto->setIdTipoUtilizador($dados["idtbTipoUtilizador"]);
+
+                return $objecto;
+            }
+
             $objecto   =  new Utilizador();
+            $objecto->setId(null);
 
-            $objecto->setId($dados["idutilizador"]);
-            $objecto->setNome($dados["nome"]);
-            $objecto->setEmail($dados["email"]);
-            $objecto->setTelefone($dados["telefone"]);
-            $objecto->setTipoUtilizador($dados['TipoUtil']);
-            $objecto->setSexo($dados['sexo']);
-            $objecto->setIdSexo($dados["idsexo"]);
-            $objecto->setDtCriacao(date('d-m-Y', strtotime($dados["dtcriacao"])));
-            $objecto->setDtEdicao(date('d-m-Y', strtotime($dados["dtedicao"])));
-            $objecto->setIdTipoUtilizador($dados["idtbTipoUtilizador"]);
+            return $objecto;
+
+            
         }
-
-        return $objecto;
 
         #FECHANDO A COMANDO
         $query->close();

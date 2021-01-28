@@ -21,6 +21,12 @@ include_once('controller/crud-inscricao.php');
 
 session_start();
 
+if (!isset($_SESSION['idCandidato'])) {
+    header('Location: index.php');
+} else if (!isset($_COOKIE['idCandidato'])) {
+    header('Location: index.php');
+}
+
 $status = 0;
 
 $dados = new Candidato();
@@ -72,46 +78,6 @@ if (isset($_POST['criarConta'])) {
 
         echo json_encode($status);
     }
-} else if (isset($_POST['editarConta'])) {
-
-    // echo json_encode("Angolano");
-
-    $nome               = $clear->specialChars('nome');
-    $email              = $clear->email('email');
-    $telefone           = $clear->int('telefone');
-    $bi                 = $clear->specialChars('bi');
-    $dtNasc             = $clear->specialChars('dtNasc');
-    $sexo               = $clear->int('sexo');
-    $nacionalidade      = $clear->int('nacionalidade');
-    $nomePai            = $clear->specialChars('nomePai');
-    $nomeMae            = $clear->specialChars('nomeMae');
-    $morada             = $clear->specialChars('morada');
-    $senha              = $clear->specialChars('senha');
-    $confirSenha        = $clear->specialChars('confirSenha');
-
-
-
-    $candidato = new Candidato();
-
-
-    $candidato->setId($_SESSION['idCandidato']);
-    $candidato->setNome($nome);
-    $candidato->setEmail($email);
-    $candidato->setTelefone($telefone);
-    $candidato->setBi($bi);
-    $candidato->setDtNasc($dtNasc);
-    $candidato->setIdSexo($sexo);
-    $candidato->setIdNacionalidade($nacionalidade);
-    $candidato->setIdEstado(1);
-    $candidato->setMorada($morada);
-    $candidato->setSenha(md5($senha));
-    $candidato->setDtCriacao(date('Y-m-d'));
-    $candidato->setDtEdicao(date('Y-m-d'));
-
-
-    $update = new CrudCandidato();
-    $status = $update->update($candidato);
-    echo json_encode($status);
 } else if (isset($_POST['entrar'])) {
 
 

@@ -1,29 +1,23 @@
-
-
 <?php
 
-
 include_once('../../model/utilizador.php');
-include_once('../../controller/crud-utilizador.php'); 
+include_once('../../controller/crud-utilizador.php');
 
 session_start();
 
-if(isset($_SESSION['idUtlizador'])) {
+if (isset($_SESSION['idUtlizador'])) {
 
-    $id           = $_SESSION['idUtilizador'];
-    $select       = new CrudUtilizador();
-    $utilizador   = $select->getById($id);
+  $id     = $_SESSION['idUtilizador'];
+  $select = new CrudUtilizador();
+  $utilizador    = $select->getById($id);
+} else if (isset($_COOKIE['idUtilizador'])) {
 
-
-} else if(isset($_COOKIE['idUtilizador'])) {
-
-    $_SESSION['idUtilizador']   = $_COOKIE['idUtilizador'];
-    $id                         = $_SESSION['idUtilizador'];
-    $select                     = new CrudUtilizador();
-    $utilizador                 = $select->getById($id);
-
+  $_SESSION['idUtilizador']   = $_COOKIE['idUtilizador'];
+  $id                         = $_SESSION['idUtilizador'];
+  $select                     = new CrudUtilizador();
+  $utilizador                        = $select->getById($id);
 } else {
-  header('Location: ../login.php');
+  header('Location: login.php');
 }
 
 
@@ -31,25 +25,20 @@ if(isset($_SESSION['idUtlizador'])) {
 ?>
 
 
+
+
+
 <!DOCTYPE html>
 <html lang="pt-pt">
 
 <head>
-
-  <meta charset="utf-8">
   <title>Inscrição Online - ADMIN</title>
-
-
   <link href="../../src/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
   <link rel="stylesheet" href="../../src/style/style.css">
   <link rel="stylesheet" href="../../src/style/animate.css">
   <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
   <link href="../../src/css/sb-admin-2.min.css" rel="stylesheet">
-  <style>
-        .error {
-            font-size: 10pt !important;
-        }
-    </style>
+
 </head>
 
 <body id="page-top">
@@ -73,7 +62,7 @@ if(isset($_SESSION['idUtlizador'])) {
 
       <!-- Nav Item - Dashboard -->
       <li class="nav-item active">
-        <a class="nav-link" href="../">
+        <a class="nav-link" href="#">
           <i class="fas fa-fw fa-tachometer-alt"></i>
           <span>Dashboard</span></a>
       </li>
@@ -81,46 +70,54 @@ if(isset($_SESSION['idUtlizador'])) {
       <!-- Divider -->
       <hr class="sidebar-divider">
 
-       <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseInscricao">
-          <i class="fas fa-address-card"></i>
-          <span>Inscrição</span>
-        </a>
-        <div id="collapseInscricao" class="collapse" data-parent="#meuSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <a class="collapse-item" href="../inscricao/vertodos.php">Ver todas</a>
-            <a class="collapse-item" href="../inscricao/reciclagem.php">Desactivados</a>
+      <?php
+        if($utilizador ->getIdTipoUtilizador() == 12 || $utilizador ->getIdTipoUtilizador() == 11) {
+          echo '<li class="nav-item">
+          <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseInscricao">
+            <i class="fas fa-address-card"></i>
+            <span>Inscrição</span>
+          </a>
+          <div id="collapseInscricao" class="collapse" data-parent="#meuSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+              <a class="collapse-item" href="../inscricao/pendente.php">Pendentes</a>
+              <a class="collapse-item" href="../inscricao/aprovado.php">Aprovado</a>
+              <a class="collapse-item" href="../inscricao/reprovado.php">Reprovado</a>
+            </div>
           </div>
-        </div>
-      </li>
+        </li>';
+        }
+      ?>
 
 
-
-      <li class="nav-item">
-        <a href="#" class="nav-link collapsed" data-toggle="collapse" data-target="#collapseCandidato">
-          <i class="fas fa-clipboard-list    "></i>
-          <span>Candidato</span>
-        </a>
-
-        <div class="collapse" id="collapseCandidato" data-parent="#meuSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <a href="../candidato/" class="collapse-item">Ver todos</a>
-            <a href="../candidato/reciclagem.php" class="collapse-item">Desactivados</a>
-          </div>
-        </div>
-      </li>
-
-      
 
       <?php
 
-        if($utilizador->getIdTipoUtilizador() == 11) {
+        if($utilizador ->getIdTipoUtilizador() == 11) {
           echo '<li class="nav-item">
+          <a href="#" class="nav-link collapsed" data-toggle="collapse" data-target="#collapseCandidato">
+            <i class="fas fa-clipboard-list    "></i>
+            <span>Candidato</span>
+          </a>
+  
+          <div class="collapse" id="collapseCandidato" data-parent="#meuSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+              <a href="../candidato/vertodos.php" class="collapse-item">Ver todos</a>
+              <a href="../candidato/reciclagem.php" class="collapse-item">Desactivados</a>
+            </div>
+          </div>
+        </li>';
+        }
+      ?>
+
+      <?php
+
+      if ($utilizador ->getIdTipoUtilizador() == 11) {
+        echo '<li class="nav-item">
           <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilizador">
             <i class="fas fa-users fa-cog"></i>
             <span>Utilizador</span>
           </a>
-          <div id="collapseUtilizador" class="collapse" aria-labelledby="headingTwo" data-parent="#meuSidebar">
+          <div id="collapseUtilizador" class="collapse"  data-parent="#meuSidebar">
             <div class="bg-white py-2 collapse-inner rounded">         
               <a class="collapse-item" href="../utilizador/">Novo</a>
               <a class="collapse-item" href="../utilizador/vertodos.php">Ver Todos</a>
@@ -128,6 +125,7 @@ if(isset($_SESSION['idUtlizador'])) {
             </div>
           </div>
         </li>
+
 
         <li class="nav-item">
           <a href="#" class="nav-link collapsed" data-toggle="collapse" data-target="#collapseFaculdade">
@@ -142,14 +140,13 @@ if(isset($_SESSION['idUtlizador'])) {
             </div>
           </div>
         </li>
-  
-  
-        <li class="nav-item">
+
+          <li class="nav-item">
           <a href="#" class="nav-link collapsed" data-toggle="collapse" data-target="#collapseCurso">
             <i class="fa fa-book" aria-hidden="true"></i>
             <span>Curso</span>
           </a>
-          <div id="collapseCurso" class="collapse" aria-labelledby="headingTwo" data-parent="#meuSidebar">
+          <div id="collapseCurso" class="collapse"  data-parent="#meuSidebar">
             <div class="bg-white py-2 collapse-inner rounded">         
               <a class="collapse-item" href="../curso/">Novo</a>
               <a class="collapse-item" href="../curso/vertodos.php">Ver Todos</a>
@@ -157,51 +154,57 @@ if(isset($_SESSION['idUtlizador'])) {
             </div>
           </div>
         </li>';
-        }
+      }
 
 
       ?>
 
 
-      <li class="nav-item">
-          <a href="#" class="nav-link collapsed" data-toggle="collapse" data-target="#collapseNacional">
-            <i class="fa fa-money-bill" aria-hidden="true"></i>
-            <span>Pagamento</span>
-          </a>
-          <div id="collapseNacional" class="collapse"  data-parent="#meuSidebar">
-            <div class="bg-white py-2 collapse-inner rounded">         
-              <a class="collapse-item" href="../pagamento/vertodos.php">Ver Confirmados</a>
-              <a class="collapse-item" href="../pagamento/reciclagem.php">Não confirmados</a>
-            </div>
-          </div>
-        </li>
+      <?php
 
-
-     
-
-     <?php
-     if($utilizador->getIdTipoUtilizador() == 11) {
-       echo ' <hr class="sidebar-divider">
-     
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#candidato" aria-expanded="true" aria-controls="collapsePages">
-          <i class="fas fa-clipboard-list    "></i>
-          <span>Nacionalidade</span>
+      if($utilizador ->getIdTipoUtilizador() == 13 || $utilizador ->getIdTipoUtilizador() == 11) {
+        echo '<li class="nav-item">
+        <a href="#" class="nav-link collapsed" data-toggle="collapse" data-target="#collapseNacional">
+          <i class="fa fa-money-bill" aria-hidden="true"></i>
+          <span>Pagamento</span>
         </a>
-        <div id="candidato" class="collapse" aria-labelledby="headingPages" data-parent="#meuSidebar">
+        <div id="collapseNacional" class="collapse" data-parent="#meuSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
-            <a class="collapse-item" href="../nacionalidade/">Nova</a>
-            <a class="collapse-item" href="../nacionalidade/vertodos.php">Ver Todas</a>
-            <div class="collapse-divider"></div>
-            <a class="collapse-item" href="../nacionalidade/reciclagem.php">Desactivados</a>
+              <a class="collapse-item" href="../pagamento/pendente.php">Pendente</a>         
+              <a class="collapse-item" href="../pagamento/aprovado.php">Confirmados</a>
+              <a class="collapse-item" href="../pagamento/reprovado.php">Não confirmados</a>
           </div>
         </div>
       </li>';
-     }
+      }
+
+      ?>
 
 
-     ?>
+      <?php
 
+
+      if ($utilizador ->getIdTipoUtilizador() == 11) {
+        echo '
+      <hr class="sidebar-divider">
+       
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#candidato" aria-expanded="true" aria-controls="collapsePages">
+              <i class="fas fa-clipboard-list    "></i>
+              <span>Nacionalidade</span>
+            </a>
+            <div id="candidato" class="collapse" aria-labelledby="headingPages" data-parent="#meuSidebar">
+              <div class="bg-white py-2 collapse-inner rounded">
+                <a class="collapse-item" href="../nacionalidade/">Nova</a>
+                <a class="collapse-item" href="../nacionalidade/vertodos.php">Ver Todas</a>
+                <div class="collapse-divider"></div>
+                <a class="collapse-item" href="../nacionalidade/reciclagem.php">Desactivados</a>
+              </div>
+            </div>
+          </li>';
+      }
+
+      ?>
 
       <hr class="sidebar-divider d-none d-md-block">
 
@@ -217,22 +220,21 @@ if(isset($_SESSION['idUtlizador'])) {
             <i class="fa fa-bars"></i>
           </button>
 
-  
+
 
           <ul class="navbar-nav ml-auto">
 
             <div class="topbar-divider d-none d-sm-block"></div>
-              <li class="nav-item dropdown no-arrow">
+            <li class="nav-item dropdown no-arrow">
               <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              <button class="btn btn-primary rounded-circle"><?php echo substr($utilizador->getNome(), 0,1) ?></button>
-                <span class="ml-2 d-none d-lg-inline text-gray-600 small"><?php echo $utilizador->getNome() ?></span>
+                <button class="btn btn-primary rounded-circle"><?php echo substr($utilizador ->getNome(), 0, 1) ?></button>
+                <span class="ml-2 d-none d-lg-inline text-gray-600 small"><?php echo $utilizador ->getNome() ?></span>
               </a>
               <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                <button class="dropdown-item" onClick='<?php echo 'window.location.replace("http://localhost/inscricaoonline/admin/utilizador/editar.php?id='.$utilizador->getId().'")'; ?>'>
+                <button class="dropdown-item" onClick='<?php echo 'window.location.replace("http://localhost/inscricaoonline/admin/utilizador/editar.php?id=' . $utilizador->getId() . '")'; ?>'>
                   <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                   Editar Perfil
                 </button>
-
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
                   <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>

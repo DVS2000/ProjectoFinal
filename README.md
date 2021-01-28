@@ -1,4 +1,4 @@
-# WebSite Para Escola de Condução JELÚ
+# WebSite Para INSCRIÇÃO ONLINE DA UNIVERSIDADE OSCAR RIBAS
 ## /* --------------------------------------------
 ##      ESTE O NOSSO REPOSITÓRIO NO GITHUB
 ## ---------------------------------------------- */

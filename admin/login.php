@@ -30,7 +30,7 @@ if(isset($_SESSION['idUtilizador'])) {
     <link rel="stylesheet" href="src/style/style.css">
     <link rel="stylesheet" href="src/style/animate.css">
    
-    <title>Escola de Condução</title>
+    <title>Inscrição Online</title>
 </head>
 
 <body>
@@ -58,7 +58,7 @@ if(isset($_SESSION['idUtilizador'])) {
 
             <div class="row">
                 <div class="col-sm-6 mb-3">
-                    <button class="btn btn-primary btn-block" style="border-radius: 30px" name="entrar">
+                    <button class="btn btn-primary btn-block" style="border-radius: 30px; background-color: #f0ad4e;" name="entrar">
                         ENTRAR
                     </button>
                 </div>
@@ -93,7 +93,7 @@ if(isset($_SESSION['idUtilizador'])) {
                     $login = new CrudUtilizador();
                     $user = $login->login($utilizador);
 
-                    if($user->getid() == null) {
+                    if($user->getId() == null) {
                         echo "Não tens acesso";
                     } else {
                         $dados = $login->getById($user->getId());

@@ -19,7 +19,7 @@ class Conexao {
 
        # SE TIVER ALGUM ERRO ELE ENVIA O USER NA PÁGINA DE ERRO
         if(mysqli_connect_errno()) {
-          header('Location: view/404.php');
+          header('Location: ../admin/404.php');
         }
 
         return true;

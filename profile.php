@@ -325,7 +325,7 @@ if (isset($_SESSION['idCandidato'])) {
                 },
                 submitHandler: function(forms) {
 
-                    alert('AQUIII')
+                   
 
                     var form = new FormData($("#pagamento")[0]);
 
@@ -338,8 +338,6 @@ if (isset($_SESSION['idCandidato'])) {
                         processData: false,
                         data: form,
                     }).done(function(res) {
-
-                        alert(res);
 
                         console.log(res)
 

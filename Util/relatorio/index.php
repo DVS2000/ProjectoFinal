@@ -16,7 +16,9 @@
 			$dompdf->setPaper('A4', 'landscape');
 
 			// Carrega seu HTML
-			$dompdf->load_html($html);
+			$dompdf->loadhtml("<h1> Angola</h1>");
+
+			echo var_dump($dompdf);
 
 
 			//Renderizar o html

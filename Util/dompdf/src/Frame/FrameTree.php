@@ -4,11 +4,11 @@ namespace Dompdf\Frame;
 
 use DOMDocument;
 use DOMNode;
+use DOMElement;
 use DOMXPath;
 
 use Dompdf\Exception;
 use Dompdf\Frame;
-use Dompdf\FrameDecorator\Page;
 
 /**
  * @package dompdf
@@ -22,7 +22,7 @@ use Dompdf\FrameDecorator\Page;
  *
  * The FrameTree consists of {@link Frame} objects each tied to specific
  * DOMNode objects in a specific DomDocument.  The FrameTree has the same
- * structure as the DomDocument, but adds additional capabalities for
+ * structure as the DomDocument, but adds additional capabilities for
  * styling and layout.
  *
  * @package dompdf
@@ -34,7 +34,7 @@ class FrameTree
      *
      * @var array
      */
-    protected static $HIDDEN_TAGS = array(
+    protected static $HIDDEN_TAGS = [
         "area",
         "base",
         "basefont",
@@ -44,10 +44,9 @@ class FrameTree
         "title",
         "colgroup",
         "noembed",
-        "noscript",
         "param",
         "#comment"
-    );
+    ];
 
     /**
      * The main DomDocument
@@ -87,11 +86,11 @@ class FrameTree
     {
         $this->_dom = $dom;
         $this->_root = null;
-        $this->_registry = array();
+        $this->_registry = [];
     }
 
     /**
-     * Returns the DOMDocument object representing the curent html document
+     * Returns the DOMDocument object representing the current html document
      *
      * @return DOMDocument
      */
@@ -103,7 +102,7 @@ class FrameTree
     /**
      * Returns the root frame of the tree
      *
-     * @return \Dompdf\FrameDecorator\Page
+     * @return Frame
      */
     public function get_root()
     {
@@ -115,7 +114,7 @@ class FrameTree
      *
      * @param string $id
      *
-     * @return Frame
+     * @return Frame|null
      */
     public function get_frame($id)
     {
@@ -160,20 +159,37 @@ class FrameTree
 
         // Move table caption before the table
         // FIXME find a better way to deal with it...
-        $captions = $xp->query("//table/caption");
+        $captions = $xp->query('//table/caption');
         foreach ($captions as $caption) {
             $table = $caption->parentNode;
             $table->parentNode->insertBefore($caption, $table);
         }
 
-        $rows = $xp->query("//table/tr");
-        foreach ($rows as $row) {
-            $tbody = $this->_dom->createElement("tbody");
-            $tbody = $row->parentNode->insertBefore($tbody, $row);
-            $tbody->appendChild($row);
+        $firstRows = $xp->query('//table/tr[1]');
+        /** @var DOMElement $tableChild */
+        foreach ($firstRows as $tableChild) {
+            $tbody = $this->_dom->createElement('tbody');
+            $tableNode = $tableChild->parentNode;
+            do {
+                if ($tableChild->nodeName === 'tr') {
+                    $tmpNode = $tableChild;
+                    $tableChild = $tableChild->nextSibling;
+                    $tableNode->removeChild($tmpNode);
+                    $tbody->appendChild($tmpNode);
+                } else {
+                    if ($tbody->hasChildNodes() === true) {
+                        $tableNode->insertBefore($tbody, $tableChild);
+                        $tbody = $this->_dom->createElement('tbody');
+                    }
+                    $tableChild = $tableChild->nextSibling;
+                }
+            } while ($tableChild);
+            if ($tbody->hasChildNodes() === true) {
+                $tableNode->appendChild($tbody);
+            }
         }
     }
-    
+
     // FIXME: temporary hack, preferably we will improve rendering of sequential #text nodes
     /**
      * Remove a child from a node
@@ -181,9 +197,9 @@ class FrameTree
      * Remove a child from a node. If the removed node results in two
      * adjacent #text nodes then combine them.
      *
-     * @param DONNode $node the current DOMNode being considered
+     * @param DOMNode $node the current DOMNode being considered
      * @param array $children an array of nodes that are the children of $node
-     * @param $index index from the $children array of the node to remove
+     * @param int $index index from the $children array of the node to remove
      */
     protected function _remove_node(DOMNode $node, array &$children, $index)
     {
@@ -192,8 +208,7 @@ class FrameTree
         $nextChild = $child->nextSibling;
         $node->removeChild($child);
         if (isset($previousChild, $nextChild)) {
-            if ($previousChild->nodeName === "#text" && $nextChild->nodeName === "#text")
-            {
+            if ($previousChild->nodeName === "#text" && $nextChild->nodeName === "#text") {
                 $previousChild->nodeValue .= $nextChild->nodeValue;
                 $this->_remove_node($node, $children, $index+1);
             }
@@ -222,9 +237,9 @@ class FrameTree
         if (!$node->hasChildNodes()) {
             return $frame;
         }
-        
+
         // Store the children in an array so that the tree can be modified
-        $children = array();
+        $children = [];
         $length = $node->childNodes->length;
         for ($i = 0; $i < $length; $i++) {
             $children[] = $node->childNodes->item($i);
@@ -234,7 +249,7 @@ class FrameTree
         while ($index < count($children)) {
             $child = $children[$index];
             $nodeName = strtolower($child->nodeName);
-            
+
             // Skip non-displaying nodes
             if (in_array($nodeName, self::$HIDDEN_TAGS)) {
                 if ($nodeName !== "head" && $nodeName !== "style") {
@@ -254,7 +269,7 @@ class FrameTree
                 $this->_remove_node($node, $children, $index);
                 continue;
             }
-       
+
             if (is_object($child)) {
                 $frame->append_child($this->_build_tree_r($child), false);
             }
@@ -265,13 +280,13 @@ class FrameTree
     }
 
     /**
-     * @param DOMNode $node
-     * @param DOMNode $new_node
+     * @param DOMElement $node
+     * @param DOMElement $new_node
      * @param string $pos
      *
      * @return mixed
      */
-    public function insert_node(DOMNode $node, DOMNode $new_node, $pos)
+    public function insert_node(DOMElement $node, DOMElement $new_node, $pos)
     {
         if ($pos === "after" || !$node->firstChild) {
             $node->appendChild($new_node);

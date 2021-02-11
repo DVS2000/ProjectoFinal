@@ -18,6 +18,10 @@ include_once('model/inscricao.php');
 # INCLUINDO O CONTROLLER DA INSCRICAO
 include_once('controller/crud-inscricao.php');
 
+include_once('Util/email/enviar.php');
+
+$sendEmail = new SendEmail();
+
 
 session_start();
 
@@ -74,6 +78,8 @@ if (isset($_POST['criarConta'])) {
 
             $relatorioCandidato = new RelatorioCandidato();
             $relatorioCandidato->UpdateRelatorio();
+
+            $sendEmail->sendCustomEmail($dados->getEmail(), $dados->getNome(), "Seja Bem-vinda ao Universidade Oscar Ribas", "BEM-VINDO");
         }
 
         echo json_encode($status);

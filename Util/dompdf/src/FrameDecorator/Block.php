@@ -33,19 +33,27 @@ class Block extends AbstractFrameDecorator
      */
     protected $_line_boxes;
 
+    /**
+     * Block constructor.
+     * @param Frame $frame
+     * @param Dompdf $dompdf
+     */
     function __construct(Frame $frame, Dompdf $dompdf)
     {
         parent::__construct($frame, $dompdf);
 
-        $this->_line_boxes = array(new LineBox($this));
+        $this->_line_boxes = [new LineBox($this)];
         $this->_cl = 0;
     }
 
+    /**
+     *
+     */
     function reset()
     {
         parent::reset();
 
-        $this->_line_boxes = array(new LineBox($this));
+        $this->_line_boxes = [new LineBox($this)];
         $this->_cl = 0;
     }
 
@@ -71,6 +79,17 @@ class Block extends AbstractFrameDecorator
     function get_line_boxes()
     {
         return $this->_line_boxes;
+    }
+
+    /**
+     * @param integer $line_number
+     * @return integer
+     */
+    function set_current_line_number($line_number)
+    {
+        $line_boxes_count = count($this->_line_boxes);
+        $cl = max(min($line_number, $line_boxes_count), 0);
+        return ($this->_cl = $cl);
     }
 
     /**
@@ -114,10 +133,9 @@ class Block extends AbstractFrameDecorator
 
         // Handle inline frames (which are effectively wrappers)
         if ($frame instanceof Inline) {
-
             // Handle line breaks
             if ($frame->get_node()->nodeName === "br") {
-                $this->maximize_line_height($style->length_in_pt($style->line_height), $frame);
+                $this->maximize_line_height($style->line_height, $frame);
                 $this->add_line(true);
             }
 
@@ -130,14 +148,15 @@ class Block extends AbstractFrameDecorator
             $frame->is_text_node() &&
             !$frame->is_pre()
         ) {
-
             $frame->set_text(ltrim($frame->get_text()));
             $frame->recalculate_width();
         }
 
         $w = $frame->get_margin_width();
 
-        if ($w == 0) {
+        // FIXME: Why? Doesn't quite seem to be the correct thing to do,
+        // but does appear to be necessary. Hack to handle wrapped white space?
+        if ($w == 0 && $frame->get_node()->nodeName !== "hr" && !$frame->is_pre()) {
             return;
         }
 
@@ -169,7 +188,11 @@ class Block extends AbstractFrameDecorator
         $current_line->add_frame($frame);
 
         if ($frame->is_text_node()) {
-            $current_line->wc += count(preg_split("/\s+/", trim($frame->get_text())));
+            // split the text into words (used to determine spacing between words on justified lines)
+            // The regex splits on everything that's a separator (^\S double negative), excluding nbsp (\xa0)
+            // This currently excludes the "narrow nbsp" character
+            $words = preg_split('/[^\S\xA0]+/u', trim($frame->get_text()));
+            $current_line->wc += count($words);
         }
 
         $this->increase_line_width($w);
@@ -177,6 +200,9 @@ class Block extends AbstractFrameDecorator
         $this->maximize_line_height($frame->get_margin_height(), $frame);
     }
 
+    /**
+     * @param Frame $frame
+     */
     function remove_frames_from_line(Frame $frame)
     {
         // Search backwards through the lines for $frame
@@ -221,11 +247,18 @@ class Block extends AbstractFrameDecorator
         }
     }
 
+    /**
+     * @param float $w
+     */
     function increase_line_width($w)
     {
         $this->_line_boxes[$this->_cl]->w += $w;
     }
 
+    /**
+     * @param $val
+     * @param Frame $frame
+     */
     function maximize_line_height($val, Frame $frame)
     {
         if ($val > $this->_line_boxes[$this->_cl]->h) {
@@ -234,12 +267,11 @@ class Block extends AbstractFrameDecorator
         }
     }
 
+    /**
+     * @param bool $br
+     */
     function add_line($br = false)
     {
-
-//     if ( $this->_line_boxes[$this->_cl]["h"] == 0 ) //count($this->_line_boxes[$i]["frames"]) == 0 ||
-//       return;
-
         $this->_line_boxes[$this->_cl]->br = $br;
         $y = $this->_line_boxes[$this->_cl]->y + $this->_line_boxes[$this->_cl]->h;
 

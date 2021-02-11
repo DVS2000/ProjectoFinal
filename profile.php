@@ -213,7 +213,8 @@ if (isset($_SESSION['idCandidato'])) {
                                 <div class="col-sm-4">
                                     <div class="form-group">
                                         <input type="text" class="form-control form-control-user" value="Estado: '.$pagamento->getEstado().'" readonly required="required">
-                                        <a href="http://localhost/inscricaoonline/'. $pagamento->getComprovativo().'" target="_blanck" id="comprovativo" class="form-control-user">Abrir o Compravativo de Pagamento</a>
+                                        <a href="http://localhost/inscricaoonline/'. $pagamento->getComprovativo().'" target="_blanck" id="comprovativo" class="form-control-user">Abrir o Compravativo de Pagamento</a><br>
+                                        <a href="http://localhost/inscricaoonline/recibo.php" target="_blanck" class="form-control-user mr-2"> BAIXAR O RECIBO DE INSCRIÇÃO</a>
                                     </div>
                                 </div>
                                 </div>

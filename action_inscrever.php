@@ -17,6 +17,8 @@ include_once('Util/clear-var.php');
 
 include_once('controller/relatorio-candidato.php');
 
+include_once('Util/email/enviar.php');
+
 # INCLUINDO O MODEL DA INSCRIÇÃO
 include_once('model/inscricao.php');
 
@@ -95,6 +97,19 @@ if(isset($_POST['idFaculdade'])) {
 
         $insertInscricao = new CrudInscricao();
         $status = $insertInscricao->insert($inscrcao);
+    }
+
+    try {
+        $email = new SendEmail();
+
+        $curso = new CrudCurso();
+
+       $dados = $curso->getById($_POST['curso']);
+
+        $email->enviar($_POST['nome'], $dados->getDescricao(), $candidato->getEmail());
+
+    } catch (\Throwable $th) {
+        
     }
 
     

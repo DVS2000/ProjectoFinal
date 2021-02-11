@@ -17,6 +17,12 @@ include_once('model/inscricao.php');
 # INCLUINDO O CONTROLLER DA INSCRICAO
 include_once('controller/crud-inscricao.php');
 
+include_once('Util/email/enviar.php');
+
+$email = new SendEmail();
+
+//$email->enviar("Dorivaldo dos Santos", "Linceciatura de Informática", "dorivaldodossantos2000@gmail.com");
+
 
 session_start();
 

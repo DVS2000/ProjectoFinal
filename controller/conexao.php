@@ -6,7 +6,7 @@ class Conexao {
     const SERVERNAME = "localhost";
     const USERNAME   = "root";
     const PASSWORD   = "";
-    const BDNAME     = "bdjelu";
+    const BDNAME     = "bdinscricao";
 
 
    
